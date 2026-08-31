@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Farmer profiles and subcollections
+    match /farmers/{farmerId} {
+      allow read, write: if true;
+
+      match /parcels/{parcelId} {
+        allow read, write: if true;
+      }
+      match /advisories/{advisoryId} {
+        allow read, write: if true;
+      }
+      match /schemes/{schemeId} {
+        allow read, write: if true;
+      }
+      match /distress_reports/{reportId} {
+        allow read, write: if true;
+      }
+    }
+
+    // 2. Mandi APMC Spot Rates
+    match /mandi_rates/{rateId} {
+      allow read, write: if true;
+    }
+
+    // 3. Weather & Satellite Telemetry
+    match /weather_telemetry/{telemetryId} {
+      allow read, write: if true;
+    }
+
+    // 4. Government Schemes & Subsidies
+    match /govt_schemes/{schemeId} {
+      allow read, write: if true;
+    }
+
+    // 5. Official Relief Dossiers
+    match /distress_dossiers/{dossierId} {
+      allow read, write: if true;
+    }
+
+    // 6. Global collection fallback
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

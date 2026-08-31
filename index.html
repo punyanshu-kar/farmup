@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="farmup-logo.png">
+<link rel="apple-touch-icon" href="farmup-logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>FarmUp — National Agricultural & Mandi Intelligence</title>
+<style>
+  /* ==========================================================================
+     1. DESIGN TOKENS & MOBILE-FIRST SYSTEM (BASE: 320px–479px)
+     ========================================================================== */
+  :root {
+    /* Palette Tokens */
+    --bg: #FFFFFF;
+    --bg-alt: #F7F9F6;
+    --surface: #FFFFFF;
+    --ink: #0D0C22;
+    --ink-muted: #565568;
+    --ink-dim: #8E8D9F;
+    --primary: #0D0C22;
+    --primary-hover: #222138;
+    --accent-pink: #EA4C89;
+    --line: rgba(0, 0, 0, 0.08);
+    --line-subtle: #E8ECE6;
+    --line-strong: rgba(0, 0, 0, 0.15);
+    
+    /* Semantic Colors (Data Only) */
+    --gain: #137333;
+    --gain-bg: #EEF6F0;
+    --drop: #C5221F;
+    --drop-bg: #FDF2F2;
+
+    /* 8px-Based Fluid Spacing Scale */
+    --space-1: 8px;
+    --space-2: clamp(12px, 2.5vw, 16px);
+    --space-3: clamp(16px, 3.5vw, 24px);
+    --space-4: clamp(24px, 4.5vw, 32px);
+    --space-6: clamp(36px, 6vw, 48px);
+    --space-8: clamp(48px, 8vw, 64px);
+
+    /* Fluid Typography Scale */
+    --font-h1: clamp(28px, 6vw, 54px);
+    --font-h2: clamp(22px, 4vw, 34px);
+    --font-h3: clamp(17px, 2.5vw, 20px);
+    --font-body: clamp(14px, 1.2vw, 15.5px);
+    --font-caption: clamp(11.5px, 0.9vw, 13px);
+
+    /* Container Max Width & Touch Target */
+    --container-max: 1240px;
+    --gutter: clamp(16px, 4vw, 32px);
+    --min-touch-target: 44px;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  /* Reset & Box Sizing */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  /* Paragraph Reading Width Limit (45–75 Characters) */
+  p, .page-sub, .desc {
+    max-width: 65ch;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Grid & Flex Child Safe Containment (Prevents Content Blowouts) */
+  .grid-item, .feat-card, .market-stat-card, td, th {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  /* Fluid Container */
+  .wrap {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ==========================================================================
+     2. TOUCH TARGETS & ACCESSIBILITY (44×44px MINIMUM)
+     ========================================================================== */
+  .btn,
+  .tb-link,
+  .tb-ask-btn,
+  .hamburger,
+  .card-action-link,
+  .nav-signup-link,
+  .btn-dribbble-login {
+    min-height: var(--min-touch-target);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+  }
+
+  /* Button Design System */
+  .btn {
+    gap: var(--space-1);
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .btn-primary {
+    background: #0D0C22;
+    color: #FFFFFF !important;
+    border-color: #0D0C22;
+  }
+  .btn-primary:hover {
+    background: #25243E;
+    border-color: #25243E;
+    transform: translateY(-1.5px);
+  }
+
+  .btn-ghost {
+    background: #FFFFFF;
+    color: var(--ink) !important;
+    border-color: var(--line-strong);
+  }
+  .btn-ghost:hover {
+    background: var(--bg-alt);
+    border-color: var(--ink);
+    transform: translateY(-1.5px);
+  }
+
+  /* ==========================================================================
+     3. PREFERS-REDUCED-MOTION ACCESSIBILITY
+     ========================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .skeleton-row, .ticker-track, .hero-video-media {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%) scale(1.04);
+    object-fit: cover;
+    opacity: 0.88;
+    filter: saturate(125%) contrast(104%) brightness(102%);
+    transition: opacity 0.8s ease;
+  }
+  }
+
+  /* ==========================================================================
+     4. ON-BRAND SKELETON LOADERS (LEDGER PAPER / --LINE TOKENS)
+     ========================================================================== */
+  .skeleton-row {
+    width: 100%;
+    height: 44px;
+    background: linear-gradient(90deg, #F7F9F6 25%, #E8ECE6 50%, #F7F9F6 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.4s infinite ease-in-out;
+    border-radius: 6px;
+    margin-bottom: var(--space-1);
+    border: 1px solid var(--line);
+  }
+  @keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ==========================================================================
+     5. HEADER & MOBILE DRAWER (BASE: MOBILE 320px+)
+     ========================================================================== */
+  .taskbar-wrap {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 62px;
+    z-index: 1000;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: center;
+  }
+
+  .floating-taskbar {
+    width: 100%;
+    max-width: var(--container-max);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--gutter);
+  }
+
+  .tb-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .tb-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .tb-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+
+  /* Mobile Drawer (Base: Slide-Down Vertical List) */
+  .tb-links {
+    position: fixed;
+    top: 62px;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    padding: var(--space-3) var(--gutter) var(--space-4);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    transform: translateY(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    z-index: 999;
+    display: flex;
+  }
+  .tb-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .tb-link {
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--ink) !important;
+    padding: 12px 0;
+    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    background: transparent !important;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tb-link:last-child {
+    border-bottom: none;
+    color: var(--accent-pink) !important;
+    font-weight: 800;
+  }
+
+  .tb-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .tb-ask-btn {
+    padding: 7px 12px;
+    border-radius: 100px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1.5px solid var(--line-strong);
+    background: #FFFFFF;
+    color: var(--ink);
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    gap: 5px;
+  }
+  .hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #0D0C22;
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.15s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ==========================================================================
+     6. HERO SECTION (BASE: MOBILE FIRST)
+     ========================================================================== */
+  .hero-stage {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: var(--bg-alt);
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-video-media {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%) scale(1.04);
+    object-fit: cover;
+    opacity: 0.75;
+    filter: saturate(130%) contrast(106%);
+  }
+  .hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, 
+      rgba(255, 255, 255, 0.10) 0%, 
+      rgba(247, 249, 246, 0.08) 50%, 
+      rgba(247, 249, 246, 0.60) 82%, 
+      #FFFFFF 100%
+    );
+    pointer-events: none;
+  }
+
+  .page-hero {
+    position: relative;
+    z-index: 2;
+    padding: var(--space-6) 0 var(--space-4);
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .eyebrow-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-caption);
+    font-weight: 700;
+    color: var(--ink);
+    background: #F1F3F5;
+    border: 1px solid var(--line);
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: var(--space-2);
+  }
+
+  h1.dribbble-title {
+    font-size: var(--font-h1);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin: 0 auto;
+    text-wrap: balance;
+    text-shadow: 0 1px 12px rgba(255, 255, 255, 0.85);
+  }
+  h1.dribbble-title span.highlight-pink {
+    color: var(--accent-pink);
+  }
+
+  .page-sub {
+    margin: var(--space-2) auto 0;
+    font-size: var(--font-body);
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .hero-cta-row {
+    margin-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: stretch;
+    width: 100%;
+  }
+  .hero-cta-row .btn {
+    width: 100%;
+  }
+
+  .hero-trust-sub {
+    font-size: var(--font-caption);
+    color: var(--ink-dim);
+    margin-top: var(--space-2);
+    font-weight: 600;
+  }
+
+  /* ==========================================================================
+     7. STATS & FEATURE GRIDS (BASE: SINGLE COLUMN)
+     ========================================================================== */
+  .market-stats-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+
+  .market-stat-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+    text-align: left;
+  }
+  .msc-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+  }
+  .msc-val {
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .msc-sub {
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin-top: 4px;
+  }
+
+  .section {
+    padding: var(--space-6) 0;
+  }
+  .section-head {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto var(--space-4);
+  }
+  .section-head h2 {
+    font-size: var(--font-h2);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-1);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .feat-card {
+    background: rgba(247, 249, 246, 0.86);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .feat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(13, 12, 34, 0.22);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+  .feat-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #F4F5F7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .icon-box svg { width: 20px; height: 20px; }
+  .feat-card h3 {
+    font-size: var(--font-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .feat-card p.desc {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    margin-bottom: var(--space-2);
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-crop { font-weight: 600; color: var(--ink); }
+  .price-vals { font-family: 'IBM Plex Mono', monospace; font-weight: 700; }
+  .delta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .delta-pill.up { background: var(--gain-bg); color: var(--gain); }
+  .delta-pill.down { background: var(--drop-bg); color: var(--drop); }
+
+  .card-action-link {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: var(--space-2);
+    justify-content: flex-start;
+  }
+  .card-action-link:hover { color: var(--accent-pink); }
+
+  /* Bottom Conversion Card */
+  .calc-sec {
+    margin-top: var(--space-6);
+    background: rgba(247, 249, 246, 0.86);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: var(--space-4) var(--space-3);
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+  }
+  .calc-sec h2 {
+    font-size: var(--font-h2);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: var(--space-1);
+  }
+  .calc-sec p {
+    color: var(--ink-muted);
+    font-size: 14.5px;
+    margin: 0 auto var(--space-3);
+  }
+  .calc-sec .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  /* Footer (Base: Single Column) */
+  
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+  .footer-col h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: var(--space-1);
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .footer-col ul li a {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    padding: 4px 0;
+    display: inline-block;
+  }
+  .footer-col ul li a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-align: center;
+  }
+
+  /* ==========================================================================
+     8. MEDIA QUERIES (MOBILE-FIRST min-width ARCHITECTURE ONLY)
+     ========================================================================== */
+
+  /* Small Phablets & Landscape (480px+) */
+  @media (min-width: 480px) {
+    .hero-cta-row {
+      flex-direction: row;
+      justify-content: center;
+      width: auto;
+    }
+    .hero-cta-row .btn {
+      width: auto;
+    }
+    .calc-sec .btn-group {
+      flex-direction: row;
+      justify-content: center;
+      width: auto;
+    }
+    .calc-sec .btn-group .btn {
+      width: auto;
+    }
+  }
+
+  /* Tablets (768px+) */
+  @media (min-width: 768px) {
+    .market-stats-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  /* Desktops (1024px+) */
+  @media (min-width: 1024px) {
+    .taskbar-wrap {
+      height: 70px;
+    }
+    .hamburger {
+      display: none !important;
+    }
+    .tb-links {
+      position: static;
+      flex-direction: row;
+      align-items: center;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      transform: none;
+      opacity: 1;
+      pointer-events: auto;
+      gap: 6px;
+      display: flex;
+    }
+    .tb-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink) !important;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      width: auto;
+    }
+    .tb-link:hover {
+      color: var(--accent-pink) !important;
+      background: rgba(0,0,0,0.03) !important;
+    }
+    .tb-link.active {
+      font-weight: 700;
+    }
+
+    .market-stats-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .footer-grid {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    }
+  }
+
+  /* Wide Monitors (1280px+) */
+  @media (min-width: 1280px) {
+    .hero-stage {
+      min-height: 540px;
+    }
+  }
+
+  /* ---------- MOBILE TASKBAR & DRAWER SPECIFICATION ---------- */
+  .tb-drawer-only { display: flex !important; }
+
+  @media (max-width: 1023px) {
+    .floating-taskbar {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      height: 62px !important;
+      padding: 0 16px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .floating-taskbar .tb-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+    }
+
+    .floating-taskbar .tb-right {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      margin-left: auto !important;
+      gap: 0 !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Strict hiding of all extra controls from phone top bar */
+    .floating-taskbar .farmup-lang-container,
+    .floating-taskbar .nav-signup-link,
+    .floating-taskbar .tb-ask-btn,
+    .floating-taskbar .tb-lang-btn,
+    .floating-taskbar #langSelectWrap,
+    .floating-taskbar .tb-lang-wrapper {
+      display: none !important;
+    }
+
+    .floating-taskbar .btn-dribbble-login {
+      display: inline-flex !important;
+      padding: 8px 18px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      border-radius: 100px !important;
+      background: #0D0C22 !important;
+      color: #FFFFFF !important;
+      white-space: nowrap !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+    }
+
+    .floating-taskbar .user-avatar-btn {
+      width: 36px !important;
+      height: 36px !important;
+    }
+
+    .hamburger {
+      display: flex !important;
+    }
+
+    .tb-links {
+      position: fixed !important;
+      top: 62px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: #FFFFFF !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.10) !important;
+      padding: 16px 20px 24px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
+      transform: translateY(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index: 999 !important;
+      display: flex !important;
+      max-height: calc(100vh - 62px);
+      overflow-y: auto;
+    }
+    .tb-links.open {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    .tb-link {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: #0D0C22 !important;
+      padding: 13px 0 !important;
+      width: 100% !important;
+      border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      text-decoration: none !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tb-drawer-only { display: none !important; }
+    .tb-drawer-extra { display: none !important; }
+    .hamburger { display: none !important; }
+    .floating-taskbar .farmup-lang-container { display: inline-flex !important; }
+    .floating-taskbar .nav-signup-link { display: inline-flex !important; }
+    .floating-taskbar .tb-ask-btn { display: inline-flex !important; }
+    
+    .tb-links {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      gap: 6px !important;
+      display: flex !important;
+    }
+    .tb-link {
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0D0C22 !important;
+      padding: 8px 14px !important;
+      border: none !important;
+      border-radius: 8px !important;
+      width: auto !important;
+    }
+    .tb-link:hover {
+      color: #EA4C89 !important;
+      background: rgba(0,0,0,0.03) !important;
+    }
+    .tb-link.active {
+      font-weight: 800 !important;
+    }
+  }
+
+  #btnGpsLoc.active, #btnGpsSync.active, .gps-active-btn {
+    background: #0D0C22 !important;
+    color: #FFFFFF !important;
+    border-color: #0D0C22 !important;
+  }
+  #btnGpsLoc.active *, #btnGpsSync.active * {
+    color: #FFFFFF !important;
+  }
+  
+
+  /* Flat Top Taskbar (Classic Full-Width Flat Navigation) */
+  .taskbar-wrap {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    z-index: 1000 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+  }
+  .floating-taskbar {
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin: 0 auto !important;
+    height: 60px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+  .tb-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+  }
+  .logo-mark {
+    width: 30px !important;
+    height: 30px !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-name {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+    letter-spacing: -0.03em !important;
+  }
+  .tb-links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .tb-link {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #0D0C22 !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: all 0.15s ease !important;
+  }
+  .tb-link:hover {
+    color: #EA4C89 !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+  .tb-link.active {
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+  }
+  .tb-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+
+  @media (max-width: 1023px) {
+    .floating-taskbar {
+      padding: 0 16px !important;
+      height: 58px !important;
+    }
+    .tb-drawer-only { display: flex !important; }
+    .tb-links {
+      position: fixed !important;
+      top: 58px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: #FFFFFF !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      border-radius: 0 !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.10) !important;
+      padding: 16px 20px 24px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
+      transform: translateY(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index: 999 !important;
+      max-height: calc(100vh - 58px);
+      overflow-y: auto;
+    }
+    .tb-links.open {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    .tb-link {
+      font-size: 15px !important;
+      font-weight: 700 !important;
+      padding: 12px 0 !important;
+      width: 100% !important;
+      border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+      border-radius: 0 !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hamburger { display: none !important; }
+    .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+    .tb-links {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      gap: 4px !important;
+      display: flex !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+  }
+
+
+  /* Clean Taskbar Rules */
+  .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+  @media (max-width: 1023px) {
+    .tb-drawer-only { display: flex !important; }
+  }
+  @media (min-width: 1024px) {
+    .tb-drawer-only, .tb-drawer-extra, .hamburger { display: none !important; }
+    .tb-links {
+      position: static !important;
+      transform: none !important;
+      opacity: 1 !important;
+      flex-direction: row !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      pointer-events: auto !important;
+      display: flex !important;
+    }
+  }
+
+/* ==========================================================================
+     UNIFIED ROCK-SOLID TASKBAR & MOBILE DRAWER (ALL SCREENS & VIEWPORTS)
+     ========================================================================== */
+  .taskbar-wrap {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: #FFFFFF !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .floating-taskbar {
+    width: 100% !important;
+    max-width: 1240px !important;
+    height: 62px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+  }
+  .tb-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+  }
+  .logo-mark {
+    width: 32px !important;
+    height: 32px !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-name {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  /* Hamburger Menu Button */
+  .hamburger {
+    display: none;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    position: relative !important;
+    z-index: 100005 !important;
+    padding: 0 !important;
+    gap: 5px !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  .hamburger span {
+    display: block !important;
+    width: 22px !important;
+    height: 2.4px !important;
+    background: #0D0C22 !important;
+    border-radius: 2px !important;
+    pointer-events: none !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease !important;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7.4px) rotate(45deg) !important; }
+  .hamburger.open span:nth-child(2) { opacity: 0 !important; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg) !important; }
+
+  /* Mobile Drawer (Screen < 1024px) */
+  @media (max-width: 1023px) {
+    .hamburger { display: flex !important; }
+    .tb-drawer-only { display: flex !important; }
+    .tb-links {
+      position: fixed !important;
+      top: 62px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: #FFFFFF !important;
+      border-bottom: 1.5px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.12) !important;
+      padding: 16px 20px 28px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
+      transform: translateY(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index: 99998 !important;
+      max-height: calc(100vh - 62px) !important;
+      overflow-y: auto !important;
+      display: flex !important;
+    }
+    .tb-links.open {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    .tb-link {
+      font-size: 15.5px !important;
+      font-weight: 700 !important;
+      color: #0D0C22 !important;
+      padding: 13px 0 !important;
+      width: 100% !important;
+      border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      text-decoration: none !important;
+    }
+    .floating-taskbar .farmup-lang-container,
+    .floating-taskbar .nav-signup-link,
+    .floating-taskbar .tb-ask-btn,
+    .floating-taskbar .tb-lang-btn,
+    .floating-taskbar #langSelectWrap,
+    .floating-taskbar .tb-lang-wrapper {
+      display: none !important;
+    }
+  }
+
+  /* Desktop View (Screen >= 1024px) */
+  @media (min-width: 1024px) {
+    .hamburger { display: none !important; }
+    .tb-drawer-only, .tb-drawer-extra, .mobile-drawer-footer-sec { display: none !important; }
+    .tb-links {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      gap: 4px !important;
+      display: flex !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .tb-link {
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0D0C22 !important;
+      padding: 8px 14px !important;
+      border-radius: 8px !important;
+      border: none !important;
+      text-decoration: none !important;
+      white-space: nowrap !important;
+      transition: all 0.15s ease !important;
+    }
+    .tb-link:hover { color: #EA4C89 !important; background: rgba(0,0,0,0.04) !important; }
+    .tb-link.active { font-weight: 800 !important; color: #0D0C22 !important; }
+  }
+
+footer {
+    border-top: 1px solid var(--line);
+    padding: var(--space-6) 0 var(--space-4);
+    background: #FFFFFF;
+    margin-top: var(--space-6);
+  }
+</style>
+</head>
+<body>
+
+<header class="taskbar-wrap">
+  <nav class="floating-taskbar">
+    <div class="tb-left">
+      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="homepage.html" class="tb-logo" aria-label="FarmUp Home">
+        <img src="farmup-logo.png" alt="FarmUp Logo" class="logo-mark">
+        <span class="tb-name">FarmUp</span>
+      </a>
+    </div>
+
+    <div class="tb-links" id="navLinks">
+      <a href="homepage.html" class="tb-link active">Home</a>
+      <a href="mandi.html" class="tb-link">Mandi Bhav</a>
+      <a href="weather.html" class="tb-link">Weather</a>
+      <a href="disease.html" class="tb-link">Crop Doctor</a>
+      <a href="schemes.html" class="tb-link">Govt Schemes</a>
+      <a href="distress.html" class="tb-link" style="color:#D32F2F;font-weight:700;">Distress Risk</a>
+      <a href="profile.html" class="tb-link" style="color:#EA4C89;">Dashboard →</a>
+    </div>
+
+    <div class="tb-right">
+      <button type="button" class="tb-ask-btn" id="tbAskBtn" aria-label="Ask FarmUp AI Assistant">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Ask AI</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero Section -->
+  <section class="hero-stage">
+    <div class="hero-video-bg" aria-hidden="true">
+      <video class="hero-video-media" autoplay muted loop playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'%3E%3Crect width='100%25' height='100%25' fill='%23F7F9F6'/%3E%3C/svg%3E">
+        <source src="hero-bg-video.mp4" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-sun-over-the-golden-wheat-field-42790-large.mp4" type="video/mp4">
+        <source src="https://savedly.net/api/stream/z6jfcwps?t=1787862694555.r-sKbW-EViwhjIofXFpLDk813I2qzIEcRTpm0UD9jA8" type="video/mp4">
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
+
+    <div class="page-hero wrap">
+      
+      <h1 class="dribbble-title">
+        Work with India's best in <span class="highlight-pink">agriculture intelligence</span>
+      </h1>
+      <p class="page-sub">
+        Real-time APMC mandi prices before you sell, hyper-local rainfall telemetry before you spray, AI crop diagnostics, and verified government subsidies.
+      </p>
+
+      <div class="hero-cta-row">
+        <a href="profile.html" class="btn btn-primary">
+          Dashboard →
+        </a>
+        <a href="mandi.html" class="btn btn-ghost">
+          Check Mandi Rates
+        </a>
+      </div>
+      <div class="hero-trust-sub">
+        100% Free for Farmers · Direct Mandi Intelligence · Works on Any Mobile
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <!-- Platform Coverage Stats -->
+    <section>
+      <div class="market-stats-row">
+        <div class="market-stat-card">
+          <div class="msc-label">APMC Mandis Tracked</div>
+          <div class="msc-val">1,900+</div>
+          <div class="msc-sub">Official daily auction records</div>
+        </div>
+        <div class="market-stat-card">
+          <div class="msc-label">States & UTs Covered</div>
+          <div class="msc-val">36</div>
+          <div class="msc-sub">Nationwide district coverage</div>
+        </div>
+        <div class="market-stat-card">
+          <div class="msc-label">Agricultural Crops</div>
+          <div class="msc-val">46+</div>
+          <div class="msc-sub">Grains, pulses, oilseeds & cash crops</div>
+        </div>
+        <div class="market-stat-card">
+          <div class="msc-label">Indian Languages</div>
+          <div class="msc-val">11</div>
+          <div class="msc-sub">Plain regional voice & text</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Core Feature Cards -->
+    <section class="section" id="market">
+      <div class="section-head">
+        
+        <h2>Essential intelligence for your daily farm decisions</h2>
+        <p style="color:var(--ink-muted);">Clear, practical information to help you manage costs, protect yields, and get fair market value.</p>
+      </div>
+
+      <div class="feature-grid">
+        <!-- 1. Mandi Rates -->
+        <div class="feat-card">
+          <div>
+            <div class="feat-top">
+              <div class="icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+              </div>
+              <h3>Today's Mandi Rates</h3>
+            </div>
+            <p class="desc">Live spot prices from your nearest APMC mandis compared with previous trading sessions.</p>
+            <div>
+              <div class="price-row"><span class="price-crop">Wheat (Sharbati)</span><span class="price-vals">₹2,480 <span class="delta-pill up">▲ +2.4%</span></span></div>
+              <div class="price-row"><span class="price-crop">Mustard (Pusa Bold)</span><span class="price-vals">₹5,620 <span class="delta-pill up">▲ +1.8%</span></span></div>
+              <div class="price-row"><span class="price-crop">Potato (Kufri Jyoti)</span><span class="price-vals">₹1,240 <span class="delta-pill down">▼ -0.8%</span></span></div>
+            </div>
+          </div>
+          <a href="mandi.html" class="card-action-link">View Mandi Rates & Net Return Calculator →</a>
+        </div>
+
+        <!-- 2. Weather -->
+        <div class="feat-card" id="weather">
+          <div>
+            <div class="feat-top">
+              <div class="icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16a4 4 0 0 1 .5-7.97A5.5 5.5 0 0 1 17 10a3.5 3.5 0 0 1-.5 6.98H6Z"/></svg>
+              </div>
+              <h3>Weather & Spray Windows</h3>
+            </div>
+            <p class="desc">Hourly rainfall forecasts and soil moisture indicators to plan field operations safely.</p>
+            <div style="background:var(--bg-alt);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-size:28px;font-weight:800;color:var(--ink);">31°C</div>
+                <div style="font-size:12.5px;color:var(--ink-dim);font-weight:500;">Partly Cloudy · Live GPS</div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--gain);text-align:right;">
+                Spraying window:<br><span style="color:var(--ink);">Sat 6–9 AM</span>
+              </div>
+            </div>
+          </div>
+          <a href="weather.html" class="card-action-link">Open 7-Day Micro-Climate & Soil Forecast →</a>
+        </div>
+
+        <!-- 3. AI Crop Doctor -->
+        <div class="feat-card" id="advisory">
+          <div>
+            <div class="feat-top">
+              <div class="icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>
+              </div>
+              <h3>Crop Doctor & Leaf Scanner</h3>
+            </div>
+            <p class="desc">Take a photo of diseased leaves or ask any agronomic query in your local tongue.</p>
+            <div style="display:flex;gap:8px;background:var(--bg-alt);border:1.5px solid var(--line);border-radius:100px;padding:4px 6px 4px 14px;">
+              <input id="askInput" type="text" placeholder="e.g. Paddy leaves yellowing / यूरिया की सही मात्रा?" style="flex:1;border:none;background:none;outline:none;font-size:13px;font-family:inherit;min-width:0;">
+              <button class="btn btn-primary" id="askSend" style="padding:6px 14px;font-size:12px;border-radius:100px;min-height:36px;">Ask →</button>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink-dim);margin-top:8px;font-weight:500;">Available in 11 Indian languages.</div>
+          </div>
+          <a href="disease.html" class="card-action-link">Open Leaf Diagnosis Scanner →</a>
+        </div>
+
+        <!-- 4. Govt Schemes -->
+        <div class="feat-card" id="community">
+          <div>
+            <div class="feat-top">
+              <div class="icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <h3>Government Schemes & Subsidies</h3>
+            </div>
+            <p class="desc">Clear eligibility calculators for PM-Kisan, PMFBY crop insurance, solar pumps, and KCC credit.</p>
+            <div style="background:var(--bg-alt);border-radius:12px;padding:12px;font-size:13px;color:var(--ink);border-left:3px solid var(--primary);">
+              Direct Benefit Transfer (DBT) verification guide and official application links.
+            </div>
+          </div>
+          <a href="schemes.html" class="card-action-link">Check Eligibility for Agricultural Schemes →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Conversion Card -->
+    <section class="calc-sec">
+      <h2>Start Checking Your Local Farm Data Today</h2>
+      <p>Instant access to today's mandi prices, weather forecasts, and field guidance on your mobile phone.</p>
+      <div class="btn-group">
+        <a href="profile.html" class="btn btn-primary">
+          Dashboard →
+        </a>
+        <a href="mandi.html" class="btn btn-ghost">
+          Check Mandi Rates
+        </a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h5>FarmUp Agriculture</h5>
+        <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.6;margin-bottom:12px;">
+          Practical agricultural intelligence for Indian farmers — market rates, weather alerts, and crop care.
+        </p>
+        <div style="font-size:12.5px;color:var(--ink-dim);font-weight:600;">
+          Kisan Toll-Free Support: <strong>1800-180-1551</strong>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Platform Tools</h5>
+        <ul>
+          <li><a href="mandi.html">Mandi Bhav & Arbitrage</a></li>
+          <li><a href="weather.html">Hyper-Local Weather</a></li>
+          <li><a href="disease.html">Crop Doctor & Leaf Scanner</a></li>
+          <li><a href="schemes.html">Govt Schemes & Subsidies</a></li>
+          </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Data Sources</h5>
+        <ul>
+          <li><a href="https://agmarknet.gov.in" target="_blank" rel="noopener">National APMC Network</a></li>
+          <li><a href="https://data.gov.in" target="_blank" rel="noopener">Open Government Data (OGD)</a></li>
+          <li><a href="https://icar.org.in" target="_blank" rel="noopener">Public Agricultural Research</a></li>
+          <li><a href="https://mausam.imd.gov.in" target="_blank" rel="noopener">India Meteorological Dept</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Security & Legal</h5>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="alert('Farmer Privacy: FarmUp adheres to strict data privacy principles.')">Privacy Charter</a></li>
+          <li><a href="javascript:void(0)" onclick="alert('Public Data: Sourced directly from official open APMC & IMD records.')">Public Data Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 FarmUp. Free Tools for Indian Farmers.</div>
+      <div style="display:flex;gap:16px;justify-content:center;">
+        <span>SSL Secured</span>
+        <span>·</span>
+        <span>Edge Fast</span>
+        <span>·</span>
+        <span>11 Indian Languages</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hamburger Toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      }
+    });
+  }
+
+  // Assistant Trigger
+  const tbAskBtn = document.getElementById('tbAskBtn');
+  if (tbAskBtn) {
+    tbAskBtn.addEventListener('click', () => {
+      if (window.FarmUpSarvamAI && window.FarmUpSarvamAI.openAssistant) {
+        window.FarmUpSarvamAI.openAssistant();
+      }
+    });
+  }
+
+  const askSend = document.getElementById('askSend');
+  const askInput = document.getElementById('askInput');
+  if (askSend && askInput) {
+    askSend.addEventListener('click', () => {
+      const q = askInput.value.trim();
+      if (!q) return;
+      if (window.FarmUpSarvamAI && window.FarmUpSarvamAI.openAssistant) {
+        window.FarmUpSarvamAI.openAssistant(q);
+      } else {
+        window.location.href = 'disease.html?q=' + encodeURIComponent(q);
+      }
+    });
+  }
+</script>
+<script type="module" src="firebase-config.js"></script>
+<script src="farmup-api.js"></script>
+</body>
+</html>

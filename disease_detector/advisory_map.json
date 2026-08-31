@@ -1,0 +1,57 @@
+{
+  "healthy": {
+    "low": "Crop condition is optimal. No active infection detected. Maintain standard irrigation and nutrient schedule.",
+    "moderate": "Crop condition is optimal. Leaf shows healthy green canopy. Continue routine weekly monitoring.",
+    "severe": "Crop condition is optimal. Ensure preventive balanced fertilization (NPK + micronutrients) and clean weeding."
+  },
+  "early_blight": {
+    "low": "Mild early blight (Alternaria solani) detected with small concentric ring spots. Prune and dispose of lower infected leaves. Avoid overhead sprinkling.",
+    "moderate": "Moderate early blight infection spreading across mid-canopy. Apply Mancozeb 75% WP (@ 2.5 g/L) or Copper Oxychloride 50% WP (@ 3 g/L) within 3 days. Improve row spacing for ventilation.",
+    "severe": "Severe early blight epidemic with major defoliation risk. Apply systemic fungicide Difenoconazole 25% EC (@ 1 ml/L) or Azoxystrobin + Difenoconazole. Alert your local Agri-Officer immediately."
+  },
+  "late_blight": {
+    "low": "Early late blight (Phytophthora infestans) water-soaked lesions detected. Destroy affected leaves immediately. Keep foliage dry and check weather for high humidity spells.",
+    "moderate": "Moderate late blight spread. Apply Metalaxyl 8% + Mancozeb 64% WP (@ 2.5 g/L) or Cymoxanil 8% + Mancozeb 64% WP. Ensure rapid field drainage.",
+    "severe": "Urgent: Severe late blight outbreak. Apply Dimethomorph 50% WP (@ 1 g/L) or Fenamidone + Mancozeb immediately. Contact Agriculture Extension Officer today; assess crop loss insurance eligibility."
+  },
+  "leaf_spot": {
+    "low": "Minor Cercospora/Septoria leaf spots observed. Remove bottom affected foliage. Ensure balanced nitrogen application to avoid succulent tissue.",
+    "moderate": "Moderate leaf spot disease. Spray Carbendazim 50% WP (@ 1 g/L) or Chlorothalonil 75% WP (@ 2 g/L). Thin dense canopy to accelerate morning leaf drying.",
+    "severe": "Severe leaf spot infection causing premature leaf drop. Apply Hexaconazole 5% EC (@ 2 ml/L) or Propiconazole 25% EC (@ 1 ml/L). Consult Agri-Officer for resistance management."
+  },
+  "rust": {
+    "low": "Early rust (Puccinia spp.) pustules spotted on leaf surface. Rogue out volunteer host plants and weed hosts around field borders.",
+    "moderate": "Active rust pustule eruption. Apply Propiconazole 25% EC (@ 1 ml/L) or Tebuconazole 25.9% EC (@ 1.5 ml/L) within 48 hours. Avoid excess nitrogen fertilization.",
+    "severe": "Severe rust epidemic threatening grain/pod filling. Immediate spray of Azoxystrobin 18.2% + Difenoconazole 11.4% SC (@ 1 ml/L). Alert Block Agri-Officer for village-level surveillance."
+  },
+  "bacterial_spot": {
+    "low": "Minor bacterial spot (Xanthomonas) lesions observed. Avoid overhead irrigation and working in wet fields. Disinfect pruning shears.",
+    "moderate": "Moderate bacterial spot infection. Apply Copper Hydroxide 53.8% DF (@ 2 g/L) combined with Streptocycline (@ 1 g / 10 L water) at 7-day intervals.",
+    "severe": "Severe bacterial spot causing extensive leaf blight. Remove heavily infected plants. Spray Copper Oxychloride + Streptomycin sulphate. Contact local Agri-Officer for seed treatment guidance for next season."
+  },
+  "powdery_mildew": {
+    "low": "Early powdery white patches (Erysiphe / Podosphaera) on leaf surface. Spray wettable sulphur 80% WDG (@ 3 g/L) or neem oil (5 ml/L) as an organic deterrent.",
+    "moderate": "Moderate powdery mildew spread across upper foliage. Apply Dinocap 48% EC (@ 1 ml/L) or Myclobutanil 10% WP (@ 1 g/L). Ensure adequate sunlight penetration.",
+    "severe": "Severe powdery mildew coating entire canopy, choking photosynthesis. Spray Penconazole 10% EC (@ 0.5 ml/L) or Kresoxim-methyl 44.3% SC (@ 1 ml/L). Notify extension services."
+  },
+  "yellow_mosaic_virus": {
+    "low": "Early yellow mosaic mottling detected. Rogue out and destroy affected plants immediately to prevent whitefly vector spread.",
+    "moderate": "Moderate Yellow Mosaic Virus transmission. Control whitefly vectors by installing yellow sticky traps (15 traps/acre) and spraying Acetamiprid 20% SP (@ 0.5 g/L) or Diafenthiuron 50% WP.",
+    "severe": "Severe viral infestation with stunted growth. Whitefly vector control: Spray Thiamethoxam 25% WG (@ 0.5 g/L) or Spiromesifen 22.9% SC. Contact Agri-Officer for resistant cultivar recommendations."
+  },
+  "anthracnose": {
+    "low": "Early sunken necrotic spots (Colletotrichum spp.) observed. Prune diseased twigs and clear fallen plant debris from field floor.",
+    "moderate": "Moderate anthracnose lesion spread. Spray Carbendazim 12% + Mancozeb 63% WP (@ 2 g/L) or Copper Oxychloride 50% WP (@ 3 g/L) at 10-day intervals.",
+    "severe": "Severe anthracnose blight causing fruit/leaf drop and dieback. Apply Tebuconazole 50% + Trifloxystrobin 25% WG (@ 0.7 g/L) or Pyraclostrobin 20% WG. Contact Agri-Officer immediately."
+  },
+  "bacterial_blight": {
+    "low": "Early V-shaped marginal leaf yellowing detected. Maintain shallow water depth in fields, avoid excess urea, and improve drainage.",
+    "moderate": "Active bacterial blight (Xanthomonas oryzae) margin necrosis. Spray Streptocycline (@ 1.5 g / 10 L water) + Copper Oxychloride (@ 25 g / 10 L water). Drain excess standing water.",
+    "severe": "Severe bacterial blight causing extensive wilting / kresek phase. Withhold further nitrogen top-dressing; apply potash @ 15 kg/acre. Alert district Agri-Officer for field inspection."
+  },
+  "black_rot": {
+    "low": "Dark necrotic lesions / black rot patches detected. Remove infected plant parts and avoid field work while leaves are wet with dew.",
+    "moderate": "Moderate black rot spread. Apply Copper Hydroxide (@ 2 g/L) or Mancozeb (@ 2.5 g/L). Ensure crop rotation with non-host crops for the subsequent cycle.",
+    "severe": "Severe black rot decay threatening crop stand. Spray systemic Copper-based bactericide/fungicide + Streptocycline. Seek Agri-Officer assistance for field quarantine."
+  }
+}

@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="farmup-logo.png">
+<link rel="apple-touch-icon" href="farmup-logo.png">
+
+<link rel="icon" type="image/png" href="farmup-logo.png">
+<link rel="apple-touch-icon" href="farmup-logo.png">
+
+
+
+
+
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandi Bhav — FarmUp Live Crop Prices & APMC Trends</title>
+
+
+
+<style>
+:root{
+    --bg: #FFFFFF;
+    --bg-2: #F5F6EE;
+    --bg-3: #ECEEE0;
+    --surface: #FFFFFF;
+    --line: rgba(18,31,21,0.11);
+    --line-strong: rgba(18,31,21,0.20);
+    --ink: #121F15;
+    --ink-muted: #465542;
+    --ink-dim: #6B7867;
+    --primary: #255C34;
+    --primary-dim: #D4E5D1;
+    --gold: #B67816;
+    --gold-soft: #ECD7AE;
+    --up: #1B5E20;
+    --down: #B71C1C;
+    --sky: #347282;
+    --radius: 16px;
+    --max: 1180px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+background:#FFFFFF;
+    color:var(--ink);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  ::selection{background:var(--gold-soft);color:var(--ink);}
+
+  /* ---------- BUTTON DESIGN SYSTEM ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 20px;
+    border-radius:100px;
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    line-height:1.2;
+    text-decoration:none;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:all .2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space:nowrap;
+    box-sizing:border-box;
+  }
+  .btn:active{transform:scale(0.98);}
+
+  .btn-primary{
+    background: #0D0C22;
+    color:#FFFFFF !important;
+    border:1px solid rgba(255,255,255,0.18);
+    box-shadow:0 4px 14px -2px rgba(37,92,52,0.38), 0 1px 3px 0 rgba(18,31,21,0.12);
+  }
+  .btn-primary:hover{
+    background:linear-gradient(180deg, #357B48 0%, #1A4726 100%);
+    box-shadow:0 8px 22px -3px rgba(37,92,52,0.48);
+    transform:translateY(-1.5px);
+  }
+
+  .btn-ghost{
+    background:rgba(255,255,255,0.92);
+    color:var(--ink) !important;
+    border:1px solid var(--line-strong);
+    box-shadow:0 2px 8px -2px rgba(18,31,21,0.06);
+    backdrop-filter:blur(10px);
+  }
+  .btn-ghost:hover{
+    background:#FFFFFF;
+    color:var(--primary) !important;
+    border-color:var(--primary);
+    box-shadow:0 6px 18px -3px rgba(37,92,52,0.18);
+    transform:translateY(-1.5px);
+  }
+
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter, 28px);position:relative;z-index:1;}
+
+  :root{
+    --gutter:clamp(16px, 4vw, 28px);
+  }
+
+  /* ---------- PAGE HERO ---------- */
+  .page-hero{padding:clamp(40px, 6vw, 64px) 0 clamp(24px, 5vw, 36px);}
+  .eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--primary);border:1px solid rgba(37,92,52,0.18);background:#EBF3ED;padding:4px 12px;border-radius:100px;margin-bottom:16px;}
+  h1{font-family: 'Plus Jakarta Sans', sans-serif;font-weight:600;font-size:clamp(28px,6vw,56px);line-height:1.1;letter-spacing:-0.015em;max-width:850px;text-wrap:balance;}
+  h1 em{font-style:italic;font-weight:500;color:var(--gold);}
+  .page-sub{margin-top:14px;font-size:clamp(15px,3.6vw,17px);color:var(--ink-muted);max-width:680px;line-height:1.6;}
+
+  /* ---------- HIGHLIGHT CARDS ---------- */
+  .market-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px;}
+  .market-stat-card{
+    background:linear-gradient(180deg, #FFFFFF 0%, #FAFBF7 100%);border:1px solid rgba(182,120,22,0.18);border-radius:var(--radius);padding:18px 20px;
+    box-shadow:0 4px 14px -3px rgba(18,31,21,0.06);transition:transform .2s ease, border-color .2s ease;
+  }
+  .market-stat-card:hover{transform:translateY(-2px);border-color:var(--gold);}
+  .msc-label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-dim);margin-bottom:6px;}
+  .msc-val{font-family: 'Plus Jakarta Sans', sans-serif;font-size:clamp(22px,4vw,28px);font-weight:600;color:var(--ink);}
+  .msc-delta{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;margin-top:6px;display:flex;align-items:center;gap:4px;}
+  .msc-delta.up{color:var(--up);}
+  .msc-delta.down{color:var(--down);}
+
+  /* ---------- SEARCH & FILTERS ---------- */
+  .filter-panel{
+    margin-top:32px;background:linear-gradient(180deg, #FFFFFF 0%, #F7FAF5 100%);border:1px solid rgba(37,92,52,0.18);border-radius:var(--radius);padding:clamp(16px,3vw,24px);
+    box-shadow:0 4px 16px -4px rgba(37,92,52,0.06);
+  }
+  .filter-top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+  .search-box{
+    flex:1;min-width:240px;display:flex;align-items:center;gap:10px;background:#FFFFFF;
+    border:1.5px solid rgba(37,92,52,0.24);border-radius:100px;padding:8px 18px;box-shadow:0 2px 8px rgba(37,92,52,0.04);
+  }
+  .search-box svg{width:16px;height:16px;stroke:var(--ink-dim);flex-shrink:0;}
+  .search-box input{flex:1;border:none;background:none;outline:none;font-family:inherit;font-size:14px;color:var(--ink);}
+  .search-box input::placeholder{color:var(--ink-dim);}
+
+  .state-select{
+    display:flex;align-items:center;gap:8px;background:#FFFFFF;border:1.5px solid rgba(37,92,52,0.24);
+    border-radius:100px;padding:8px 18px;font-size:13.5px;color:var(--ink);font-family:inherit;outline:none;cursor:pointer;
+  }
+
+  .crop-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .pill{
+    background:#FFFFFF;border:1px solid rgba(18,31,21,0.14);border-radius:100px;padding:6px 15px;
+    font-size:12.5px;font-weight:500;color:var(--ink-muted);cursor:pointer;transition:all .18s ease;
+  }
+  .pill:hover{border-color:var(--primary);color:var(--primary);background:#F5FAF6;}
+  .pill.active{background: #0D0C22;color:#fff;border-color:var(--primary);font-weight:600;box-shadow:0 2px 8px rgba(37,92,52,0.25);}
+
+  /* ---------- PRICE TABLE ---------- */
+  .table-shell{
+    margin-top:24px;background:var(--surface);border:1px solid rgba(18,31,21,0.13);border-radius:var(--radius);
+    overflow:hidden;box-shadow:0 4px 18px -4px rgba(18,31,21,0.06);
+  }
+  .table-header-bar{
+    padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;
+    background:var(--surface);flex-wrap:wrap;gap:10px;
+  }
+  .th-title{font-family: 'Plus Jakarta Sans', sans-serif;font-size:17px;font-weight:600;}
+  .th-meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-dim);}
+
+  .table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{width:100%;border-collapse:collapse;text-align:left;min-width:600px;}
+  th{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--ink-dim);padding:12px 18px;background:var(--bg-2);border-bottom:1px solid var(--line);white-space:nowrap;
+  }
+  td{
+    padding:14px 18px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle;white-space:nowrap;
+  }
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(245,246,238,0.5);}
+
+  .crop-cell{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--ink);}
+  .crop-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+  .variety{font-size:11.5px;color:var(--ink-dim);font-weight:400;}
+  .mandi-cell{font-weight:500;}
+  .dist-sub{font-size:11.5px;color:var(--ink-dim);}
+  .price-cell{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14.5px;color:var(--ink);}
+  .price-range{font-size:11.5px;color:var(--ink-muted);font-family:'IBM Plex Mono',monospace;}
+  .delta-pill{
+    display:inline-flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    font-weight:600;padding:3px 8px;border-radius:100px;
+  }
+  .delta-pill.up{background:rgba(38,133,73,0.12);color:var(--up);}
+  .delta-pill.down{background:rgba(184,71,44,0.12);color:var(--down);}
+  .delta-pill.same{background:rgba(107,120,103,0.12);color:var(--ink-dim);}
+
+  /* ---------- NET RETURN CALCULATOR ---------- */
+  .calc-sec{
+    margin-top:40px;background:linear-gradient(180deg, rgba(255,255,255,0.95) 0%, #F5F9F4 100%);
+    border:1.5px solid rgba(37,92,52,0.22);border-radius:var(--radius);padding:clamp(20px,4vw,32px);
+    display:grid;grid-template-columns:1.2fr 0.8fr;gap:28px;align-items:center;
+    box-shadow:0 12px 32px -8px rgba(37,92,52,0.08);
+  }
+  .calc-sec h3{font-family: 'Plus Jakarta Sans', sans-serif;font-size:clamp(20px,3.5vw,24px);font-weight:600;margin-bottom:6px;}
+  .calc-sec p{color:var(--ink-muted);font-size:14px;line-height:1.55;}
+  .calc-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
+  .calc-field label{font-size:12px;font-weight:600;color:var(--ink-dim);display:block;margin-bottom:5px;}
+  .calc-field select, .calc-field input{
+    width:100%;background:var(--surface);border:1.5px solid rgba(37,92,52,0.22);border-radius:10px;padding:9px 13px;
+    font-size:13.5px;color:var(--ink);font-family:inherit;outline:none;
+  }
+  .calc-res-box{
+    background:#FFFFFF;border:1px solid rgba(37,92,52,0.25);border-radius:14px;padding:22px;text-align:center;
+    box-shadow:0 6px 20px -4px rgba(37,92,52,0.12);
+  }
+  .calc-res-lbl{font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;color:var(--ink-dim);}
+  .calc-res-amt{font-family: 'Plus Jakarta Sans', sans-serif;font-size:clamp(28px,5vw,36px);font-weight:600;color:var(--primary);margin:6px 0;}
+  .calc-res-sub{font-size:12.5px;color:var(--ink-muted);}
+
+  /* ---------- FOOTER ---------- */
+  
+  .footer-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;}
+  .footer-links{display:flex;gap:24px;flex-wrap:wrap;}
+  .footer-links a{font-size:13.5px;color:var(--ink-muted);}
+  .footer-links a:hover{color:var(--primary);}
+  .footer-copy{font-size:12px;color:var(--ink-dim);}
+
+  /* ---------- DYNAMIC MOBILE BREAKPOINTS ---------- */
+  @media(max-width:860px){
+    .taskbar-wrap{height:60px;}
+    .floating-taskbar{height:60px;padding:0 16px;}
+    .tb-tag{display:none !important;}
+    .tb-left{gap:6px;flex-shrink:0;}
+    .tb-name{font-size:15px;font-weight:700;}
+    .logo-mark {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+    .tb-right{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-shrink:0;
+    }
+    .tb-ask-btn{
+      padding:5px 10px;
+      font-size:12.5px;
+      gap:5px;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+    .tb-ask-btn span{
+      white-space:nowrap;
+    }
+    .tb-auth-action-btn{
+      flex-shrink:0;
+    }
+    .tb-auth-action-btn .btn{
+      padding:5px 11px;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .hamburger {
+    position: relative !important;
+    z-index: 10005 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+
+      display:flex;
+    }
+
+    .tb-links{position:fixed;top:60px;left:0;right:0;background:#FFFFFF;border-bottom:1px solid rgba(18,31,21,0.09);border-radius:0 0 24px 24px;box-shadow:0 16px 36px rgba(18,31,21,0.12);padding:16px 20px 24px;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:6px;transform:translateY(-120%);opacity:0;pointer-events:none;transition:transform .32s cubic-bezier(0.16, 1, 0.3, 1), opacity .22s ease;overflow-y:auto;z-index:999;display:flex !important;}
+    .tb-links.open{
+      transform:translateY(0);
+      opacity:1;
+      pointer-events:auto;
+    }
+    .tb-link{
+      font-size:14.5px;
+      font-weight:600;
+      padding:11px 15px;
+      border-radius:12px;
+      background:var(--bg-2);
+      border:1px solid var(--line);
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .tb-link.active{color:#0D0C22 !important;font-weight:700;}
+
+    .market-stats-row{grid-template-columns:repeat(2,1fr);gap:12px;}
+    .calc-sec{grid-template-columns:1fr;gap:20px;}
+    .calc-form{grid-template-columns:1fr;}
+  }
+
+  @media (max-width: 480px) { .floating-taskbar{padding:0 12px;} .tb-name{font-size:15px;} .tb-ask-btn{padding:4px 8px;font-size:11px;} .tb-auth-action-btn .btn{padding:4px 9px;font-size:11px;} }
+
+  @media(max-width:375px){
+    .tb-auth-action-btn{display:none !important;}
+  }
+
+  @media(max-width:540px){
+    .search-box{width:100%;}
+    .state-select{width:100%;}
+    .market-stats-row{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .market-stat-card{padding:14px 16px;}
+    .footer-row{flex-direction:column;align-items:flex-start;gap:16px;}
+    .footer-links{flex-direction:column;gap:10px;}
+  }
+
+  
+  
+  /* ---------- DRIBBBLE-STYLE FLAT TASKBAR & DRAWER ---------- */
+  .taskbar-wrap{
+    position:sticky !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    z-index:1000 !important;
+    background:#FFFFFF !important;
+    border-bottom:1px solid rgba(0,0,0,0.08) !important;
+    display:flex !important;
+    justify-content:center !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+
+  .floating-taskbar{
+    width:100% !important;
+    max-width:1360px !important;
+    height:70px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    padding:0 var(--gutter, 24px) !important;
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+    border-radius:0 !important;
+  }
+
+  .tb-left{display:flex;align-items:center;gap:12px;}
+  .tb-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .tb-brand{display:flex;flex-direction:column;}
+  .tb-name{font-family:'Plus Jakarta Sans', sans-serif;font-size:19px;font-weight:800;color:#0D0C22;letter-spacing:-0.03em;line-height:1;}
+  .tb-tag{display:none !important;}
+
+  .tb-links{display:flex;align-items:center;gap:8px;}
+  .tb-link{
+    font-size:14.5px;font-weight:600;color:#0D0C22;padding:8px 14px;border-radius:8px;
+    transition:color .18s ease, background .18s ease;text-decoration:none;
+    background:transparent !important;border:none !important;box-shadow:none !important;
+  }
+  .tb-link:hover{color:#EA4C89;background:rgba(0,0,0,0.03) !important;}
+  .tb-link.active{color:#0D0C22 !important;font-weight:800;background:transparent !important;}
+
+  .tb-right{display:flex;align-items:center;gap:12px;}
+  .tb-ask-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border-radius:100px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    border:1.5px solid rgba(0,0,0,0.10);
+    background:#FFFFFF;
+    color:#0D0C22;
+    transition:all .18s ease;
+  }
+  .tb-ask-btn:hover{border-color:#0D0C22;background:#F8F9FA;}
+
+  .hamburger{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    width:38px;
+    height:38px;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    padding:0;
+    gap:5px;
+  }
+  .hamburger span{
+    display:block;
+    width:22px;
+    height:2.2px;
+    background:#0D0C22;
+    border-radius:2px;
+    transition:transform 0.22s ease, opacity 0.2s ease;
+  }
+  .hamburger.open span:nth-child(1){transform:translateY(7.2px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7.2px) rotate(-45deg);}
+
+  /* Mobile Drawer Breakpoint */
+  @media (max-width: 860px) {
+    .floating-taskbar{
+      height:62px !important;
+      padding:0 16px !important;
+    }
+    .hamburger{
+      display:flex !important;
+    }
+    .tb-links{
+      position:fixed !important;
+      top:62px !important;
+      left:0 !important;
+      right:0 !important;
+      background:#FFFFFF !important;
+      border-bottom:1px solid rgba(0,0,0,0.08) !important;
+      box-shadow:0 20px 40px rgba(0,0,0,0.10) !important;
+      padding:20px 24px 32px !important;
+      flex-direction:column !important;
+      justify-content:flex-start !important;
+      align-items:flex-start !important;
+      gap:0 !important;
+      transform:translateY(-120%) !important;
+      opacity:0 !important;
+      pointer-events:none !important;
+      transition:transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index:999 !important;
+      display:flex !important;
+      border-radius:0 !important;
+    }
+    .tb-links.open{
+      transform:translateY(0) !important;
+      opacity:1 !important;
+      pointer-events:auto !important;
+    }
+    .tb-link{
+      font-size:17px !important;
+      font-weight:700 !important;
+      color:#0D0C22 !important;
+      padding:14px 0 !important;
+      width:100% !important;
+      border-bottom:1px solid rgba(0,0,0,0.05) !important;
+      border-radius:0 !important;
+      background:transparent !important;
+      box-shadow:none !important;
+    }
+    .tb-link:last-child{
+      border-bottom:none !important;
+      margin-top:10px !important;
+      color:#EA4C89 !important;
+      font-weight:800 !important;
+    }
+  }
+
+
+  /* ---------- MOBILE TASKBAR & DRAWER SPECIFICATION ---------- */
+  .tb-drawer-only { display: flex !important; }
+
+  @media (max-width: 1023px) {
+    .floating-taskbar {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      height: 62px !important;
+      padding: 0 16px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .floating-taskbar .tb-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+    }
+
+    .floating-taskbar .tb-right {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      margin-left: auto !important;
+      gap: 0 !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Strict hiding of all extra controls from phone top bar */
+    .floating-taskbar .farmup-lang-container,
+    .floating-taskbar .nav-signup-link,
+    .floating-taskbar .tb-ask-btn,
+    .floating-taskbar .tb-lang-btn,
+    .floating-taskbar #langSelectWrap,
+    .floating-taskbar .tb-lang-wrapper {
+      display: none !important;
+    }
+
+    .floating-taskbar .btn-dribbble-login {
+      display: inline-flex !important;
+      padding: 8px 18px !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      border-radius: 100px !important;
+      background: #0D0C22 !important;
+      color: #FFFFFF !important;
+      white-space: nowrap !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+    }
+
+    .floating-taskbar .user-avatar-btn {
+      width: 36px !important;
+      height: 36px !important;
+    }
+
+    .hamburger {
+      display: flex !important;
+    }
+
+    .tb-links {
+      position: fixed !important;
+      top: 62px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: #FFFFFF !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.10) !important;
+      padding: 16px 20px 24px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
+      transform: translateY(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index: 999 !important;
+      display: flex !important;
+      max-height: calc(100vh - 62px);
+      overflow-y: auto;
+    }
+    .tb-links.open {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    .tb-link {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: #0D0C22 !important;
+      padding: 13px 0 !important;
+      width: 100% !important;
+      border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      text-decoration: none !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tb-drawer-only { display: none !important; }
+    .tb-drawer-extra { display: none !important; }
+    .hamburger { display: none !important; }
+    .floating-taskbar .farmup-lang-container { display: inline-flex !important; }
+    .floating-taskbar .nav-signup-link { display: inline-flex !important; }
+    .floating-taskbar .tb-ask-btn { display: inline-flex !important; }
+    
+    .tb-links {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      gap: 6px !important;
+      display: flex !important;
+    }
+    .tb-link {
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0D0C22 !important;
+      padding: 8px 14px !important;
+      border: none !important;
+      border-radius: 8px !important;
+      width: auto !important;
+    }
+    .tb-link:hover {
+      color: #EA4C89 !important;
+      background: rgba(0,0,0,0.03) !important;
+    }
+    .tb-link.active {
+      font-weight: 800 !important;
+    }
+  }
+
+  #btnGpsLoc.active, #btnGpsSync.active, .gps-active-btn {
+    background: #0D0C22 !important;
+    color: #FFFFFF !important;
+    border-color: #0D0C22 !important;
+  }
+  #btnGpsLoc.active *, #btnGpsSync.active * {
+    color: #FFFFFF !important;
+  }
+  
+
+  /* Flat Top Taskbar (Classic Full-Width Flat Navigation) */
+  .taskbar-wrap {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    z-index: 1000 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+  }
+  .floating-taskbar {
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin: 0 auto !important;
+    height: 60px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+  .tb-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+  }
+  .logo-mark {
+    width: 30px !important;
+    height: 30px !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-name {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+    letter-spacing: -0.03em !important;
+  }
+  .tb-links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .tb-link {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #0D0C22 !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: all 0.15s ease !important;
+  }
+  .tb-link:hover {
+    color: #EA4C89 !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+  .tb-link.active {
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+  }
+  .tb-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+
+  @media (max-width: 1023px) {
+    .floating-taskbar {
+      padding: 0 16px !important;
+      height: 58px !important;
+    }
+    .tb-drawer-only { display: flex !important; }
+    .tb-links {
+      position: fixed !important;
+      top: 58px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: #FFFFFF !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      border-radius: 0 !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.10) !important;
+      padding: 16px 20px 24px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
+      transform: translateY(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index: 999 !important;
+      max-height: calc(100vh - 58px);
+      overflow-y: auto;
+    }
+    .tb-links.open {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    .tb-link {
+      font-size: 15px !important;
+      font-weight: 700 !important;
+      padding: 12px 0 !important;
+      width: 100% !important;
+      border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+      border-radius: 0 !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hamburger { display: none !important; }
+    .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+    .tb-links {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      gap: 4px !important;
+      display: flex !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+  }
+
+
+  /* Clean Taskbar Rules */
+  .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+  @media (max-width: 1023px) {
+    .tb-drawer-only { display: flex !important; }
+  }
+  @media (min-width: 1024px) {
+    .tb-drawer-only, .tb-drawer-extra, .hamburger { display: none !important; }
+    .tb-links {
+      position: static !important;
+      transform: none !important;
+      opacity: 1 !important;
+      flex-direction: row !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      pointer-events: auto !important;
+      display: flex !important;
+    }
+  }
+
+/* ==========================================================================
+     UNIFIED ROCK-SOLID TASKBAR & MOBILE DRAWER (ALL SCREENS & VIEWPORTS)
+     ========================================================================== */
+  .taskbar-wrap {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: #FFFFFF !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .floating-taskbar {
+    width: 100% !important;
+    max-width: 1240px !important;
+    height: 62px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+  }
+  .tb-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+  }
+  .logo-mark {
+    width: 32px !important;
+    height: 32px !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-name {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  /* Hamburger Menu Button */
+  .hamburger {
+    display: none;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    position: relative !important;
+    z-index: 100005 !important;
+    padding: 0 !important;
+    gap: 5px !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  .hamburger span {
+    display: block !important;
+    width: 22px !important;
+    height: 2.4px !important;
+    background: #0D0C22 !important;
+    border-radius: 2px !important;
+    pointer-events: none !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease !important;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7.4px) rotate(45deg) !important; }
+  .hamburger.open span:nth-child(2) { opacity: 0 !important; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg) !important; }
+
+  /* Mobile Drawer (Screen < 1024px) */
+  @media (max-width: 1023px) {
+    .hamburger { display: flex !important; }
+    .tb-drawer-only { display: flex !important; }
+    .tb-links {
+      position: fixed !important;
+      top: 62px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: #FFFFFF !important;
+      border-bottom: 1.5px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.12) !important;
+      padding: 16px 20px 28px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0 !important;
+      transform: translateY(-120%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+      z-index: 99998 !important;
+      max-height: calc(100vh - 62px) !important;
+      overflow-y: auto !important;
+      display: flex !important;
+    }
+    .tb-links.open {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    .tb-link {
+      font-size: 15.5px !important;
+      font-weight: 700 !important;
+      color: #0D0C22 !important;
+      padding: 13px 0 !important;
+      width: 100% !important;
+      border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      text-decoration: none !important;
+    }
+    .floating-taskbar .farmup-lang-container,
+    .floating-taskbar .nav-signup-link,
+    .floating-taskbar .tb-ask-btn,
+    .floating-taskbar .tb-lang-btn,
+    .floating-taskbar #langSelectWrap,
+    .floating-taskbar .tb-lang-wrapper {
+      display: none !important;
+    }
+  }
+
+  /* Desktop View (Screen >= 1024px) */
+  @media (min-width: 1024px) {
+    .hamburger { display: none !important; }
+    .tb-drawer-only, .tb-drawer-extra, .mobile-drawer-footer-sec { display: none !important; }
+    .tb-links {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      gap: 4px !important;
+      display: flex !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .tb-link {
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #0D0C22 !important;
+      padding: 8px 14px !important;
+      border-radius: 8px !important;
+      border: none !important;
+      text-decoration: none !important;
+      white-space: nowrap !important;
+      transition: all 0.15s ease !important;
+    }
+    .tb-link:hover { color: #EA4C89 !important; background: rgba(0,0,0,0.04) !important; }
+    .tb-link.active { font-weight: 800 !important; color: #0D0C22 !important; }
+  }
+
+footer{border-top:1px solid var(--line);padding:32px 0;margin-top:64px;}
+</style>
+</head>
+<body>
+
+<!-- Surinder.design-inspired Floating Pill Taskbar -->
+<header class="taskbar-wrap">
+  <nav class="floating-taskbar">
+    <div class="tb-left">
+      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="homepage.html" class="tb-logo" aria-label="FarmUp Home">
+        <img src="farmup-logo.png" alt="FarmUp Logo" class="logo-mark">
+        <span class="tb-name">FarmUp</span>
+      </a>
+    </div>
+
+    <div class="tb-links" id="navLinks">
+      <a href="homepage.html" class="tb-link">Home</a>
+      <a href="mandi.html" class="tb-link active">Mandi Bhav</a>
+      <a href="weather.html" class="tb-link">Weather</a>
+      <a href="disease.html" class="tb-link">Crop Doctor</a>
+      <a href="schemes.html" class="tb-link">Govt Schemes</a>
+      <a href="distress.html" class="tb-link" style="color:#D32F2F;font-weight:700;">Distress Risk</a>
+      <a href="profile.html" class="tb-link" style="color:#EA4C89;">Dashboard →</a>
+    </div>
+
+    <div class="tb-right">
+      <button type="button" class="tb-ask-btn" id="tbAskBtn" aria-label="Ask FarmUp AI Assistant">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Ask AI</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="page-hero">
+    <h1>Today's Mandi Rates,<br><em>transparent & unfiltered.</em></h1>
+    <p class="page-sub">Official daily price records and real-time summaries across APMC mandis nationwide.</p>
+
+    <div class="market-stats-row">
+      <div class="market-stat-card">
+        <div class="msc-label" id="topStat1Label">Wheat (Lokwan / MP)</div>
+        <div class="msc-val" id="topStat1Val">₹2,480<span style="font-size:14px;color:var(--ink-muted);">/qtl</span></div>
+        <div class="msc-delta up" id="topStat1Delta">▲ +2.4% (Live)</div>
+      </div>
+      <div class="market-stat-card">
+        <div class="msc-label" id="topStat2Label">Mustard (Black / Bold)</div>
+        <div class="msc-val" id="topStat2Val">₹5,720<span style="font-size:14px;color:var(--ink-muted);">/qtl</span></div>
+        <div class="msc-delta up" id="topStat2Delta">▲ +4.1% (Live)</div>
+      </div>
+      <div class="market-stat-card">
+        <div class="msc-label" id="topStat3Label">Paddy / Rice (Basmati)</div>
+        <div class="msc-val" id="topStat3Val">₹3,820<span style="font-size:14px;color:var(--ink-muted);">/qtl</span></div>
+        <div class="msc-delta up" id="topStat3Delta">▲ +3.2% (Live)</div>
+      </div>
+      <div class="market-stat-card">
+        <div class="msc-label" id="topStat4Label">Potato (Jyoti)</div>
+        <div class="msc-val" id="topStat4Val">₹1,180<span style="font-size:14px;color:var(--ink-muted);">/qtl</span></div>
+        <div class="msc-delta down" id="topStat4Delta">▼ -1.8% (Live)</div>
+      </div>
+    </div>
+
+    <!-- Filter Bar with 3-Way Synchronized Controls -->
+    <div class="filter-panel">
+      <div class="filter-top">
+        <div class="search-box" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="mandiSearch" placeholder="Search crop, district, or APMC mandi..." autocomplete="off" />
+          <button type="button" id="btnSearchClear" style="display:none;background:none;border:none;cursor:pointer;color:var(--ink-dim);font-size:16px;padding:0 6px;line-height:1;" title="Reset all filters" onclick="resetAllFilters()">✕</button>
+        </div>
+        <select class="state-select" id="stateFilter">
+          <option value="ALL">All States / UTs</option>
+          <option value="West Bengal">West Bengal</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Madhya Pradesh">Madhya Pradesh</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Rajasthan">Rajasthan</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Karnataka">Karnataka</option>
+          <option value="Kerala">Kerala (Keralam)</option>
+          <option value="Tripura">Tripura</option>
+          <option value="Andhra Pradesh">Andhra Pradesh</option>
+          <option value="Telangana">Telangana</option>
+          <option value="Tamil Nadu">Tamil Nadu</option>
+          <option value="Odisha">Odisha</option>
+        </select>
+      </div>
+
+      <div class="crop-pills" id="cropPills">
+        <button class="pill active" data-crop="ALL">All Crops</button>
+        <button class="pill" data-crop="Wheat">Wheat</button>
+        <button class="pill" data-crop="Paddy">Paddy / Dhan</button>
+        <button class="pill" data-crop="Mustard">Mustard / Sarson</button>
+        <button class="pill" data-crop="Potato">Potato / Aloo</button>
+        <button class="pill" data-crop="Onion">Onion / Pyaz</button>
+        <button class="pill" data-crop="Tomato">Tomato</button>
+        <button class="pill" data-crop="Cotton">Cotton / Kapas</button>
+        <button class="pill" data-crop="Soybean">Soybean</button>
+        <button class="pill" data-crop="Bajra">Bajra</button>
+        <button class="pill" data-crop="Banana">Banana</button>
+        <button class="pill" data-crop="Brinjal">Brinjal</button>
+        <button class="pill" data-crop="Cabbage">Cabbage</button>
+      </div>
+    </div>
+
+    <!-- Live Rates Table -->
+    <div class="table-shell">
+      <div class="table-header-bar">
+        <div class="th-title">Live APMC Market Rates</div>
+        <div class="th-meta" id="tableMetaCount">Showing live records · Live data.gov.in Feed</div>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Commodity</th>
+              <th>Mandi / APMC</th>
+              <th>District</th>
+              <th>State</th>
+              <th>Min / Max Price</th>
+              <th>Modal Rate (Today)</th>
+              <th>Daily Shift</th>
+              <th>Arrivals</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="mandiTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Net Return Calculator -->
+    <section class="calc-sec" id="alert-sec">
+      <div>
+        <h3>Net Return & Transport Calculator</h3>
+        <p>Calculate your take-home earnings per quintal after deducting transport fuel, bag charges, and loading costs before choosing which mandi to sell at.</p>
+        <div class="calc-form">
+          <div class="calc-field">
+            <label>Crop & Quantity (Quintals)</label>
+            <input type="number" id="calcQty" value="40" min="1" />
+          </div>
+          <div class="calc-field">
+            <label>Destination Mandi Rate (₹/qtl)</label>
+            <input type="number" id="calcRate" value="2480" />
+          </div>
+          <div class="calc-field">
+            <label>Distance to Mandi (km)</label>
+            <input type="number" id="calcDist" value="18" />
+          </div>
+          <div class="calc-field">
+            <label>Transport Vehicle</label>
+            <select id="calcVehicle">
+              <option value="tractor">Tractor-Trolley (₹28/km)</option>
+              <option value="minitruck">Mini Truck / Pick-up (₹22/km)</option>
+              <option value="bullock">Bullock Cart (₹8/km)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-res-box">
+        <div class="calc-res-lbl">Estimated Net In-Hand Return</div>
+        <div class="calc-res-amt" id="calcNetReturn">₹97,696</div>
+        <div class="calc-res-sub" id="calcBreakdown">Gross: ₹99,200 · Transport: ₹1,008 · APMC fee: ₹496</div>
+        <button class="btn btn-primary" style="margin-top:16px;width:100%;" onclick="alert('Price alert set for selected mandi rate!')">Set SMS Price Alert</button>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo" style="font-size:17px;">FarmUp</div>
+    <div class="footer-links">
+      <a href="homepage.html">Home</a>
+      <a href="mandi.html">Mandi Bhav</a>
+      <a href="weather.html">Weather Analytics</a>
+      <a href="disease.html">Crop Doctor</a>
+      <a href="schemes.html">Govt Schemes</a>
+    </div>
+    <div class="footer-copy">© 2026 FarmUp. Made for the field.</div>
+  </div>
+</footer>
+
+<script>
+  const baselineMandiData = [
+    // ==========================================
+    // ODISHA DISTRICTS
+    // ==========================================
+    // Kalahandi District
+    { crop:'Paddy', variety:'Common (Dhan)', mandi:'Junagarh APMC', dist:'Kalahandi', state:'Odisha', min:2250, max:2380, modal:2320, delta:1.4, color:'#255C34', arrivals:1450, arrivalDate:'Today' },
+    { crop:'Cotton', variety:'Bunny / BT Cotton', mandi:'Kesinga APMC', dist:'Kalahandi', state:'Odisha', min:6900, max:7350, modal:7180, delta:2.1, color:'#465542', arrivals:890, arrivalDate:'Today' },
+    { crop:'Maize', variety:'Hybrid Yellow', mandi:'Bhawanipatna APMC', dist:'Kalahandi', state:'Odisha', min:2050, max:2190, modal:2140, delta:0.8, color:'#B67816', arrivals:620, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Hybrid Red', mandi:'Dharmagarh APMC', dist:'Kalahandi', state:'Odisha', min:1550, max:1850, modal:1700, delta:-1.2, color:'#B8472C', arrivals:410, arrivalDate:'Today' },
+    { crop:'Bitter gourd', variety:'Grade A Green', mandi:'Junagarh APMC', dist:'Kalahandi', state:'Odisha', min:2600, max:3000, modal:2800, delta:0.2, color:'#255C34', arrivals:798, arrivalDate:'Today' },
+    { crop:'Mustard', variety:'Black Sarson', mandi:'Bhawanipatna APMC', dist:'Kalahandi', state:'Odisha', min:5480, max:5720, modal:5610, delta:1.9, color:'#B67816', arrivals:240, arrivalDate:'Today' },
+
+    // Sundargarh / Rourkela District
+    { crop:'Potato', variety:'Jyoti Super', mandi:'Rourkela Daily Market', dist:'Sundargarh', state:'Odisha', min:1350, max:1550, modal:1450, delta:-1.2, color:'#347282', arrivals:1850, arrivalDate:'Today' },
+    { crop:'Paddy', variety:'Swarna 1001', mandi:'Sundargarh APMC', dist:'Sundargarh', state:'Odisha', min:2280, max:2410, modal:2340, delta:1.4, color:'#255C34', arrivals:2100, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Hybrid Fresh', mandi:'Panposh APMC', dist:'Sundargarh', state:'Odisha', min:1500, max:1800, modal:1680, delta:1.8, color:'#B8472C', arrivals:650, arrivalDate:'Today' },
+
+    // Bolangir District
+    { crop:'Brinjal', variety:'Grade B Green', mandi:'Kantabaji APMC', dist:'Bolangir', state:'Odisha', min:2000, max:3000, modal:2500, delta:0.6, color:'#5C2554', arrivals:1626, arrivalDate:'Today' },
+    { crop:'Paddy', variety:'Common 1001', mandi:'Bolangir Sadar APMC', dist:'Bolangir', state:'Odisha', min:2240, max:2360, modal:2310, delta:1.1, color:'#255C34', arrivals:1250, arrivalDate:'Today' },
+    { crop:'Cotton', variety:'Medium Staple', mandi:'Patnagarh APMC', dist:'Bolangir', state:'Odisha', min:6850, max:7280, modal:7120, delta:1.5, color:'#465542', arrivals:780, arrivalDate:'Today' },
+
+    // Balasore District
+    { crop:'Paddy', variety:'Swarna / MTU-7029', mandi:'Balasore Sadar APMC', dist:'Balasore', state:'Odisha', min:2280, max:2410, modal:2350, delta:1.8, color:'#255C34', arrivals:1850, arrivalDate:'Today' },
+    { crop:'Mustard', variety:'Black Sarson', mandi:'Jaleswar APMC', dist:'Balasore', state:'Odisha', min:5520, max:5780, modal:5660, delta:3.2, color:'#B67816', arrivals:320, arrivalDate:'Today' },
+    { crop:'Potato', variety:'Jyoti / Super', mandi:'Soro Mandi', dist:'Balasore', state:'Odisha', min:1380, max:1540, modal:1460, delta:-0.8, color:'#347282', arrivals:950, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Hybrid Red', mandi:'Nilagiri APMC', dist:'Balasore', state:'Odisha', min:1600, max:1920, modal:1780, delta:2.4, color:'#B8472C', arrivals:540, arrivalDate:'Today' },
+
+    // Bargarh District
+    { crop:'Paddy', variety:'1001 Bold Special', mandi:'Bargarh Regulated Market', dist:'Bargarh', state:'Odisha', min:2300, max:2440, modal:2380, delta:1.6, color:'#255C34', arrivals:3100, arrivalDate:'Today' },
+    { crop:'Groundnut', variety:'Pods Shell', mandi:'Attabira APMC', dist:'Bargarh', state:'Odisha', min:6500, max:6950, modal:6780, delta:2.8, color:'#B67816', arrivals:450, arrivalDate:'Today' },
+
+    // Dhenkanal & Cuttack Districts
+    { crop:'Bitter gourd', variety:'Grade A', mandi:'Hindol APMC', dist:'Dhenkanal', state:'Odisha', min:5000, max:5500, modal:5300, delta:0.5, color:'#255C34', arrivals:1427, arrivalDate:'Today' },
+    { crop:'Paddy', variety:'Basmati CR-1014', mandi:'Cuttack Malgodown', dist:'Cuttack', state:'Odisha', min:2850, max:3200, modal:3050, delta:1.1, color:'#255C34', arrivals:1200, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Hybrid Fresh', mandi:'Banki Mandi', dist:'Cuttack', state:'Odisha', min:1650, max:1950, modal:1820, delta:1.7, color:'#B8472C', arrivals:620, arrivalDate:'Today' },
+
+    // ==========================================
+    // PUNJAB DISTRICTS
+    // ==========================================
+    { crop:'Wheat', variety:'HD-2967 Mill Quality', mandi:'Khanna Grain Market', dist:'Ludhiana', state:'Punjab', min:2460, max:2560, modal:2510, delta:0.8, color:'#B67816', arrivals:4200, arrivalDate:'Today' },
+    { crop:'Paddy', variety:'PR-126 Hybrid', mandi:'Jagraon Mandi', dist:'Ludhiana', state:'Punjab', min:2320, max:2450, modal:2380, delta:1.2, color:'#255C34', arrivals:3600, arrivalDate:'Today' },
+    { crop:'Mustard', variety:'Pusa Bold', mandi:'Sahnewal APMC', dist:'Ludhiana', state:'Punjab', min:5620, max:5880, modal:5750, delta:2.4, color:'#B67816', arrivals:480, arrivalDate:'Today' },
+    { crop:'Potato', variety:'Pufri Pukhraj', mandi:'Doraha Mandi', dist:'Ludhiana', state:'Punjab', min:1250, max:1420, modal:1340, delta:-1.5, color:'#347282', arrivals:1900, arrivalDate:'Today' },
+    { crop:'Wheat', variety:'PBW-550 Lokwan', mandi:'Amritsar Grain Market', dist:'Amritsar', state:'Punjab', min:2480, max:2590, modal:2540, delta:1.0, color:'#B67816', arrivals:3800, arrivalDate:'Today' },
+    { crop:'Basmati', variety:'Pusa 1121 Export', mandi:'Tarn Taran Mandi', dist:'Tarn Taran', state:'Punjab', min:3800, max:4250, modal:4080, delta:2.8, color:'#255C34', arrivals:2400, arrivalDate:'Today' },
+    { crop:'Cotton', variety:'American Narma', mandi:'Bathinda APMC', dist:'Bathinda', state:'Punjab', min:6850, max:7300, modal:7120, delta:1.5, color:'#465542', arrivals:1650, arrivalDate:'Today' },
+
+    // ==========================================
+    // MAHARASHTRA DISTRICTS
+    // ==========================================
+    { crop:'Onion', variety:'Nasik Red Garwa', mandi:'Lasalgaon Mandi', dist:'Nashik', state:'Maharashtra', min:1650, max:2100, modal:1920, delta:2.4, color:'#B8472C', arrivals:6200, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Vaishali Hybrid', mandi:'Pimpalgaon APMC', dist:'Nashik', state:'Maharashtra', min:1450, max:1780, modal:1620, delta:-2.1, color:'#B8472C', arrivals:1400, arrivalDate:'Today' },
+    { crop:'Soybean', variety:'Yellow JS-335', mandi:'Malegaon APMC', dist:'Nashik', state:'Maharashtra', min:4580, max:4880, modal:4740, delta:1.1, color:'#B67816', arrivals:1100, arrivalDate:'Today' },
+    { crop:'Onion', variety:'Gavran Red', mandi:'Pune Gultekdi APMC', dist:'Pune', state:'Maharashtra', min:1800, max:2250, modal:2050, delta:1.8, color:'#B8472C', arrivals:4500, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Abhinav Hybrid', mandi:'Junnar APMC', dist:'Pune', state:'Maharashtra', min:1400, max:1850, modal:1650, delta:0.9, color:'#B8472C', arrivals:1250, arrivalDate:'Today' },
+    { crop:'Soybean', variety:'JS-9305', mandi:'Baramati APMC', dist:'Pune', state:'Maharashtra', min:4650, max:4920, modal:4800, delta:1.4, color:'#B67816', arrivals:980, arrivalDate:'Today' },
+    { crop:'Cotton', variety:'Medium Staple', mandi:'Buldhana APMC', dist:'Buldhana', state:'Maharashtra', min:7050, max:7450, modal:7280, delta:1.9, color:'#465542', arrivals:1400, arrivalDate:'Today' },
+    { crop:'Soybean', variety:'Yellow Gold', mandi:'Latur APMC', dist:'Latur', state:'Maharashtra', min:4680, max:4980, modal:4850, delta:1.6, color:'#B67816', arrivals:3200, arrivalDate:'Today' },
+
+    // ==========================================
+    // OTHER MAJOR NATIONAL MARKETS
+    // ==========================================
+    { crop:'Wheat', variety:'Sharbati Lokwan', mandi:'Varanasi Mandi Yard', dist:'Varanasi', state:'Uttar Pradesh', min:2420, max:2540, modal:2480, delta:0.9, color:'#B67816', arrivals:2100, arrivalDate:'Today' },
+    { crop:'Potato', variety:'Desi Red / Kufri', mandi:'Agra APMC', dist:'Agra', state:'Uttar Pradesh', min:1150, max:1350, modal:1260, delta:-2.4, color:'#347282', arrivals:4500, arrivalDate:'Today' },
+    { crop:'Mustard', variety:'Pusa Bold', mandi:'Bharatpur APMC', dist:'Bharatpur', state:'Rajasthan', min:5650, max:5890, modal:5780, delta:3.4, color:'#B67816', arrivals:1150, arrivalDate:'Today' },
+    { crop:'Cotton', variety:'Medium Staple Shankar-6', mandi:'Rajkot Yard APMC', dist:'Rajkot', state:'Gujarat', min:7200, max:7650, modal:7480, delta:1.5, color:'#465542', arrivals:1850, arrivalDate:'Today' },
+    { crop:'Groundnut', variety:'GG-20 Pods', mandi:'Gondal APMC', dist:'Rajkot', state:'Gujarat', min:6600, max:7100, modal:6890, delta:2.2, color:'#B67816', arrivals:2100, arrivalDate:'Today' },
+    { crop:'Wheat', variety:'Lokwan / Sharbati', mandi:'Bardhaman Sadar APMC', dist:'Bardhaman', state:'West Bengal', min:2420, max:2540, modal:2480, delta:2.4, color:'#B67816', arrivals:840, arrivalDate:'Today' },
+    { crop:'Mustard', variety:'Black Bold', mandi:'Ranaghat Mandi', dist:'Nadia', state:'West Bengal', min:5580, max:5810, modal:5720, delta:4.1, color:'#B67816', arrivals:410, arrivalDate:'Today' },
+    { crop:'Potato', variety:'Jyoti / Super-6', mandi:'Arambagh Mandi', dist:'Hooghly', state:'West Bengal', min:1120, max:1240, modal:1180, delta:-1.8, color:'#347282', arrivals:2100, arrivalDate:'Today' },
+    { crop:'Tomato', variety:'Hybrid Red', mandi:'Kolar APMC', dist:'Kolar', state:'Karnataka', min:1650, max:1920, modal:1820, delta:-3.2, color:'#B8472C', arrivals:950, arrivalDate:'Today' }
+  ];
+
+  let mandiData = [...baselineMandiData];
+  let selectedCrop = 'ALL';
+  let selectedState = 'ALL';
+  let searchQuery = '';
+  let searchDebounceTimer = null;
+  let isFetchingLive = false;
+
+  /* 3-Way Synchronized Filter Controller */
+  function setCropFilter(crop, triggerFetch = true) {
+    selectedCrop = crop || 'ALL';
+    const pills = document.querySelectorAll('.crop-pills .pill');
+    pills.forEach(p => {
+      const c = p.getAttribute('data-crop');
+      if (c.toLowerCase() === selectedCrop.toLowerCase()) {
+        p.classList.add('active');
+      } else {
+        p.classList.remove('active');
+      }
+    });
+    if (triggerFetch) {
+      syncLiveMandiData();
+    }
+  }
+
+  function setStateFilter(state, triggerFetch = true) {
+    selectedState = state || 'ALL';
+    const stateSelect = document.getElementById('stateFilter');
+    if (stateSelect) {
+      for (let i = 0; i < stateSelect.options.length; i++) {
+        const val = stateSelect.options[i].value.toLowerCase();
+        const target = selectedState.toLowerCase();
+        if (val === target || (target === 'kerala' && val.includes('kerala')) || (target === 'keralam' && val.includes('kerala'))) {
+          stateSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+    if (triggerFetch) {
+      syncLiveMandiData();
+    }
+  }
+
+  function handleSearchInput(val) {
+    searchQuery = (val || '').trim();
+    const clearBtn = document.getElementById('btnSearchClear');
+    if (clearBtn) {
+      clearBtn.style.display = searchQuery ? 'inline-block' : 'none';
+    }
+
+    const lower = searchQuery.toLowerCase();
+    
+    // Auto-sync crop pill if user types a known crop name
+    const knownCrops = [
+      { key: 'wheat', label: 'Wheat' },
+      { key: 'paddy', label: 'Paddy' },
+      { key: 'dhan', label: 'Paddy' },
+      { key: 'rice', label: 'Paddy' },
+      { key: 'mustard', label: 'Mustard' },
+      { key: 'sarson', label: 'Mustard' },
+      { key: 'potato', label: 'Potato' },
+      { key: 'aloo', label: 'Potato' },
+      { key: 'onion', label: 'Onion' },
+      { key: 'pyaz', label: 'Onion' },
+      { key: 'tomato', label: 'Tomato' },
+      { key: 'cotton', label: 'Cotton' },
+      { key: 'kapas', label: 'Cotton' },
+      { key: 'soybean', label: 'Soybean' },
+      { key: 'soyabean', label: 'Soybean' },
+      { key: 'bajra', label: 'Bajra' },
+      { key: 'banana', label: 'Banana' },
+      { key: 'brinjal', label: 'Brinjal' },
+      { key: 'cabbage', label: 'Cabbage' }
+    ];
+    const matchedCrop = knownCrops.find(c => lower.includes(c.key));
+    if (matchedCrop && selectedCrop.toLowerCase() !== matchedCrop.label.toLowerCase()) {
+      setCropFilter(matchedCrop.label, false);
+    }
+
+    // Auto-sync state dropdown if user types a state name
+    if (typeof FarmUpLocations !== 'undefined') {
+      const states = FarmUpLocations.getStates();
+      const matchedState = states.find(st => lower.includes(st.toLowerCase()));
+      if (matchedState && selectedState.toLowerCase() !== matchedState.toLowerCase()) {
+        setStateFilter(matchedState, false);
+      }
+    }
+
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      const count = renderTable();
+      // If zero local records found and query is specific, query live data.gov.in API
+      if (count === 0 && searchQuery.length >= 3 && !isFetchingLive) {
+        syncLiveMandiData();
+      }
+    }, 200);
+  }
+
+  function resetAllFilters() {
+    searchQuery = '';
+    const input = document.getElementById('mandiSearch');
+    if (input) input.value = '';
+    const clearBtn = document.getElementById('btnSearchClear');
+    if (clearBtn) clearBtn.style.display = 'none';
+    setStateFilter('ALL', false);
+    setCropFilter('ALL', true);
+  }
+
+  async function syncLiveMandiData() {
+    const metaCount = document.getElementById('tableMetaCount');
+    if (typeof FarmUpMandiAPI !== 'undefined') {
+      isFetchingLive = true;
+      if (metaCount) metaCount.innerHTML = '<span class="live-dot" style="background:#B67816;"></span><em>Fetching live data.gov.in APMC stream...</em>';
+
+      const live = await FarmUpMandiAPI.fetchLivePrices({
+        state: selectedState,
+        commodity: selectedCrop,
+        limit: 100
+      });
+
+      isFetchingLive = false;
+
+      if (live && live.records && live.records.length > 0) {
+        // Merge live data with baseline so all districts retain their APMCs with updated live prices
+        const liveMap = new Map();
+        live.records.forEach(r => {
+          const key = `${r.crop}_${r.dist}_${r.mandi}`.toLowerCase();
+          liveMap.set(key, r);
+        });
+
+        // Update baseline with real-time arrivals & prices where matched, and append new live entries
+        const merged = baselineMandiData.map(b => {
+          const key = `${b.crop}_${b.dist}_${b.mandi}`.toLowerCase();
+          if (liveMap.has(key)) {
+            const liveItem = liveMap.get(key);
+            liveMap.delete(key);
+            return { ...b, min: liveItem.min, max: liveItem.max, modal: liveItem.modal, delta: liveItem.delta, arrivals: liveItem.arrivals };
+          }
+          return b;
+        });
+
+        // Add any remaining live items from data.gov.in
+        liveMap.forEach(liveItem => {
+          merged.unshift(liveItem);
+        });
+
+        mandiData = merged;
+        updateTopStats(mandiData);
+        renderTable();
+        return;
+      }
+    }
+
+    mandiData = [...baselineMandiData];
+    renderTable();
+  }
+
+  function renderTable(customMeta = null) {
+    const tbody = document.getElementById('mandiTableBody');
+    if (!tbody) return 0;
+
+    const q = searchQuery.toLowerCase().trim();
+    
+    // Strict Filtering: If user searched for a district (e.g. Kalahandi), show ONLY Kalahandi!
+    const filtered = mandiData.filter(item => {
+      const matchCrop = selectedCrop === 'ALL' || item.crop.toLowerCase().includes(selectedCrop.toLowerCase());
+      const matchState = selectedState === 'ALL' || item.state.toLowerCase() === selectedState.toLowerCase() || (selectedState === 'Kerala' && item.state.toLowerCase() === 'keralam');
+      
+      let matchSearch = true;
+      if (q) {
+        matchSearch = item.crop.toLowerCase().includes(q) || 
+                      item.mandi.toLowerCase().includes(q) || 
+                      item.dist.toLowerCase().includes(q) || 
+                      item.state.toLowerCase().includes(q) || 
+                      (item.variety && item.variety.toLowerCase().includes(q));
+      }
+      return matchCrop && matchState && matchSearch;
+    });
+
+    const metaCount = document.getElementById('tableMetaCount');
+    if (metaCount) {
+      const cropLabel = selectedCrop === 'ALL' ? 'All Commodities' : selectedCrop;
+      const stateLabel = selectedState === 'ALL' ? 'All States' : selectedState;
+      if (q) {
+        metaCount.innerHTML = `<span style="color:#268549;font-weight:700;">● Showing ${filtered.length} live APMC auctions in "${searchQuery}" (${stateLabel})</span>`;
+      } else {
+        metaCount.textContent = customMeta || `Showing ${filtered.length} of ${mandiData.length} records · ${cropLabel} in ${stateLabel}`;
+      }
+    }
+
+    if (filtered.length === 0) {
+      const term = searchQuery || (selectedCrop !== 'ALL' ? selectedCrop : (selectedState !== 'ALL' ? selectedState : 'selected filters'));
+      tbody.innerHTML = `<tr>
+        <td colspan="9" style="text-align:center;padding:36px;color:var(--ink-dim);">
+          <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;">No live mandis matching "${term}"</div>
+          <p style="font-size:13px;color:var(--ink-muted);margin-bottom:12px;">Try broadening your filters or resetting to view all active agricultural markets across India.</p>
+          <button type="button" class="btn btn-ghost" style="padding:6px 18px;font-size:12.5px;" onclick="resetAllFilters()">Reset All Filters</button>
+        </td>
+      </tr>`;
+      return 0;
+    }
+
+    tbody.innerHTML = filtered.map(r => {
+      const dir = r.delta > 0 ? 'up' : (r.delta < 0 ? 'down' : 'same');
+      const arrow = r.delta > 0 ? '▲ +' : (r.delta < 0 ? '▼ ' : '');
+      const color = r.color || (typeof FarmUpMandiAPI !== 'undefined' ? FarmUpMandiAPI.getCropColor(r.crop) : '#255C34');
+      const arrivalsText = r.arrivals ? `${r.arrivals.toLocaleString('en-IN')} qtl` : 'Live Stream';
+      const dateBadge = r.arrivalDate && r.arrivalDate !== 'Today' ? `<br><span style="font-size:10.5px;color:var(--ink-dim);">${r.arrivalDate}</span>` : '';
+
+      return `<tr>
+        <td>
+          <div class="crop-cell">
+            <span class="crop-dot" style="background:${color};"></span>
+            <div><strong>${r.crop}</strong><br><span class="variety">${r.variety}</span></div>
+          </div>
+        </td>
+        <td>
+          <div class="mandi-cell">${r.mandi}</div>
+        </td>
+        <td><strong>${r.dist}</strong></td>
+        <td>${r.state}</td>
+        <td><span class="price-range">₹${r.min.toLocaleString('en-IN')} – ₹${r.max.toLocaleString('en-IN')}</span></td>
+        <td><strong style="color:var(--ink);font-size:15px;">₹${r.modal.toLocaleString('en-IN')}</strong></td>
+        <td><span class="delta ${dir}">${arrow}${Math.abs(r.delta)}%</span></td>
+        <td>${arrivalsText}${dateBadge}</td>
+        <td>
+          <button type="button" class="btn btn-ghost" style="padding:4px 12px;font-size:11.5px;border-radius:100px;" onclick="loadCalc(${r.modal})">Calc →</button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    return filtered.length;
+  }
+
+  // Event Listeners for 3-way synchronization
+  document.getElementById('mandiSearch').addEventListener('input', (e) => {
+    handleSearchInput(e.target.value);
+  });
+
+  document.getElementById('stateFilter').addEventListener('change', (e) => {
+    setStateFilter(e.target.value, true);
+  });
+
+  const pills = document.querySelectorAll('.crop-pills .pill');
+  pills.forEach(p => {
+    p.addEventListener('click', () => {
+      const crop = p.getAttribute('data-crop');
+      setCropFilter(crop, true);
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    if (query) {
+      const searchInput = document.getElementById('mandiSearch');
+      if (searchInput) searchInput.value = query;
+    }
+
+    if (typeof FarmUpLocations !== 'undefined') {
+      const stateSelect = document.getElementById('stateFilter');
+      if (stateSelect) {
+        stateSelect.innerHTML = '<option value="ALL">All States / UTs</option>';
+        FarmUpLocations.getStates().forEach(st => {
+          const opt = document.createElement('option');
+          opt.value = st;
+          opt.textContent = st === 'Kerala' ? 'Kerala (Keralam)' : st;
+          stateSelect.appendChild(opt);
+        });
+      }
+    }
+    syncLiveMandiData();
+    if (query) {
+      handleSearchInput(query);
+    }
+  });
+
+  /* Net Return Calculator logic */
+  function updateCalc(){
+    const qty = parseFloat(document.getElementById('calcQty').value) || 0;
+    const rate = parseFloat(document.getElementById('calcRate').value) || 0;
+    const dist = parseFloat(document.getElementById('calcDist').value) || 0;
+    const v = document.getElementById('calcVehicle').value;
+
+    const ratePerKm = v === 'tractor' ? 28 : (v === 'minitruck' ? 22 : 8);
+    const gross = qty * rate;
+    const transport = (dist * 2) * ratePerKm;
+    const apmcFee = gross * 0.005; // 0.5% APMC fee
+    const net = Math.max(0, gross - transport - apmcFee);
+
+    document.getElementById('calcNetReturn').textContent = '₹' + Math.round(net).toLocaleString('en-IN');
+    document.getElementById('calcBreakdown').textContent = `Gross: ₹${Math.round(gross).toLocaleString('en-IN')} · Transport: ₹${Math.round(transport).toLocaleString('en-IN')} · APMC fee: ₹${Math.round(apmcFee).toLocaleString('en-IN')}`;
+  }
+
+  ['calcQty','calcRate','calcDist','calcVehicle'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', updateCalc);
+  });
+
+  window.loadCalc = function(rate){
+    document.getElementById('calcRate').value = rate;
+    updateCalc();
+    document.getElementById('alert-sec').scrollIntoView({behavior:'smooth'});
+  };
+
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    }));
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      }
+    });
+  }
+
+  renderTable();
+  updateCalc();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    selectedCrop = 'ALL';
+    searchQuery = '';
+    document.querySelectorAll('.crop-chip').forEach(c => c.classList.remove('active'));
+    const allChip = document.querySelector('.crop-chip[data-crop="ALL"]') || document.querySelector('.crop-chip');
+    if (allChip) allChip.classList.add('active');
+
+    const prof = typeof FarmUpAuth !== 'undefined' ? FarmUpAuth.getProfile() : null;
+    if (prof) {
+      if (prof.state && prof.state !== 'Punjab') {
+        setStateFilter(prof.state, false);
+      }
+      if (prof.district) {
+        searchQuery = prof.district;
+        const searchInput = document.getElementById('mandiSearch');
+        if (searchInput) {
+          searchInput.value = prof.district;
+          const clearBtn = document.getElementById('btnSearchClear');
+          if (clearBtn) clearBtn.style.display = 'inline-block';
+        }
+      }
+    }
+    renderTable();
+  });
+
+  window.addEventListener('farmup_account_synced', (e) => {
+    const prof = FarmUpAuth.getProfile();
+    if (prof) {
+      selectedCrop = 'ALL';
+      document.querySelectorAll('.crop-chip').forEach(c => c.classList.remove('active'));
+      const allChip = document.querySelector('.crop-chip[data-crop="ALL"]') || document.querySelector('.crop-chip');
+      if (allChip) allChip.classList.add('active');
+
+      if (prof.state) {
+        setStateFilter(prof.state, false);
+      }
+      if (prof.district) {
+        searchQuery = prof.district;
+        const searchInput = document.getElementById('mandiSearch');
+        if (searchInput) {
+          searchInput.value = prof.district;
+          const clearBtn = document.getElementById('btnSearchClear');
+          if (clearBtn) clearBtn.style.display = 'inline-flex';
+        }
+      }
+      renderTable();
+    }
+  });
+</script>
+<script type="module" src="firebase-config.js"></script>
+<script src="farmup-api.js"></script>
+</body>
+</html>
