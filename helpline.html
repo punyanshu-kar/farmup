@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Kisan Helpline Directory · National & State Agricultural Support | FarmUp</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ==========================================================================
+     1. CSS VARIABLES & RESET
+     ========================================================================== */
+  :root {
+    --bg-prime: #FDFCF8;
+    --card-bg: #FFFFFF;
+    --ink: #0D0C22;
+    --ink-muted: #5E636E;
+    --ink-dim: #8E8D9F;
+    --line: rgba(0, 0, 0, 0.08);
+    --line-strong: rgba(0, 0, 0, 0.16);
+    --primary: #123B1E;
+    --primary-light: #E8F5E9;
+    --primary-accent: #268549;
+    --gold: #B67816;
+    --gold-light: #FEF8E7;
+    --danger: #D32F2F;
+    --danger-light: #FEECEB;
+    --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-main);
+    background-color: var(--bg-prime);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* Taskbar */
+  .taskbar-wrap {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    background: #FFFFFF !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .floating-taskbar {
+    width: 100% !important;
+    max-width: 1240px !important;
+    height: 62px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+  }
+  .tb-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+  }
+  .logo-mark {
+    width: 32px !important;
+    height: 32px !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+  }
+  .tb-name {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0D0C22 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  .tb-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tb-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding: 7px 12px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+  }
+  .tb-link:hover, .tb-link.active {
+    color: #0D0C22;
+    background: #F1F3F5;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    gap: 5px !important;
+  }
+  .hamburger span {
+    display: block !important;
+    width: 22px !important;
+    height: 2px !important;
+    background: #0D0C22 !important;
+    border-radius: 2px !important;
+    transition: all 0.2s ease !important;
+  }
+
+  @media (max-width: 900px) {
+    .hamburger { display: flex !important; }
+    .tb-links {
+      position: fixed;
+      top: 62px;
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      display: none;
+      gap: 12px;
+    }
+    .tb-links.open { display: flex; }
+    .tb-link { width: 100%; padding: 10px 0; font-size: 15px; }
+  }
+
+  /* Page Hero */
+  .page-hero {
+    padding: 36px 0 24px;
+    text-align: center;
+  }
+  .page-hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .page-hero h1 em {
+    font-style: italic;
+    color: var(--primary-accent);
+  }
+  .page-sub {
+    font-size: 15px;
+    color: var(--ink-muted);
+    max-width: 680px;
+    margin: 0 auto 24px;
+  }
+
+  /* Quick Dial Emergency Ticker */
+  .emergency-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .em-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .em-card:hover {
+    border-color: #0D0C22;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+  .em-info h4 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .em-info p {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+  .em-number {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #1B5E20;
+    margin-top: 4px;
+  }
+  .btn-call {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 100px;
+    background: #123B1E;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .btn-call:hover {
+    background: #268549;
+    transform: scale(1.03);
+  }
+
+  /* Filter Panel */
+  .filter-panel {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: 20px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+  }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+  }
+  .search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px 0 40px;
+    border-radius: 100px;
+    border: 1.5px solid var(--line-strong);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #FDFCF8;
+    outline: none;
+    transition: all 0.15s ease;
+  }
+  .search-input:focus {
+    border-color: #0D0C22;
+    background: #FFFFFF;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--ink-dim);
+  }
+
+  .state-select {
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--line-strong);
+    background: #FFFFFF;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    margin-top: 14px;
+  }
+  .f-pill {
+    padding: 7px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: #F8FAFC;
+    color: var(--ink-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .f-pill:hover, .f-pill.active {
+    background: #0D0C22;
+    color: #FFFFFF;
+    border-color: #0D0C22;
+  }
+
+  /* Helpline Cards Grid */
+  .helpline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .h-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .h-card:hover {
+    border-color: rgba(0,0,0,0.25);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+  .h-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .h-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .h-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .h-badge.national { background: #E3F2FD; color: #1565C0; }
+  .h-badge.state { background: #E8F5E9; color: #2E7D32; }
+
+  .h-dept {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    margin-bottom: 12px;
+  }
+  .h-desc {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    flex-grow: 1;
+  }
+  .h-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .h-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .h-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    gap: 10px;
+  }
+  .h-phone-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .h-phone-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .h-phone-num {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: #0D0C22;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 0;
+    margin-top: 64px;
+    background: transparent;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .footer-col h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .footer-col ul li a {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .footer-col ul li a:hover { color: var(--ink); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-dim);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Taskbar -->
+<div class="taskbar-wrap">
+  <nav class="floating-taskbar">
+    <div class="tb-left">
+      <a href="index.html" class="tb-logo">
+        <img src="farmup-logo.png" alt="FarmUp" class="logo-mark" onerror="this.src='favicon.png'">
+        <span class="tb-name">FarmUp</span>
+      </a>
+    </div>
+    <div class="tb-links" id="navLinks">
+      <a href="mandi.html" class="tb-link">Mandi Bhav</a>
+      <a href="weather.html" class="tb-link">Weather</a>
+      <a href="disease.html" class="tb-link">Crop Doctor</a>
+      <a href="schemes.html" class="tb-link">Govt Schemes</a>
+      <a href="distress.html" class="tb-link">Distress Scorer</a>
+      <a href="helpline.html" class="tb-link active">Helpline</a>
+      <a href="profile.html" class="tb-link">Dashboard</a>
+    </div>
+    <div class="tb-right" style="display:flex;align-items:center;gap:10px;">
+      <a href="login.html" class="btn-call" style="background:#0D0C22;padding:8px 16px;">Sign In →</a>
+      <button class="hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Toggle Navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<main class="wrap">
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <h1>Kisan Helpline Directory,<br><em>instant 1-tap support.</em></h1>
+    <p class="page-sub">Direct toll-free telephone helplines across national ministries and state agricultural directorates for crop advisory, PM-Kisan DBT, crop loss claims, and emergency relief.</p>
+  </section>
+
+  <!-- Quick Dial Emergency Ticker -->
+  <div class="emergency-strip">
+    <div class="em-card">
+      <div class="em-info">
+        <h4>Kisan Call Centre (KCC)</h4>
+        <p>Agronomy, Pest Control, 22 Languages</p>
+        <div class="em-number">1800-180-1551</div>
+      </div>
+      <a href="tel:18001801551" class="btn-call">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call 1551
+      </a>
+    </div>
+
+    <div class="em-card">
+      <div class="em-info">
+        <h4>PM-Kisan DBT Support</h4>
+        <p>Direct Bank Transfer & eKYC Inquiries</p>
+        <div class="em-number">155261 / 011-24300606</div>
+      </div>
+      <a href="tel:155261" class="btn-call">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call 155261
+      </a>
+    </div>
+
+    <div class="em-card">
+      <div class="em-info">
+        <h4>PMFBY Crop Insurance</h4>
+        <p>Immediate 72hr Crop Loss Intimation</p>
+        <div class="em-number">14447 (Toll-Free)</div>
+      </div>
+      <a href="tel:14447" class="btn-call">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call 14447
+      </a>
+    </div>
+  </div>
+
+  <!-- Interactive Filter Controls -->
+  <div class="filter-panel">
+    <div class="filter-row">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="helplineSearch" class="search-input" placeholder="Search helpline by scheme, issue, department, or keyword..." oninput="filterHelplines()">
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select id="scopeFilter" class="state-select" onchange="filterHelplines()">
+          <option value="ALL">All Levels (National & State)</option>
+          <option value="NATIONAL">National Only (All-India)</option>
+          <option value="STATE">State Directorates Only</option>
+        </select>
+
+        <select id="stateFilter" class="state-select" onchange="filterHelplines()">
+          <option value="ALL">All States / UTs</option>
+          <option value="Odisha">Odisha</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Madhya Pradesh">Madhya Pradesh</option>
+          <option value="Rajasthan">Rajasthan</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Haryana">Haryana</option>
+          <option value="West Bengal">West Bengal</option>
+          <option value="Bihar">Bihar</option>
+          <option value="Karnataka">Karnataka</option>
+          <option value="Tamil Nadu">Tamil Nadu</option>
+          <option value="Andhra Pradesh">Andhra Pradesh</option>
+          <option value="Telangana">Telangana</option>
+          <option value="Kerala">Kerala</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-pills">
+      <button type="button" class="f-pill active" data-cat="ALL" onclick="setCategory('ALL')">All Helplines</button>
+      <button type="button" class="f-pill" data-cat="advisory" onclick="setCategory('advisory')">Crop & Pest Advisory</button>
+      <button type="button" class="f-pill" data-cat="dbt" onclick="setCategory('dbt')">DBT & Subsidies</button>
+      <button type="button" class="f-pill" data-cat="insurance" onclick="setCategory('insurance')">Crop Insurance & Claims</button>
+      <button type="button" class="f-pill" data-cat="loan" onclick="setCategory('loan')">KCC & Credit Support</button>
+      <button type="button" class="f-pill" data-cat="market" onclick="setCategory('market')">e-NAM & Mandi Marketing</button>
+      <button type="button" class="f-pill" data-cat="disaster" onclick="setCategory('disaster')">Emergency & Cyclone Relief</button>
+    </div>
+  </div>
+
+  <!-- Helpline Result Count -->
+  <div style="font-size:13px;font-weight:700;color:var(--ink-muted);margin-bottom:16px;" id="helplineCount">
+    Showing verified agricultural helplines across India...
+  </div>
+
+  <!-- Helpline Cards Grid -->
+  <div class="helpline-grid" id="helplineGrid">
+    <!-- Rendered dynamically by JS -->
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="wrap">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h5>FarmUp Agriculture</h5>
+      <p style="font-size:13px;color:var(--ink-muted);line-height:1.5;">Practical agricultural intelligence for Indian farmers — mandi rates, weather alerts, disease detection, and emergency helplines.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform Tools</h5>
+      <ul>
+        <li><a href="mandi.html">Mandi Bhav & Arbitrage</a></li>
+        <li><a href="weather.html">Hyper-Local Weather</a></li>
+        <li><a href="disease.html">Crop Doctor & Scanner</a></li>
+        <li><a href="schemes.html">Govt Schemes & Subsidies</a></li>
+        <li><a href="distress.html">Distress Scorer</a></li>
+        <li><a href="helpline.html">Kisan Helpline Directory</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Data Sources</h5>
+      <ul>
+        <li><a href="https://agmarknet.gov.in" target="_blank" rel="noopener">National APMC Network</a></li>
+        <li><a href="https://data.gov.in" target="_blank" rel="noopener">Open Government Data</a></li>
+        <li><a href="https://icar.org.in" target="_blank" rel="noopener">Public Agricultural Research</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 FarmUp. Free Tools for Indian Farmers.</div>
+    <div>11 Indian Languages Supported · Toll-Free Assistance</div>
+  </div>
+</footer>
+
+<script src="farmup-api.js"></script>
+<script>
+  // Complete National & State Helpline Dataset
+  const HELPLINES_DATABASE = [
+    // ================= NATIONAL ALL-INDIA HELPLINES =================
+    {
+      id: 'nat_kcc',
+      title: 'Kisan Call Centre (KCC)',
+      dept: 'Ministry of Agriculture & Farmers Welfare, Govt of India',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-180-1551',
+      dial: '18001801551',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM (All 365 Days)',
+      langs: '22 Indian Languages',
+      desc: 'Expert agronomist telephone advice on crop pests, disease management, fertilizer dosages, soil preparation, and weather forecasts with zero call charges.'
+    },
+    {
+      id: 'nat_pmkisan',
+      title: 'PM-Kisan Direct Benefit Transfer (DBT) Helpline',
+      dept: 'Department of Agriculture & Farmers Welfare',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '155261 / 011-24300606',
+      dial: '155261',
+      category: 'dbt',
+      hours: '9:30 AM – 6:00 PM (Mon–Sat)',
+      langs: 'Hindi, English, Regional',
+      desc: 'Official assistance for PM-Kisan ₹6,000 installment tracking, land record seeding, eKYC status verification, and uncredited installment resolution.'
+    },
+    {
+      id: 'nat_pmfby',
+      title: 'PMFBY Crop Insurance & Loss Claim Toll-Free',
+      dept: 'Pradhan Mantri Fasal Bima Yojana',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '14447',
+      dial: '14447',
+      category: 'insurance',
+      hours: '24x7 Dedicated Toll-Free',
+      langs: 'Pan-India Multilingual',
+      desc: 'Mandatory 72-hour localized crop loss reporting for unseasonal rainfall, hailstorms, flooding, and landslide claim settlement dispatch.'
+    },
+    {
+      id: 'nat_kcc_loan',
+      title: 'Kisan Credit Card (KCC) Subsidized Loan Support',
+      dept: 'National Bank for Agriculture and Rural Development (NABARD)',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-11-5526',
+      dial: '1800115526',
+      category: 'loan',
+      hours: '10:00 AM – 5:30 PM (Working Days)',
+      langs: 'English, Hindi',
+      desc: 'Guidance on 4% interest subvention crop loans, KCC renewal, zero-collateral limit eligibility up to ₹1.6 Lakh, and bank branch escalations.'
+    },
+    {
+      id: 'nat_enam',
+      title: 'e-NAM National Agriculture Market Helpdesk',
+      dept: 'Small Farmers Agri-Business Consortium (SFAC)',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-270-0224',
+      dial: '18002700224',
+      category: 'market',
+      hours: '9:00 AM – 6:00 PM',
+      langs: 'Multilingual',
+      desc: 'Assistance with online APMC mandi auction trading, inter-state unified license bidding, electronic payment settlement, and assaying support.'
+    },
+    {
+      id: 'nat_fertilizer',
+      title: 'Fertilizer Subsidy & Quality Control Helpline',
+      dept: 'Department of Fertilizers, Ministry of Chemicals & Fertilizers',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-11-1968',
+      dial: '1800111968',
+      category: 'advisory',
+      hours: '9:30 AM – 6:00 PM',
+      langs: 'Hindi, English',
+      desc: 'Report black marketing, over-pricing of Urea/DAP bags above MRP, fertilizer adulteration, and point-of-sale (PoS) machine issues.'
+    },
+    {
+      id: 'nat_ndrf',
+      title: 'National Disaster / Cyclone & Flood Emergency (NDRF)',
+      dept: 'National Disaster Management Authority (NDMA)',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1078 / 011-24363260',
+      dial: '1078',
+      category: 'disaster',
+      hours: '24x7 Emergency Control Room',
+      langs: 'All Languages',
+      desc: 'Emergency rescue, flood evacuation, cyclone warnings, and field relief coordination for farming communities during severe climatic disasters.'
+    },
+
+    // ================= STATE-LEVEL HELPLINES =================
+    // Odisha
+    {
+      id: 'st_od_amakrushi',
+      title: 'AMA KRUSHI Agronomic & Scheme Helpline',
+      dept: 'Dept of Agriculture & Farmers Empowerment, Odisha',
+      scope: 'STATE',
+      state: 'Odisha',
+      phone: '155333',
+      dial: '155333',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Odia, Sambalpuri, English',
+      desc: 'Personalized agricultural advice in Odia, Krushak Odisha portal registration support, soil health card recommendations, and weather forecast alerts.'
+    },
+    {
+      id: 'st_od_kalia',
+      title: 'KALIA Scheme Financial Assistance Helpline',
+      dept: 'Government of Odisha',
+      scope: 'STATE',
+      state: 'Odisha',
+      phone: '1800-572-1122',
+      dial: '18005721122',
+      category: 'dbt',
+      hours: '7:00 AM – 9:00 PM',
+      langs: 'Odia, English',
+      desc: 'Assistance regarding direct livelihood support of ₹10,000/year for small/marginal farmers and landless agricultural households in Odisha.'
+    },
+    {
+      id: 'st_od_agri',
+      title: 'Directorate of Agriculture Control Room (Bhubaneswar)',
+      dept: 'Krushi Bhavan, Odisha',
+      scope: 'STATE',
+      state: 'Odisha',
+      phone: '0674-2395532',
+      dial: '06742395532',
+      category: 'advisory',
+      hours: '10:00 AM – 5:30 PM',
+      langs: 'Odia, English',
+      desc: 'District agriculture officer escalations, farm machinery subsidy (DBT Odisha), and farm pond (Jalanidhi) application inquiries.'
+    },
+
+    // Punjab
+    {
+      id: 'st_pb_pau',
+      title: 'PAU Kisan Advisory Helpline (Ludhiana)',
+      dept: 'Punjab Agricultural University (PAU)',
+      scope: 'STATE',
+      state: 'Punjab',
+      phone: '0161-2401960',
+      dial: '01612401960',
+      category: 'advisory',
+      hours: '9:00 AM – 5:00 PM (Mon–Fri)',
+      langs: 'Punjabi, Hindi, English',
+      desc: 'Direct consultation with PAU university agronomists for wheat yellow rust, paddy stem borer, stubble management, and certified seed varieties.'
+    },
+    {
+      id: 'st_pb_mandi',
+      title: 'Punjab Mandi Board Procurement Helpline',
+      dept: 'Punjab State Agricultural Marketing Board',
+      scope: 'STATE',
+      state: 'Punjab',
+      phone: '0172-2212351',
+      dial: '01722212351',
+      category: 'market',
+      hours: '8:00 AM – 8:00 PM (Procurement Season)',
+      langs: 'Punjabi, Hindi',
+      desc: 'Anaaj Kharid portal token generation, moisture testing verification, and MSP procurement payment tracking for Punjab grain markets.'
+    },
+
+    // Maharashtra
+    {
+      id: 'st_mh_mahaagri',
+      title: 'MahaAgri Farmer Call Centre',
+      dept: 'Department of Agriculture, Govt of Maharashtra',
+      scope: 'STATE',
+      state: 'Maharashtra',
+      phone: '1800-233-4000',
+      dial: '18002334000',
+      category: 'advisory',
+      hours: '8:00 AM – 8:00 PM',
+      langs: 'Marathi, Hindi',
+      desc: 'Maharashtra state crop advisory, MahaDBT farmer scheme subsidies, drip irrigation grants, and cotton pink bollworm outbreak remedies in Marathi.'
+    },
+    {
+      id: 'st_mh_msamb',
+      title: 'MSAMB Marketing & Export Helpline',
+      dept: 'Maharashtra State Agricultural Marketing Board (Pune)',
+      scope: 'STATE',
+      state: 'Maharashtra',
+      phone: '020-24268297',
+      dial: '02024268297',
+      category: 'market',
+      hours: '10:00 AM – 6:00 PM',
+      langs: 'Marathi, Hindi, English',
+      desc: 'Cold storage subsidy assistance, export quality certification for onion, grapes, and pomegranate, and weekly APMC market trends.'
+    },
+
+    // Uttar Pradesh
+    {
+      id: 'st_up_mitra',
+      title: 'UP Kisan Mitra Helpline',
+      dept: 'Department of Agriculture, Uttar Pradesh',
+      scope: 'STATE',
+      state: 'Uttar Pradesh',
+      phone: '1800-180-1551',
+      dial: '18001801551',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Hindi',
+      desc: 'Direct consultation for sugarcane crop calendar, certified wheat/paddy seed distribution at block godowns, and KCC loan camps in UP.'
+    },
+    {
+      id: 'st_up_mandi',
+      title: 'UP Rajya Krishi Utpadan Mandi Parishad',
+      dept: 'Govt of Uttar Pradesh',
+      scope: 'STATE',
+      state: 'Uttar Pradesh',
+      phone: '1800-180-1553',
+      dial: '18001801553',
+      category: 'market',
+      hours: '9:30 AM – 6:00 PM',
+      langs: 'Hindi',
+      desc: 'Mandi fee disputes, auction dispute arbitration, potato cold storage allocations, and MSP procurement center grievances in UP.'
+    },
+
+    // Madhya Pradesh
+    {
+      id: 'st_mp_kisan',
+      title: 'MP Kisan Kalyan & Krishi Vikas Control Room',
+      dept: 'Govt of Madhya Pradesh (Bhopal)',
+      scope: 'STATE',
+      state: 'Madhya Pradesh',
+      phone: '0755-2551522',
+      dial: '07552551522',
+      category: 'advisory',
+      hours: '10:00 AM – 6:00 PM',
+      langs: 'Hindi',
+      desc: 'Soybean and wheat disease diagnostics, Bhavantar Bhugtan scheme support, and custom hiring center farm machinery reservations in MP.'
+    },
+
+    // Rajasthan
+    {
+      id: 'st_rj_sewa',
+      title: 'Rajasthan Kisan Sewa Kendra',
+      dept: 'Agriculture Department, Govt of Rajasthan',
+      scope: 'STATE',
+      state: 'Rajasthan',
+      phone: '1800-180-1551',
+      dial: '18001801551',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Hindi, Rajasthani',
+      desc: 'Mustard and cumin crop protection, farm pond subsidy (Khet Talai), solar pump grants under KUSUM, and locust emergency alerts in Rajasthan.'
+    },
+
+    // Gujarat
+    {
+      id: 'st_gj_ikhedut',
+      title: 'i-Khedut Portal & Kisan Sahay Helpline',
+      dept: 'Agriculture, Farmers Welfare & Co-operation Dept, Gujarat',
+      scope: 'STATE',
+      state: 'Gujarat',
+      phone: '079-23256101',
+      dial: '07923256101',
+      category: 'dbt',
+      hours: '10:30 AM – 6:10 PM',
+      langs: 'Gujarati, Hindi',
+      desc: 'Assistance with i-Khedut online application tracking for tractor subsidies, pipeline grants, and Mukhyamantri Kisan Sahay Yojana in Gujarat.'
+    },
+
+    // Haryana
+    {
+      id: 'st_hr_kisan',
+      title: 'Haryana Kisan Help Desk (Panchkula)',
+      dept: 'Department of Agriculture & Farmers Welfare, Haryana',
+      scope: 'STATE',
+      state: 'Haryana',
+      phone: '1800-180-2117',
+      dial: '18001802117',
+      category: 'advisory',
+      hours: '9:00 AM – 5:00 PM',
+      langs: 'Hindi, Haryanvi',
+      desc: 'Meri Fasal Mera Byora portal registration, DSR direct seeded rice incentives (₹4,000/acre), and tubewell electricity connection support.'
+    },
+
+    // West Bengal
+    {
+      id: 'st_wb_matir',
+      title: 'Matir Katha Farmer Toll-Free (West Bengal)',
+      dept: 'Department of Agriculture, Govt of West Bengal',
+      scope: 'STATE',
+      state: 'West Bengal',
+      phone: '1800-103-1000',
+      dial: '18001031000',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Bengali, English',
+      desc: 'Krishak Bandhu financial assistance inquiries, jute grading advisory, boro paddy pest control, and Bangla Shasya Bima insurance claims in Bengali.'
+    },
+
+    // Bihar
+    {
+      id: 'st_br_krishi',
+      title: 'Bihar Krishi Helpline',
+      dept: 'Department of Agriculture, Govt of Bihar',
+      scope: 'STATE',
+      state: 'Bihar',
+      phone: '1800-345-6221',
+      dial: '18003456221',
+      category: 'advisory',
+      hours: '7:00 AM – 7:00 PM',
+      langs: 'Hindi, Bhojpuri, Maithili',
+      desc: 'Bihar Rajya Fasal Sahayata Yojana claims, diesel subsidy applications, certified seed booking on DBT Agriculture portal, and flood recovery support.'
+    },
+
+    // Karnataka
+    {
+      id: 'st_ka_raitha',
+      title: 'Raitha Samparka Kendra Helpline',
+      dept: 'Department of Agriculture, Govt of Karnataka',
+      scope: 'STATE',
+      state: 'Karnataka',
+      phone: '1800-425-3553',
+      dial: '18004253553',
+      category: 'advisory',
+      hours: '8:00 AM – 8:00 PM',
+      langs: 'Kannada, English',
+      desc: 'FRUITS portal farmer registration, Raitha Siri millet cultivation assistance, borewell recharge scheme, and district RSK advisory in Kannada.'
+    },
+
+    // Tamil Nadu
+    {
+      id: 'st_tn_uzhavan',
+      title: 'Uzhavan Farmer Help Desk (Tamil Nadu)',
+      dept: 'Department of Agriculture and Farmers Welfare, Tamil Nadu',
+      scope: 'STATE',
+      state: 'Tamil Nadu',
+      phone: '1800-425-4444',
+      dial: '18004254444',
+      category: 'advisory',
+      hours: '8:00 AM – 8:00 PM',
+      langs: 'Tamil, English',
+      desc: 'Uzhavan app guidance, Kalaignar All Village Integrated Agriculture Development Scheme, micro-irrigation 100% subsidy for small farmers, and paddy advisory.'
+    }
+  ];
+
+  let selectedCategory = 'ALL';
+
+  function setCategory(cat) {
+    selectedCategory = cat;
+    document.querySelectorAll('.f-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.getAttribute('data-cat') === cat);
+    });
+    filterHelplines();
+  }
+
+  function filterHelplines() {
+    const searchVal = document.getElementById('helplineSearch').value.toLowerCase().trim();
+    const scopeVal = document.getElementById('scopeFilter').value;
+    const stateVal = document.getElementById('stateFilter').value;
+
+    const filtered = HELPLINES_DATABASE.filter(item => {
+      const matchSearch = !searchVal || 
+        item.title.toLowerCase().includes(searchVal) ||
+        item.dept.toLowerCase().includes(searchVal) ||
+        item.state.toLowerCase().includes(searchVal) ||
+        item.desc.toLowerCase().includes(searchVal) ||
+        item.phone.includes(searchVal);
+
+      const matchScope = scopeVal === 'ALL' || item.scope === scopeVal;
+      
+      const matchState = stateVal === 'ALL' || 
+        item.state === 'All-India' || 
+        item.state.toLowerCase() === stateVal.toLowerCase();
+
+      const matchCat = selectedCategory === 'ALL' || item.category === selectedCategory;
+
+      return matchSearch && matchScope && matchState && matchCat;
+    });
+
+    renderHelplineGrid(filtered);
+  }
+
+  function renderHelplineGrid(list) {
+    const grid = document.getElementById('helplineGrid');
+    const countEl = document.getElementById('helplineCount');
+
+    if (countEl) {
+      countEl.textContent = `Showing ${list.length} verified agricultural helplines across India`;
+    }
+
+    if (list.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align:center; padding: 48px 20px; background:#FFF; border-radius:18px; border:1px solid var(--line);">
+          <div style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;">No helplines matching your filter</div>
+          <p style="font-size:13.5px;color:var(--ink-muted);margin-bottom:16px;">Try clearing search keywords or selecting "All States / UTs".</p>
+          <button type="button" class="btn-call" onclick="resetFilters()">Reset All Filters</button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = list.map(item => {
+      const isNat = item.scope === 'NATIONAL';
+      const badgeClass = isNat ? 'national' : 'state';
+      const badgeText = isNat ? 'National (All-India)' : item.state;
+
+      return `
+        <div class="h-card">
+          <div>
+            <div class="h-header">
+              <div class="h-title">${item.title}</div>
+              <span class="h-badge ${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="h-dept">${item.dept}</div>
+            <div class="h-desc">${item.desc}</div>
+            
+            <div class="h-meta-row">
+              <div class="h-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>${item.hours}</span>
+              </div>
+              <div class="h-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+                <span>${item.langs}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-footer">
+            <div class="h-phone-box">
+              <span class="h-phone-label">Toll-Free Helpline</span>
+              <span class="h-phone-num">${item.phone}</span>
+            </div>
+            <a href="tel:${item.dial}" class="btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Now
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function resetFilters() {
+    document.getElementById('helplineSearch').value = '';
+    document.getElementById('scopeFilter').value = 'ALL';
+    document.getElementById('stateFilter').value = 'ALL';
+    setCategory('ALL');
+  }
+
+  function toggleMobileNav() {
+    const nav = document.getElementById('navLinks');
+    if (nav) nav.classList.toggle('open');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Auto-detect farmer's registered state from profile
+    if (typeof FarmUpAuth !== 'undefined') {
+      const p = FarmUpAuth.getProfile();
+      if (p && p.state) {
+        const stateSelect = document.getElementById('stateFilter');
+        for (let opt of stateSelect.options) {
+          if (opt.value.toLowerCase() === p.state.toLowerCase()) {
+            stateSelect.value = opt.value;
+            break;
+          }
+        }
+      }
+    }
+
+    filterHelplines();
+  });
+</script>
+</body>
+</html>
