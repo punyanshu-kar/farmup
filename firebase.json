@@ -8,6 +8,9 @@
       "firebase.json",
       ".firebaserc",
       "**/.*",
+      ".git/**",
+      "scratch/**",
+      "disease_detector/**",
       "**/node_modules/**"
     ],
     "cleanUrls": true,
