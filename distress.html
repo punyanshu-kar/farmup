@@ -553,11 +553,12 @@
 
 <script>
 
+
 let currentFarmerProfile = null;
 let latestDistressReport = null;
 let voiceAudioObj = null;
 
-// Initialize as soon as DOM loads
+// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
@@ -567,29 +568,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Load farmer profile
-  const savedProf = (typeof FarmUpAuth !== 'undefined' && FarmUpAuth.getProfile()) || {
-    name: 'Rajesh Kumar Nayak',
-    phone: '+91 98765 43210',
-    village: 'Nuagaon',
-    district: 'Sundargarh',
-    state: 'Odisha',
-    acres: 4.5,
-    soil: 'Alluvial Clay Loam',
-    irrigation: 'Canal + Borewell (Drip Connected)',
-    crops: ['Paddy', 'Potato', 'Tomato'],
-    totalDebt: 120000,
-    informalDebtRatio: 0.20,
-    tenancyStatus: 'Owner-Cultivator'
-  };
+  evaluateUserAuthStateAndRender();
+});
 
+// Re-evaluate if Firebase auth or localStorage syncs
+window.addEventListener('farmup_account_synced', () => {
+  evaluateUserAuthStateAndRender();
+});
+
+function evaluateUserAuthStateAndRender() {
+  const guestSec = document.getElementById('guestLockSection');
+  const authView = document.getElementById('authenticatedDistressView');
+  const loggedIn = typeof FarmUpAuth !== 'undefined' && FarmUpAuth.isLoggedIn();
+
+  // If NOT logged in, show lock screen only and NEVER show farm data
+  if (!loggedIn) {
+    if (guestSec) guestSec.style.display = 'block';
+    if (authView) authView.style.display = 'none';
+    currentFarmerProfile = null;
+    return;
+  }
+
+  // If logged in, show cockpit and load farmer profile
+  if (guestSec) guestSec.style.display = 'none';
+  if (authView) authView.style.display = 'block';
+
+  const savedProf = FarmUpAuth.getProfile() || {};
   const cleanCrops = savedProf.crops ? (Array.isArray(savedProf.crops) ? savedProf.crops : savedProf.crops.split(',').map(s => s.trim())) : ['Paddy'];
-  const acres = parseFloat(savedProf.acres) || 4.5;
+  const acres = parseFloat(savedProf.acres) || 2.5;
 
   currentFarmerProfile = {
-    name: savedProf.name || 'Rajesh Kumar Nayak',
+    name: savedProf.name || 'Kisan Farmer',
     phone: savedProf.phone || '',
-    village: savedProf.village || 'Nuagaon',
+    village: savedProf.village || 'Gram Panchayat',
     district: savedProf.district || 'Sundargarh',
     state: savedProf.state || 'Odisha',
     acres: acres,
@@ -601,17 +612,13 @@ document.addEventListener('DOMContentLoaded', () => {
     tenancyStatus: savedProf.tenancyStatus || 'Owner-Cultivator'
   };
 
-  const guestSec = document.getElementById('guestLockSection');
-  const authView = document.getElementById('authenticatedDistressView');
-  if (guestSec) guestSec.style.display = 'none';
-  if (authView) authView.style.display = 'block';
-
-  // 1. INSTANT SYNCHRONOUS INITIAL RENDER (0.00s delay)
+  // 1. Instant Synchronous Initial Render (0ms)
   executeDistressCalculation(26, 32.8, 5, 2480, (currentFarmerProfile.district || 'Sundargarh') + ' APMC Mandi');
 
-  // 2. NON-BLOCKING LIVE BACKGROUND TELEMETRY SYNC
+  // 2. Background Live Telemetry Sync
   syncLiveDistrictTelemetry();
-});
+}
+
 
 // Calculate and immediately update DOM
 function executeDistressCalculation(liveTemp, rain7dSum, rainDeficitPct, mandiSpotRate, mandiMarketName) {
