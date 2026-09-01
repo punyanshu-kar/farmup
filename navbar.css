@@ -421,6 +421,8 @@
   /* Expands when .open class is toggled on click */
   .nav-dropdown.open .nav-dropdown-menu {
     display: flex !important;
+    flex-direction: column !important; /* Stack vertically: one in a line, then other in next line */
+    gap: 4px !important;
   }
 
   .dd-item {

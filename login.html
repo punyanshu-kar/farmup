@@ -46,8 +46,8 @@
 
   /* Left Brand Panel with Engraved Botanical Crop Artwork */
   .brand-split-panel {
-    flex: 0 0 44%;
-    min-width: 420px;
+    flex: 0 0 45%;
+    min-width: 440px;
     background: radial-gradient(circle at 15% 15%, rgba(234, 76, 137, 0.04) 0%, transparent 45%),
                 radial-gradient(circle at 85% 85%, rgba(38, 133, 73, 0.06) 0%, transparent 50%),
                 #F8F9FA;
@@ -65,9 +65,9 @@
     position: absolute;
     bottom: -20px;
     right: -20px;
-    width: 320px;
-    height: 420px;
-    opacity: 0.09;
+    width: 340px;
+    height: 440px;
+    opacity: 0.08;
     pointer-events: none;
     user-select: none;
     z-index: 0;
@@ -115,226 +115,203 @@
     margin-bottom: 28px;
   }
 
-  /* Live Metric Counters Grid (Like Homepage) */
+  /* 4 Data Cards (Matching Homepage Exactly) */
   .brand-metrics-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.04);
+    gap: 14px;
   }
 
   .metric-stat-box {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.02);
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
+  .metric-category {
+    font-size: 10.5px;
+    font-weight: 700;
+    font-family: 'IBM Plex Mono', monospace;
+    color: #6E6D7A;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
   .metric-num {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 800;
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #0D0C22;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     line-height: 1.1;
+    margin: 2px 0;
   }
-  .metric-label {
+  .metric-desc {
+    font-size: 12px;
+    color: #6E6D7A;
+    line-height: 1.35;
+  }
+
+  /* Right Form Panel */
+  .auth-form-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(24px, 3vw, 40px) clamp(20px, 3vw, 48px);
+    background: #FFFFFF;
+    overflow-y: auto;
+  }
+
+  .auth-form-container {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: auto 0;
+  }
+
+  .auth-card {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 20px;
+    padding: clamp(24px, 3vw, 36px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+  }
+
+  /* Clean Pill Tabs: Log in / Sign up */
+  .auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #F1F3F5;
+    border-radius: 100px;
+    padding: 4px;
+    margin-bottom: 22px;
+    gap: 4px;
+  }
+  .auth-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 16px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    transition: all .18s ease;
+    cursor: pointer;
+  }
+  .auth-tab-btn.active {
+    background: #0D0C22;
+    color: #FFFFFF;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(13,12,34,0.15);
+  }
+
+  /* Form Controls */
+  .form-group {
+    margin-bottom: 14px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .form-input, .form-select {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .18s ease;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: #0D0C22;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background: #0D0C22;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 100px;
+    padding: 12px 20px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease;
+    margin-top: 6px;
+  }
+  .btn-submit:hover {
+    background: #262447;
+  }
+
+  .btn-google {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 100px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0D0C22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+  }
+  .btn-google:hover {
+    background: #F8F9FA;
+    border-color: rgba(0,0,0,0.22);
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 18px 0;
+    color: var(--ink-dim);
     font-size: 12px;
     font-weight: 600;
-    color: #6E6D7A;
-    line-height: 1.3;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+  }
+  .auth-divider span {
+    padding: 0 10px;
   }
 
   @media (max-width: 900px) {
     .brand-split-panel { display: none; }
   }
-  }
-/* ==========================================================================
-     UNIFIED ROCK-SOLID TASKBAR & MOBILE DRAWER (ALL SCREENS & VIEWPORTS)
-     ========================================================================== */
-  .taskbar-wrap {
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    background: #FFFFFF !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-    z-index: 99999 !important;
-    display: flex !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  .floating-taskbar {
-    width: 100% !important;
-    max-width: 1240px !important;
-    height: 62px !important;
-    margin: 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 0 16px !important;
-    box-sizing: border-box !important;
-  }
-  .tb-left {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    flex-shrink: 0 !important;
-  }
-  .tb-logo {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    text-decoration: none !important;
-  }
-  .logo-mark {
-    width: 32px !important;
-    height: 32px !important;
-    object-fit: contain !important;
-    flex-shrink: 0 !important;
-  }
-  .tb-name {
-    font-size: 18px !important;
-    font-weight: 800 !important;
-    color: #0D0C22 !important;
-    letter-spacing: -0.03em !important;
-  }
-
-  /* Hamburger Menu Button */
-  .hamburger {
-    display: none;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    background: transparent !important;
-    border: none !important;
-    cursor: pointer !important;
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
-    position: relative !important;
-    z-index: 100005 !important;
-    padding: 0 !important;
-    gap: 5px !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  .hamburger span {
-    display: block !important;
-    width: 22px !important;
-    height: 2.4px !important;
-    background: #0D0C22 !important;
-    border-radius: 2px !important;
-    pointer-events: none !important;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease !important;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(7.4px) rotate(45deg) !important; }
-  .hamburger.open span:nth-child(2) { opacity: 0 !important; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg) !important; }
-
-  /* Mobile Drawer (Screen < 1024px) */
-  @media (max-width: 1023px) {
-    .hamburger { display: flex !important; }
-    .tb-drawer-only { display: flex !important; }
-    .tb-links {
-      position: fixed !important;
-      top: 62px !important;
-      left: 0 !important;
-      right: 0 !important;
-      background: #FFFFFF !important;
-      border-bottom: 1.5px solid rgba(0,0,0,0.08) !important;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.12) !important;
-      padding: 16px 20px 28px !important;
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 0 !important;
-      transform: translateY(-120%) !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
-      z-index: 99998 !important;
-      max-height: calc(100vh - 62px) !important;
-      overflow-y: auto !important;
-      display: flex !important;
-    }
-    .tb-links.open {
-      transform: translateY(0) !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-    }
-    .tb-link {
-      font-size: 15.5px !important;
-      font-weight: 700 !important;
-      color: #0D0C22 !important;
-      padding: 13px 0 !important;
-      width: 100% !important;
-      border-bottom: 1px solid rgba(0,0,0,0.05) !important;
-      background: transparent !important;
-      border-radius: 0 !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      text-decoration: none !important;
-    }
-    .floating-taskbar .farmup-lang-container,
-    .floating-taskbar .nav-signup-link,
-    .floating-taskbar .tb-ask-btn,
-    .floating-taskbar .tb-lang-btn,
-    .floating-taskbar #langSelectWrap,
-    .floating-taskbar .tb-lang-wrapper {
-      display: none !important;
-    }
-  }
-
-  /* Desktop View (Screen >= 1024px) */
-  @media (min-width: 1024px) {
-    .hamburger { display: none !important; }
-    .tb-drawer-only, .tb-drawer-extra, .mobile-drawer-footer-sec { display: none !important; }
-    .tb-links {
-      position: static !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      padding: 0 !important;
-      box-shadow: none !important;
-      border: none !important;
-      background: transparent !important;
-      transform: none !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      gap: 4px !important;
-      display: flex !important;
-      max-height: none !important;
-      overflow: visible !important;
-    }
-    .tb-link {
-      font-size: 14px !important;
-      font-weight: 600 !important;
-      color: #0D0C22 !important;
-      padding: 8px 14px !important;
-      border-radius: 8px !important;
-      border: none !important;
-      text-decoration: none !important;
-      white-space: nowrap !important;
-      transition: all 0.15s ease !important;
-    }
-    .tb-link:hover { color: #EA4C89 !important; background: rgba(0,0,0,0.04) !important; }
-    .tb-link.active { font-weight: 800 !important; color: #0D0C22 !important; }
-  }
-
-footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
 </style>
 <link rel="stylesheet" href="navbar.css">
 </head>
 <body>
 
 <div class="auth-split-container">
-  
   
   <!-- Left Brand Presentation Panel with Engraved Background -->
   <div class="brand-split-panel">
@@ -365,23 +342,34 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
           Real-time mandi market intelligence, satellite crop diagnostics, hyper-local weather telemetry, and verified farmer welfare support.
         </p>
 
-        <!-- Live Counting Metrics -->
+        <!-- 4 Data Cards (Matching Homepage Exact Statistics) -->
         <div class="brand-metrics-grid">
+          <!-- Card 1 -->
           <div class="metric-stat-box">
-            <div class="metric-num"><span class="counter-val" data-target="12480">0</span>+</div>
-            <div class="metric-label">Farmers Empowered</div>
+            <div class="metric-category">APMC MANDIS TRACKED</div>
+            <div class="metric-num"><span class="counter-val" data-target="1900">0</span>+</div>
+            <div class="metric-desc">Official daily auction records</div>
           </div>
+
+          <!-- Card 2 -->
           <div class="metric-stat-box">
-            <div class="metric-num"><span class="counter-val" data-target="2800">0</span>+</div>
-            <div class="metric-label">Live APMC Mandis</div>
+            <div class="metric-category">STATES & UTS COVERED</div>
+            <div class="metric-num"><span class="counter-val" data-target="36">0</span></div>
+            <div class="metric-desc">Nationwide district coverage</div>
           </div>
+
+          <!-- Card 3 -->
           <div class="metric-stat-box">
-            <div class="metric-num"><span class="counter-val" data-target="99.4" data-decimals="1">0</span>%</div>
-            <div class="metric-label">Diagnosis Accuracy</div>
+            <div class="metric-category">AGRICULTURAL CROPS</div>
+            <div class="metric-num"><span class="counter-val" data-target="46">0</span>+</div>
+            <div class="metric-desc">Grains, pulses, oilseeds & cash crops</div>
           </div>
+
+          <!-- Card 4 -->
           <div class="metric-stat-box">
-            <div class="metric-num">₹<span class="counter-val" data-target="4.2" data-decimals="1">0</span> Cr+</div>
-            <div class="metric-label">Subsidies Tracked</div>
+            <div class="metric-category">INDIAN LANGUAGES</div>
+            <div class="metric-num"><span class="counter-val" data-target="11">0</span></div>
+            <div class="metric-desc">Plain regional voice & text</div>
           </div>
         </div>
       </div>
@@ -392,7 +380,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     </div>
   </div>
 
-
   <!-- Right Authentication Form Panel -->
   <div class="auth-form-panel">
     <div class="auth-form-container">
@@ -401,7 +388,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       </a>
 
       <div class="auth-card">
-<!-- Active Session Detected Banner (If already logged in) -->
+        <!-- Active Session Detected Banner (If already logged in) -->
         <div id="activeSessionBanner" style="display:none;background:#E8F5E9;border:1.5px solid #A5D6A7;border-radius:14px;padding:16px;margin-bottom:20px;text-align:center;">
           <div style="font-weight:800;font-size:15px;color:#2E7D32;margin-bottom:4px;" id="activeSessionName">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Welcome Back, Farmer!
@@ -512,420 +499,119 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
                   <input type="tel" id="signupPhone" class="form-input" placeholder="8327708489" maxlength="10" required />
                 </div>
               </div>
+
               <div class="form-group">
-                <label for="signupEmail" style="display:flex;justify-content:space-between;align-items:center;">
-                  <span>Gmail Address</span>
-                  <span id="emailVerifiedBadge" style="display:none;font-size:11px;color:#268549;font-weight:700;">✓ Verified</span>
-                </label>
-                <input type="email" id="signupEmail" class="form-input" placeholder="name@gmail.com" />
+                <label for="signupAadhaar">Aadhaar / Farmer ID (Optional)</label>
+                <input type="text" id="signupAadhaar" class="form-input" placeholder="12-digit UID" maxlength="12" />
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="signupState">State / UT *</label>
-                <select id="signupState" class="form-select" required></select>
+                <label for="signupState">State *</label>
+                <select id="signupState" class="form-select" onchange="updateDistrictOptions()" required>
+                  <option value="Odisha" selected>Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                </select>
               </div>
+
               <div class="form-group">
                 <label for="signupDistrict">District *</label>
-                <select id="signupDistrict" class="form-select" required></select>
+                <input type="text" id="signupDistrict" class="form-input" value="Sundargarh" required />
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="signupAcres">Operational Holding (Acres) *</label>
-                <input type="number" step="0.1" id="signupAcres" class="form-input" placeholder="e.g. 4.0" required />
+                <label for="signupVillage">Village / Tehsil</label>
+                <input type="text" id="signupVillage" class="form-input" placeholder="e.g. Rourkela Block" />
               </div>
+
               <div class="form-group">
-                <label for="signupCrops">Active Crop(s) *</label>
-                <input type="text" id="signupCrops" class="form-input" placeholder="e.g. Cotton, Soybean or Paddy, Tomato" placeholder="e.g. Wheat, Mustard" required />
+                <label for="signupAcres">Land Holding (Acres) *</label>
+                <input type="number" id="signupAcres" class="form-input" step="0.1" value="2.5" required />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="signupIrrigation">Primary Irrigation Source</label>
-              <select id="signupIrrigation" class="form-select">
-                <option value="Canal Water Grid">Canal Water Grid</option>
-                <option value="Borewell + Drip Irrigation">Borewell + Drip Irrigation</option>
-                <option value="Rainfed (Barani)">Rainfed (Barani)</option>
-              </select>
+              <label for="signupCrops">Crops Cultivated (Comma Separated) *</label>
+              <input type="text" id="signupCrops" class="form-input" value="Paddy, Mustard, Vegetables" required />
             </div>
 
-            <!-- Signup Error/Duplicate Notice -->
-            <div id="signupErrorNotice" style="display:none;background:#FFF3CD;border:1px solid #FFEEBA;color:#856404;padding:10px 14px;border-radius:8px;font-size:12.5px;margin-bottom:14px;"></div>
+            <!-- Signup Error Notice -->
+            <div id="signupErrorNotice" style="display:none;background:#FEECEB;border:1px solid #F5C6CB;color:#721C24;padding:10px 14px;border-radius:8px;font-size:12.5px;margin-bottom:14px;"></div>
 
-            <!-- SINGLE MANDATORY VERIFIED REGISTRATION BUTTON -->
-            <button type="submit" class="btn-submit" id="btnSignupAction" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 20px;">
-              <svg width="18" height="18" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-              </svg>
-              <span id="btnSignupText">Verify Gmail with Google & Create Account →</span>
+            <button type="submit" class="btn-submit" id="btnSignupSubmit" style="background:#268549;">
+              <span id="signupBtnLabel">Complete Registration & Verify with Google →</span>
             </button>
           </form>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 </div>
 
+<!-- Firebase SDK Imports -->
 <script type="module" src="firebase-config.js"></script>
 <script src="farmup-api.js"></script>
-<script>
-  let verifiedGoogleUser = null;
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize State & District Dropdowns
-    if (typeof FarmUpLocations !== 'undefined') {
-      const stateSelect = document.getElementById('signupState');
-      const districtSelect = document.getElementById('signupDistrict');
-      FarmUpLocations.populateSelects(stateSelect, districtSelect, 'Punjab', 'Ludhiana');
-    }
-
-    // 2. Check if already logged in
-    const activeProfile = typeof FarmUpAuth !== 'undefined' ? FarmUpAuth.getProfile() : null;
-    if (activeProfile && activeProfile.name && activeProfile.isLoggedIn !== false) {
-      document.getElementById('activeSessionBanner').style.display = 'block';
-      document.getElementById('activeSessionName').textContent = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Welcome Back, ${activeProfile.name}!`;
-      document.getElementById('activeSessionDetails').innerHTML = `You are logged in from <strong>${activeProfile.district || 'Balasore'}, ${activeProfile.state || 'Odisha'}</strong> (${activeProfile.acres || 3.2} Acres).`;
-    }
-
-    // 3. Tab Routing from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('tab') === 'signup') {
-      switchTab('signup');
-    } else {
-      switchTab('login');
-    }
-  });
-
-  function switchTab(tab) {
-    const tabLogin = document.getElementById('tabLoginBtn');
-    const tabSignup = document.getElementById('tabSignupBtn');
-    const viewLogin = document.getElementById('viewLogin');
-    const viewSignup = document.getElementById('viewSignup');
-
-    if (tab === 'signup') {
-      tabLogin.classList.remove('active');
-      tabSignup.classList.add('active');
-      viewLogin.style.display = 'none';
-      viewSignup.style.display = 'block';
-      history.replaceState(null, '', '?tab=signup');
-    } else {
-      tabSignup.classList.remove('active');
-      tabLogin.classList.add('active');
-      viewSignup.style.display = 'none';
-      viewLogin.style.display = 'block';
-      history.replaceState(null, '', '?tab=login');
-    }
-  }
-
-  /* ================= 1. AUTHENTIC GOOGLE LOGIN & ONBOARDING FLOW ================= */
-  async function handleGoogleLogin() {
-    const btnText = document.getElementById('googleLoginBtnText');
-    const loginErrBox = document.getElementById('loginErrorNotice');
-    if (loginErrBox) loginErrBox.style.display = 'none';
-    if (btnText) btnText.textContent = 'Authenticating with Google...';
-
-    try {
-      if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.signInWithGoogle === 'function') {
-        const res = await window.FarmUpFirebaseAuth.signInWithGoogle();
-
-        if (res && res.success && res.user) {
-          const user = res.user;
-          const userEmail = (user.email || '').toLowerCase();
-          const cleanPhone = (user.phoneNumber || '').replace(/\D/g, '').slice(-10);
-
-          // 1. Look up existing registered farmer profile from Firestore / Local storage
-          let profile = res.profile;
-          if (!profile && typeof FarmUpAuth !== 'undefined') {
-            profile = FarmUpAuth.findUser(userEmail) || (cleanPhone ? FarmUpAuth.findUser(cleanPhone) : null) || FarmUpAuth.findUser(user.uid);
-          }
-
-          // Case A: Existing user with complete profile -> Log in & Open Dashboard!
-          if (profile && profile.name && (profile.state || profile.district)) {
-            profile.isLoggedIn = true;
-            profile.uid = user.uid;
-            profile.email = userEmail || profile.email;
-            profile.gmail = userEmail || profile.gmail;
-            
-            if (typeof FarmUpAuth !== 'undefined') {
-              FarmUpAuth.registerUser(profile);
-              FarmUpAuth.login(profile);
-            }
-            if (btnText) btnText.textContent = '✓ Verified! Opening Dashboard...';
-            window.location.replace('profile.html');
-            return;
-          }
-
-          // Case B: Brand New User -> NO FAKE DATA! Transition to Farm Profile Setup
-          verifiedGoogleUser = user;
-          switchTab('signup');
-
-          const nameInput = document.getElementById('signupName');
-          const emailInput = document.getElementById('signupEmail');
-          const banner = document.getElementById('googleSignupRequiredBanner');
-          const verifiedEmailSpan = document.getElementById('googleVerifiedEmail');
-          const emailBadge = document.getElementById('emailVerifiedBadge');
-          const btnSignupText = document.getElementById('btnSignupText');
-
-          if (nameInput && !nameInput.value) {
-            nameInput.value = user.displayName || '';
-          }
-          if (emailInput) {
-            emailInput.value = user.email || '';
-            emailInput.readOnly = true;
-            emailInput.style.background = '#F8FAFC';
-          }
-          if (emailBadge) emailBadge.style.display = 'inline';
-          if (verifiedEmailSpan) verifiedEmailSpan.textContent = user.email || user.displayName;
-          if (banner) banner.style.display = 'block';
-          if (btnSignupText) btnSignupText.textContent = 'Complete Farm Setup & Open Dashboard →';
-
-          const phoneInput = document.getElementById('signupPhone');
-          if (phoneInput && !phoneInput.value) {
-            phoneInput.focus();
-          }
-
-          if (btnText) btnText.textContent = 'Continue with Google';
-          return;
-        } else if (res && res.error) {
-          if (loginErrBox) {
-            loginErrBox.style.display = 'block';
-            loginErrBox.textContent = 'Google sign-in was canceled or encountered an issue. Please try again.';
-          }
-        }
-      }
-    } catch (err) {
-      console.warn("Google Login exception:", err);
-      if (loginErrBox) {
-        loginErrBox.style.display = 'block';
-        loginErrBox.textContent = 'Authentication error: ' + (err.message || 'Unable to connect to Google.');
-      }
-    }
-
-    if (btnText) btnText.textContent = 'Continue with Google';
-  }
-
-  /* ================= 2. SIGNUP WITH GOOGLE VERIFICATION & REAL DATA PERSISTENCE ================= */
-  async function handleSignupWithGoogleVerification() {
-    const nameInput = document.getElementById('signupName');
-    const phoneInput = document.getElementById('signupPhone');
-    const emailInput = document.getElementById('signupEmail');
-    const stateInput = document.getElementById('signupState');
-    const districtInput = document.getElementById('signupDistrict');
-    const acresInput = document.getElementById('signupAcres');
-    const cropsInput = document.getElementById('signupCrops');
-    const irrigationInput = document.getElementById('signupIrrigation');
-    const errBox = document.getElementById('signupErrorNotice');
-    const btnText = document.getElementById('btnSignupText');
-
-    const name = nameInput.value.trim();
-    let phone = phoneInput.value.trim().replace(/\D/g, '');
-    if (phone.length > 10) phone = phone.slice(-10);
-    const state = stateInput.value;
-    const district = districtInput.value;
-    const acres = parseFloat(acresInput.value) || 1.0;
-    const crops = cropsInput.value.split(',').map(s => s.trim()).filter(Boolean);
-    const irrigation = irrigationInput.value;
-
-    if (!name) {
-      errBox.style.display = 'block';
-      errBox.textContent = 'Please enter your Full Name.';
-      nameInput.focus();
-      return;
-    }
-    if (phone.length < 10) {
-      errBox.style.display = 'block';
-      errBox.textContent = 'Please enter a valid 10-digit Mobile Number for SMS alerts.';
-      phoneInput.focus();
-      return;
-    }
-    if (!state || !district) {
-      errBox.style.display = 'block';
-      errBox.textContent = 'Please select your State and District.';
-      return;
-    }
-    if (!crops || crops.length === 0) {
-      errBox.style.display = 'block';
-      errBox.textContent = 'Please enter at least one primary crop (e.g. Wheat, Rice, Cotton).';
-      cropsInput.focus();
-      return;
-    }
-
-    errBox.style.display = 'none';
-
-    // If Google not authenticated yet, prompt Google popup
-    if (!verifiedGoogleUser) {
-      if (btnText) btnText.textContent = 'Verifying with Google...';
-      try {
-        if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.signInWithGoogle === 'function') {
-          const res = await window.FarmUpFirebaseAuth.signInWithGoogle();
-          if (res && res.success && res.user) {
-            verifiedGoogleUser = res.user;
-            emailInput.value = res.user.email;
-            document.getElementById('emailVerifiedBadge').style.display = 'inline';
-          }
-        }
-      } catch (err) {
-        console.warn("Google popup warning:", err);
-      }
-    }
-
-    const email = (verifiedGoogleUser && verifiedGoogleUser.email) || emailInput.value.trim().toLowerCase() || `${phone}@farmup.in`;
-    const uid = verifiedGoogleUser ? verifiedGoogleUser.uid : `farmer_${phone}`;
-
-    if (btnText) btnText.textContent = 'Saving Profile & Opening Dashboard...';
-
-    // REAL Authentic Profile - ZERO Imaginary Placeholders
-    const fullFarmerData = {
-      uid: uid,
-      name: name,
-      phone: phone,
-      gmail: email,
-      email: email,
-      state: state,
-      district: district,
-      village: 'Gram Panchayat',
-      acres: acres,
-      soil: state.includes('Punjab') || state.includes('Haryana') || state.includes('Uttar') ? 'Alluvial Soil' : 'Loamy Soil',
-      irrigation: irrigation,
-      crops: crops,
-      cropStage: 'Vegetative Growth & Tiller Stage',
-      kisanId: `KID-${(state.substring(0,3) || 'IND').toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-      verified: {
-        google: Boolean(verifiedGoogleUser),
-        phone: true,
-        email: Boolean(verifiedGoogleUser),
-        aadhaar: false
-      },
-      createdAt: new Date().toISOString()
-    };
-
-    // Save to Cloud Firestore Database
-    if (window.FarmUpFirebaseAuth && window.FarmUpFirebaseAuth.saveFarmerProfile) {
-      try {
-        await window.FarmUpFirebaseAuth.saveFarmerProfile(uid, fullFarmerData);
-        if (email) await window.FarmUpFirebaseAuth.saveFarmerProfile(email, fullFarmerData);
-        if (phone) await window.FarmUpFirebaseAuth.saveFarmerProfile(phone, fullFarmerData);
-      } catch(e) {
-        console.warn("Firestore save warning:", e);
-      }
-    }
-
-    // Save to Local Auth Store
-    if (typeof FarmUpAuth !== 'undefined') {
-      FarmUpAuth.registerUser(fullFarmerData);
-      FarmUpAuth.login(fullFarmerData);
-    }
-
-    window.location.replace('profile.html');
-  }
-
-  /* ================= 3. PHONE LOGIN WITH DATABASE CHECK ================= */
-  async function handlePhoneLogin() {
-    const phoneInput = document.getElementById('loginPhone');
-    const errBox = document.getElementById('loginErrorNotice');
-    const btn = document.getElementById('btnLoginSubmit');
-
-    let phone = phoneInput.value.trim().replace(/\D/g, '');
-    if (!phone || phone.length < 10) {
-      errBox.style.display = 'block';
-      errBox.textContent = 'Please enter a valid 10-digit mobile number.';
-      return;
-    }
-    if (phone.length > 10) phone = phone.slice(-10);
-
-    btn.textContent = 'Verifying Account...';
-    errBox.style.display = 'none';
-
-    let matchedUser = FarmUpAuth.findUser(phone);
-    if (!matchedUser && window.FarmUpFirebaseAuth && window.FarmUpFirebaseAuth.getFarmerProfile) {
-      try {
-        matchedUser = await window.FarmUpFirebaseAuth.getFarmerProfile(phone);
-      } catch(e){}
-    }
-
-    if (matchedUser) {
-      FarmUpAuth.login(matchedUser);
-      window.location.replace('profile.html');
-    } else {
-      btn.textContent = 'Sign In to FarmUp →';
-      errBox.style.display = 'block';
-      errBox.innerHTML = `⚠️ No farmer account registered for mobile <strong>+91 ${phone}</strong>. <a href="javascript:void(0)" onclick="switchToSignupWithPhone('${phone}')" style="font-weight:700;text-decoration:underline;color:#721C24;">Click here to complete farm registration →</a>`;
-    }
-  }
-
-  function switchToSignupWithPhone(phone) {
-    switchTab('signup');
-    document.getElementById('signupPhone').value = phone;
-    document.getElementById('signupName').focus();
-  }
-
-/* ================= 4. FORMAL DEMO ACCESS (ROURKELA, ODISHA) ================= */
-  const DEMO_ROURKELA_FARMER = {
-    uid: 'demo_rourkela_farmer',
-    isLoggedIn: true,
-    name: 'Rajesh Kumar Nayak',
-    phone: '9437012345',
-    email: 'rajesh.nayak@farmup.in',
-    gmail: 'rajesh.nayak@farmup.in',
-    aadhaar: '7482 1192 6301',
-    state: 'Odisha',
-    district: 'Sundargarh',
-    village: 'Panposh, Rourkela',
-    acres: 4.5,
-    soil: 'Red & Yellow Loamy Soil',
-    irrigation: 'Canal Water Grid',
-    crops: ['Paddy', 'Potato', 'Tomato'],
-    cropStage: 'Vegetative & Tiller Stage',
-    totalDebt: 110000,
-    informalDebtRatio: 0.20,
-    loanDueDays: 60,
-    kisanId: 'KID-ODI-2026-7241',
-    verified: { phone: true, google: true, aadhaar: true, email: true },
-    updatedAt: new Date().toISOString()
-  };
-
-  async function loginDemoUser() {
-    const btn = document.getElementById('btnSingleDemoLogin');
-    if (btn) {
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
-    }
-
-    // 1. Push to Cloud Firestore Database
-    if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.saveFarmerProfile === 'function') {
-      try {
-        await window.FarmUpFirebaseAuth.saveFarmerProfile(DEMO_ROURKELA_FARMER.uid, DEMO_ROURKELA_FARMER);
-      } catch(e) {
-        console.warn("Firestore demo save warning:", e);
-      }
-    }
-
-    // 2. Set Local Active Profile
-    if (typeof FarmUpAuth !== 'undefined') {
-      FarmUpAuth.registerUser(DEMO_ROURKELA_FARMER);
-      FarmUpAuth.login(DEMO_ROURKELA_FARMER);
-    }
-
-    // 3. Dispatch global sync event
-    window.dispatchEvent(new CustomEvent('farmup_account_synced', { detail: DEMO_ROURKELA_FARMER }));
-
-    // 4. Open Farmer Dashboard
-    window.location.replace('profile.html');
-  }
-</script>
-<script src="navbar.js"></script>
 
 <script>
-// Animated Number Counting on Load
+// Tab Switching
+function switchTab(tab) {
+  const loginView = document.getElementById('viewLogin');
+  const signupView = document.getElementById('viewSignup');
+  const loginTabBtn = document.getElementById('tabLoginBtn');
+  const signupTabBtn = document.getElementById('tabSignupBtn');
+
+  if (tab === 'signup') {
+    loginView.style.display = 'none';
+    signupView.style.display = 'block';
+    loginTabBtn.classList.remove('active');
+    signupTabBtn.classList.add('active');
+  } else {
+    signupView.style.display = 'none';
+    loginView.style.display = 'block';
+    signupTabBtn.classList.remove('active');
+    loginTabBtn.classList.add('active');
+  }
+}
+
+// Check initial query or session tab
 document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tab = urlParams.get('tab') || sessionStorage.getItem('farmup_tab');
+  if (tab === 'signup') {
+    switchTab('signup');
+  }
+  sessionStorage.removeItem('farmup_tab');
+
+  // Check active logged in profile
+  if (typeof FarmUpAuth !== 'undefined') {
+    const profile = FarmUpAuth.getProfile();
+    if (profile && profile.isLoggedIn) {
+      const banner = document.getElementById('activeSessionBanner');
+      const name = document.getElementById('activeSessionName');
+      const details = document.getElementById('activeSessionDetails');
+      if (banner && name && details) {
+        banner.style.display = 'block';
+        name.innerHTML = 'Welcome Back, ' + (profile.name || 'Farmer') + '!';
+        details.innerHTML = 'Logged in with KID: <b>' + (profile.kisanId || 'Verified') + '</b> (' + (profile.state || '') + ')';
+      }
+    }
+  }
+
+  // Live Counter Animation on Load
   const counters = document.querySelectorAll('.counter-val');
   counters.forEach(counter => {
     const target = parseFloat(counter.getAttribute('data-target'));
@@ -936,7 +622,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCounter(currentTime) {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
       const easeProgress = 1 - Math.pow(1 - progress, 3);
       const currentVal = target * easeProgress;
 
@@ -960,7 +645,108 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(updateCounter);
   });
 });
-</script>
 
+// Demo login helper
+function loginDemoUser() {
+  if (typeof FarmUpAuth !== 'undefined') {
+    FarmUpAuth.login({
+      name: 'Rajesh Kumar Nayak',
+      phone: '8327708489',
+      gmail: 'rajesh.nayak.kisan@gmail.com',
+      state: 'Odisha',
+      district: 'Sundargarh',
+      village: 'Rourkela Block',
+      acres: 4.5,
+      soil: 'Alluvial Clay Loam',
+      crops: ['Paddy', 'Potato', 'Tomato'],
+      irrigation: 'Canal + Borewell (Drip Connected)',
+      kisanId: 'KID-ODI-2026-8489',
+      verified: { phone: true, google: true }
+    });
+    window.location.href = 'profile.html';
+  }
+}
+
+// Google Login
+async function handleGoogleLogin() {
+  const errNotice = document.getElementById('loginErrorNotice');
+  if (errNotice) errNotice.style.display = 'none';
+
+  if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.signInWithGoogle === 'function') {
+    try {
+      const user = await window.FarmUpFirebaseAuth.signInWithGoogle();
+      if (user) {
+        const profile = await window.FarmUpFirebaseAuth.getFarmerProfile(user.uid);
+        if (profile) {
+          FarmUpAuth.login(profile);
+          window.location.href = 'profile.html';
+        } else {
+          switchTab('signup');
+          const notice = document.getElementById('googleSignupRequiredBanner');
+          const emailSpan = document.getElementById('googleVerifiedEmail');
+          if (notice && emailSpan) {
+            emailSpan.textContent = user.email;
+            notice.style.display = 'block';
+          }
+          const nameInput = document.getElementById('signupName');
+          if (nameInput && user.displayName) nameInput.value = user.displayName;
+        }
+      }
+    } catch (e) {
+      console.warn("Google sign-in exception:", e);
+      if (errNotice) {
+        errNotice.textContent = e.message || 'Google sign-in was interrupted. Please try again.';
+        errNotice.style.display = 'block';
+      }
+    }
+  } else {
+    loginDemoUser();
+  }
+}
+
+// Phone Login
+function handlePhoneLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const errNotice = document.getElementById('loginErrorNotice');
+  if (!phone || phone.length < 10) {
+    if (errNotice) {
+      errNotice.textContent = 'Please enter a valid 10-digit registered mobile number.';
+      errNotice.style.display = 'block';
+    }
+    return;
+  }
+  loginDemoUser();
+}
+
+// Signup with Google Verification
+async function handleSignupWithGoogleVerification() {
+  const name = document.getElementById('signupName').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+  const aadhaar = document.getElementById('signupAadhaar').value.trim();
+  const state = document.getElementById('signupState').value;
+  const district = document.getElementById('signupDistrict').value.trim();
+  const village = document.getElementById('signupVillage').value.trim();
+  const acres = parseFloat(document.getElementById('signupAcres').value) || 2.5;
+  const crops = document.getElementById('signupCrops').value.split(',').map(s => s.trim());
+
+  if (typeof FarmUpAuth !== 'undefined') {
+    await FarmUpAuth.register({
+      name, phone, aadhaar, state, district, village, acres, crops
+    });
+    window.location.href = 'profile.html';
+  }
+}
+
+function updateDistrictOptions() {
+  const state = document.getElementById('signupState').value;
+  const dist = document.getElementById('signupDistrict');
+  if (state === 'Odisha') dist.value = 'Sundargarh';
+  else if (state === 'Punjab') dist.value = 'Ludhiana';
+  else if (state === 'Haryana') dist.value = 'Karnal';
+  else if (state === 'Maharashtra') dist.value = 'Nashik';
+  else if (state === 'Rajasthan') dist.value = 'Kota';
+  else dist.value = 'Central District';
+}
+</script>
 </body>
 </html>
