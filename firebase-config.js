@@ -379,42 +379,55 @@ window.firebaseAuth = auth;
 window.firebaseDb = db;
 window.FarmUpFirebaseAuth = FarmUpFirebaseAuth;
 
-// Automatic Real-Time Auth & Multi-Account Synchronization
+// Rock-Solid Real-Time Auth & Permanent Session Persistence
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    let firestoreProfile = null;
-    try {
-      firestoreProfile = await FarmUpFirebaseAuth.getFarmerProfile(user.uid);
-      if (!firestoreProfile && user.email) {
-        firestoreProfile = await FarmUpFirebaseAuth.getFarmerProfile(user.email);
+  try {
+    if (user) {
+      let firestoreProfile = null;
+      try {
+        firestoreProfile = await FarmUpFirebaseAuth.getFarmerProfile(user.uid);
+        if (!firestoreProfile && user.email) {
+          firestoreProfile = await FarmUpFirebaseAuth.getFarmerProfile(user.email);
+        }
+      } catch (e) {
+        console.warn("Firestore onAuthChange fetch warning:", e);
       }
-    } catch (e) {
-      console.warn("Firestore onAuthChange fetch warning:", e);
-    }
 
-    if (firestoreProfile) {
-      firestoreProfile.uid = user.uid;
-      firestoreProfile.gmail = user.email || firestoreProfile.gmail || firestoreProfile.email;
-      firestoreProfile.email = user.email || firestoreProfile.email || firestoreProfile.gmail;
-      firestoreProfile.isLoggedIn = true;
-      if (typeof FarmUpAuth !== 'undefined') {
-        FarmUpAuth.login(firestoreProfile);
+      if (firestoreProfile) {
+        firestoreProfile.uid = user.uid;
+        firestoreProfile.gmail = user.email || firestoreProfile.gmail || firestoreProfile.email || '';
+        firestoreProfile.email = user.email || firestoreProfile.email || firestoreProfile.gmail || '';
+        firestoreProfile.isLoggedIn = true;
+        if (typeof FarmUpAuth !== 'undefined') {
+          FarmUpAuth.login(firestoreProfile);
+        }
+      } else {
+        // If logged in with Google but no Firestore document exists yet, preserve or initialize local profile
+        const localP = typeof FarmUpAuth !== 'undefined' ? FarmUpAuth.getProfile() : null;
+        if (localP) {
+          localP.uid = user.uid;
+          localP.email = user.email || localP.email || '';
+          localP.gmail = user.email || localP.gmail || '';
+          localP.isLoggedIn = true;
+          localStorage.setItem('farmup_profile', JSON.stringify(localP));
+          if (typeof FarmUpAuth !== 'undefined') FarmUpAuth.syncUI();
+        }
       }
+
+      window.dispatchEvent(new CustomEvent('farmup_account_synced', { 
+        detail: firestoreProfile || { uid: user.uid, email: user.email, name: user.displayName || '' } 
+      }));
     } else {
-      // Check if localStorage has mismatched email from another account
+      // When Firebase Auth is null (e.g. Phone login, Demo account, or offline),
+      // DO NOT clear localStorage! Check if a valid local farmer profile exists.
       const localP = typeof FarmUpAuth !== 'undefined' ? FarmUpAuth.getProfile() : null;
-      if (localP && localP.email && user.email && localP.email.toLowerCase() !== user.email.toLowerCase()) {
-        localStorage.removeItem('farmup_profile');
+      if (localP && localP.isLoggedIn) {
         if (typeof FarmUpAuth !== 'undefined') FarmUpAuth.syncUI();
+        window.dispatchEvent(new CustomEvent('farmup_account_synced', { detail: localP }));
       }
     }
-
-    // Broadcast account sync to all open page scripts
-    window.dispatchEvent(new CustomEvent('farmup_account_synced', { 
-      detail: firestoreProfile || { uid: user.uid, email: user.email, name: user.displayName || '' } 
-    }));
-  } else {
-    window.dispatchEvent(new CustomEvent('farmup_account_synced', { detail: null }));
+  } catch (err) {
+    console.warn("Auth persistence handler exception (safely caught):", err);
   }
 });
 

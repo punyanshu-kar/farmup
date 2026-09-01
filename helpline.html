@@ -480,6 +480,129 @@
     flex-wrap: wrap;
     gap: 10px;
   }
+  
+  /* ==========================================================================
+     RESPONSIVE SMARTPHONE STYLES (BELOW 768px & BELOW 480px)
+     ========================================================================== */
+  @media (max-width: 768px) {
+    .wrap {
+      padding: 0 12px;
+    }
+    .page-hero {
+      padding: 24px 0 16px;
+    }
+    .page-hero h1 {
+      font-size: 23px;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .page-sub {
+      font-size: 13.5px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+    .emergency-strip {
+      grid-template-columns: 1fr !important;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .em-card {
+      padding: 12px 14px;
+      border-radius: 14px;
+      width: 100%;
+      min-width: 0;
+    }
+    .em-info h4 {
+      font-size: 13.5px;
+    }
+    .em-number {
+      font-size: 13.5px;
+    }
+    .btn-call {
+      padding: 8px 14px;
+      font-size: 12px;
+    }
+    
+    /* Filter Panel */
+    .filter-panel {
+      padding: 14px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      width: 100%;
+      min-width: 0;
+    }
+    .filter-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .search-wrap {
+      width: 100%;
+      min-width: 0;
+    }
+    .state-select {
+      width: 100%;
+      font-size: 13px;
+    }
+    .filter-pills {
+      padding-top: 10px;
+      margin-top: 10px;
+      gap: 6px;
+      padding-bottom: 4px;
+    }
+    .f-pill {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Helpline Cards Grid (100% width on phone, 1 card per row) */
+    .helpline-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px;
+      margin-bottom: 32px;
+      width: 100%;
+    }
+    .h-card {
+      padding: 16px;
+      border-radius: 16px;
+      min-width: 0;
+      width: 100%;
+    }
+    .h-title {
+      font-size: 15px;
+    }
+    .h-desc {
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .h-meta-row {
+      gap: 8px;
+      font-size: 11.5px;
+      margin-bottom: 12px;
+    }
+    .h-footer {
+      padding-top: 12px;
+      gap: 8px;
+    }
+    .h-phone-num {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .h-footer {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .h-footer .btn-call {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
   </style>
 <link rel="stylesheet" href="navbar.css">
 </head>
