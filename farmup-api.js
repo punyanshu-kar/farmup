@@ -1,4 +1,4 @@
-// Universal Global Hamburger & Mobile Drawer Handler (Capture Phase Event Delegation)
+// Universal Global Hamburger, Mobile Drawer & Avatar Menu Outside-Click Dismissal (Capture Phase)
 if (typeof document !== 'undefined') {
   document.addEventListener('click', function(e) {
     const hamburgerBtn = e.target.closest('.hamburger') || (e.target.classList && e.target.classList.contains('hamburger') ? e.target : null);
@@ -25,13 +25,40 @@ if (typeof document !== 'undefined') {
       return;
     }
 
-    // Dismiss open drawer when clicking outside
+    // 1. Dismiss open mobile drawer when clicking outside
     const openDrawer = document.querySelector('.tb-links.open');
     if (openDrawer && !openDrawer.contains(e.target)) {
       openDrawer.classList.remove('open');
       document.querySelectorAll('.hamburger.open').forEach(h => h.classList.remove('open'));
     }
-  }, true); // true = Capture Phase ensures listener always runs first!
+
+    // 2. Dismiss open Profile Avatar Dropdown when clicking outside
+    const avatarPopup = document.getElementById('navAvatarDropdown');
+    const avatarBtn = (e.target && e.target.closest && e.target.closest('.user-avatar-btn')) || document.getElementById('navUserAvatarBtn');
+    if (avatarPopup && (avatarPopup.style.display === 'flex' || avatarPopup.style.display === 'block')) {
+      if (!avatarPopup.contains(e.target) && (!avatarBtn || !avatarBtn.contains(e.target))) {
+        avatarPopup.style.display = 'none';
+      }
+    }
+
+    // 3. Dismiss open Language Dropdown when clicking outside
+    const langDropdowns = document.querySelectorAll('.farmup-lang-dropdown.show');
+    langDropdowns.forEach(dd => {
+      const parentWrap = dd.closest('.farmup-lang-container');
+      if (parentWrap && !parentWrap.contains(e.target)) {
+        dd.classList.remove('show');
+      }
+    });
+  }, true); // true = Capture Phase ensures listener always runs first across any page!
+
+  // Escape key closes open menus
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const avatarPopup = document.getElementById('navAvatarDropdown');
+      if (avatarPopup) avatarPopup.style.display = 'none';
+      document.querySelectorAll('.farmup-lang-dropdown.show').forEach(dd => dd.classList.remove('show'));
+    }
+  });
 }
 
 /**
@@ -2927,14 +2954,4 @@ window.FarmUpDistressEngine = FarmUpDistressEngine;
 
 if (typeof document !== "undefined") { FarmUpAuth.syncNavbar(); }
 
-// Outside click listener for Avatar Dropdown
-if (typeof document !== 'undefined') {
-  document.addEventListener('click', (e) => {
-    /* navAvatarDropdown_dismiss */
-    const popup = document.getElementById('navAvatarDropdown');
-    const btn = document.getElementById('navUserAvatarBtn');
-    if (popup && popup.style.display === 'flex' && !popup.contains(e.target) && (!btn || !btn.contains(e.target))) {
-      popup.style.display = 'none';
-    }
-  });
-}
+
