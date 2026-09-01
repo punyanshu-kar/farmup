@@ -94,6 +94,16 @@
   align-items: center !important;
 }
 
+/* Hover bridge so mouse does not lose hover */
+.nav-dropdown::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 14px !important;
+}
+
 .nav-dropdown-trigger {
   display: inline-flex !important;
   align-items: center !important;
@@ -104,7 +114,7 @@
   text-decoration: none !important;
   padding: 8px 12px !important;
   border-radius: 8px !important;
-  cursor: pointer !important;
+  cursor: default !important; /* Non-clickable main trigger on desktop */
   background: transparent !important;
   border: none !important;
   transition: background-color 0.15s ease !important;
@@ -132,16 +142,16 @@
   transform: rotate(180deg) !important;
 }
 
-/* Wide Smooth Landscape Card (Not tall/long down) */
+/* Wide Smooth Landscape Card */
 @media (min-width: 1024px) {
   .nav-dropdown-menu {
     position: absolute !important;
-    top: calc(100% + 6px) !important;
+    top: calc(100% + 4px) !important;
     left: 0 !important;
-    width: 360px !important; /* Wide landscape card */
+    width: 360px !important;
     background: #FFFFFF !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 14px !important; /* Smooth modern curve */
+    border-radius: 14px !important;
     box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     padding: 8px !important;
     display: none !important;
@@ -170,6 +180,7 @@
   border-radius: 10px !important;
   text-decoration: none !important;
   color: #0D0C22 !important;
+  cursor: pointer !important;
   transition: background-color 0.15s ease !important;
 }
 
@@ -390,6 +401,7 @@
     font-weight: 700 !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
     border-radius: 0 !important;
+    cursor: pointer !important; /* Tap to toggle sub-sections on phone */
   }
 
   /* Submenu is COLLAPSED by default on mobile */
@@ -416,6 +428,6 @@
   }
 
   .dd-desc {
-    display: none !important; /* Keep mobile drawer ultra clean and minimal */
+    display: none !important;
   }
 }
