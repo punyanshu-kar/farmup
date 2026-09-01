@@ -1215,6 +1215,8 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
 <!-- Flat Top Navigation Taskbar -->
 
 <!-- Unified Taskbar -->
+
+<!-- Unified Taskbar Header -->
 <header class="taskbar-wrap">
   <nav class="floating-taskbar">
     <div class="tb-left">
@@ -1234,7 +1236,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       <a href="disease.html" class="tb-link ">Crop Doctor</a>
       <a href="schemes.html" class="tb-link ">Govt Schemes</a>
 
-      <!-- Sharp Rectangular Distress Dropdown -->
+      <!-- 100% Sharp Cornered Rectangular Distress Dropdown -->
       <div class="nav-dropdown">
         <a href="distress.html" class="nav-dropdown-trigger ">
           <span>Distress</span>
@@ -1243,7 +1245,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
           </svg>
         </a>
 
-        <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-menu" style="border-radius:0px !important;border:1.5px solid #0D0C22 !important;">
           <a href="distress.html" class="dd-item">
             <div class="dd-icon-box">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1269,114 +1271,10 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     </div>
 
     <div class="tb-right">
-      <button type="button" class="btn-nav-ask tb-ask-trigger" onclick="if(window.FarmUpSarvamAI&&window.FarmUpSarvamAI.openAssistant){window.FarmUpSarvamAI.openAssistant();}else{window.location.href='disease.html';}" aria-label="Ask FarmUp AI Assistant">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-        <span>Ask AI</span>
-      </button>
       <a href="login.html" class="btn-nav-auth" id="navAuthBtn">Log in</a>
     </div>
   </nav>
 </header>
-
-
-<!-- Mobile Slide-Over Backdrop -->
-<div class="nav-backdrop" id="mobileBackdrop"></div>
-
-<!-- Mobile Slide-Over Drawer -->
-<div class="mobile-drawer" id="mobileDrawer">
-  <div class="drawer-header">
-    <a href="index.html" class="tb-logo">
-      <img src="farmup-logo.png" alt="FarmUp" class="logo-mark" onerror="this.src='favicon.png'">
-      <span class="tb-name">FarmUp</span>
-    </a>
-    <button type="button" class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close Menu">✕</button>
-  </div>
-
-  <div class="drawer-body">
-    <a href="index.html" class="mob-link ">
-      <span>Home</span>
-      <span style="font-size:12px;color:var(--nav-dim);">→</span>
-    </a>
-    <a href="mandi.html" class="mob-link ">
-      <span>Mandi Bhav</span>
-      <span style="font-size:12px;color:var(--nav-dim);">→</span>
-    </a>
-    <a href="weather.html" class="mob-link ">
-      <span>Weather</span>
-      <span style="font-size:12px;color:var(--nav-dim);">→</span>
-    </a>
-    <a href="disease.html" class="mob-link ">
-      <span>Crop Doctor</span>
-      <span style="font-size:12px;color:var(--nav-dim);">→</span>
-    </a>
-    <a href="schemes.html" class="mob-link ">
-      <span>Govt Schemes</span>
-      <span style="font-size:12px;color:var(--nav-dim);">→</span>
-    </a>
-
-    <!-- Mobile Drawer Accordion for Distress & Helplines -->
-    <div class="mob-accordion " id="mobDistressAccordion">
-      <button type="button" class="mob-accordion-btn" id="mobDistressAccordionBtn">
-        <span style="display:flex;align-items:center;gap:8px;">
-          <span>Distress & Helplines</span>
-          <span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;background:#FEECEB;color:#D32F2F;">Hub</span>
-        </span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-
-      <div class="mob-accordion-content">
-        <!-- Sub-item 1: Risk Scorer -->
-        <a href="distress.html?tab=distress" class="mob-sub-card">
-          <div class="dd-icon-box red">📊</div>
-          <div>
-            <div class="mob-sub-title">
-              <span>Distress Risk Scorer</span>
-              <span class="dd-badge pink">Telemetry</span>
-            </div>
-            <div class="mob-sub-desc">Predictive AI multi-factor vulnerability assessment</div>
-          </div>
-        </a>
-
-        <!-- Sub-item 2: Kisan Helplines -->
-        <a href="distress.html?tab=helplines" class="mob-sub-card">
-          <div class="dd-icon-box green">📞</div>
-          <div>
-            <div class="mob-sub-title">
-              <span>Helplines Directory</span>
-              <span class="dd-badge green">Free</span>
-            </div>
-            <div class="mob-sub-desc">Toll-free national & state directorate numbers</div>
-          </div>
-        </a>
-
-        <!-- Quick 1-Tap Emergency Hotlines -->
-        <div class="mob-hotlines-box">
-          <span>⚡ 1-Tap Toll-Free Emergency:</span>
-          <div class="mob-hotlines-grid">
-            <a href="tel:18001801551">📞 KCC 1551</a>
-            <a href="tel:155261">📞 PM-Kisan 155261</a>
-            <a href="tel:14447">📞 PMFBY 14447</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <a href="profile.html" class="mob-link active" style="color:var(--nav-pink);">
-      <span>Farmer Dashboard</span>
-      <span style="font-size:14px;">→</span>
-    </a>
-  </div>
-
-  <div class="drawer-footer">
-    <button type="button" class="btn-nav-ask tb-ask-trigger" style="width:100%;justify-content:center;padding:10px;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-      <span>Ask FarmUp AI Assistant</span>
-    </button>
-    <a href="login.html" class="btn-nav-auth" style="width:100%;justify-content:center;padding:10px;">
-      <span>Sign In / Farmer Profile →</span>
-    </a>
-  </div>
-</div>
 
 <main class="dashboard-page wrap">
 

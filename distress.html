@@ -760,6 +760,8 @@
 <!-- Flat Top Navigation Taskbar -->
 
 <!-- Unified Taskbar -->
+
+<!-- Unified Taskbar Header -->
 <header class="taskbar-wrap">
   <nav class="floating-taskbar">
     <div class="tb-left">
@@ -779,7 +781,7 @@
       <a href="disease.html" class="tb-link ">Crop Doctor</a>
       <a href="schemes.html" class="tb-link ">Govt Schemes</a>
 
-      <!-- Sharp Rectangular Distress Dropdown -->
+      <!-- 100% Sharp Cornered Rectangular Distress Dropdown -->
       <div class="nav-dropdown">
         <a href="distress.html" class="nav-dropdown-trigger active">
           <span>Distress</span>
@@ -788,7 +790,7 @@
           </svg>
         </a>
 
-        <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-menu" style="border-radius:0px !important;border:1.5px solid #0D0C22 !important;">
           <a href="distress.html" class="dd-item">
             <div class="dd-icon-box">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -814,17 +816,11 @@
     </div>
 
     <div class="tb-right">
-      <button type="button" class="btn-nav-ask tb-ask-trigger" onclick="if(window.FarmUpSarvamAI&&window.FarmUpSarvamAI.openAssistant){window.FarmUpSarvamAI.openAssistant();}else{window.location.href='disease.html';}" aria-label="Ask FarmUp AI Assistant">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-        <span>Ask AI</span>
-      </button>
       <a href="login.html" class="btn-nav-auth" id="navAuthBtn">Log in</a>
     </div>
   </nav>
 </header>
 
-
-<!-- Mobile Slide-Over Backdrop -->
 <main class="wrap">
 
   <!-- Page Header -->

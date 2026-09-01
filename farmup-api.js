@@ -1694,130 +1694,44 @@ const FarmUpMandiAPI = {
 
 /* ---------- 5. CLEAN SINGLE-SOURCE-OF-TRUTH AUTH CONTROLLER ---------- */
 const FarmUpAuth = {
+  isLoggedIn() {
+    const profile = this.getProfile();
+    return !!(profile && profile.isLoggedIn);
+  },
+
   getProfile() {
     try {
-      const p = localStorage.getItem('farmup_profile');
-      if (!p) return null;
-      const parsed = JSON.parse(p);
-      if (parsed && parsed.name && parsed.isLoggedIn !== false) {
-        return parsed;
-      }
-      return null;
-    } catch (e) {
+      const stored = localStorage.getItem('farmup_profile');
+      if (!stored) return null;
+      return JSON.parse(stored);
+    } catch(e) {
       return null;
     }
   },
 
-  isLoggedIn() {
-    const p = this.getProfile();
-    return !!(p && p.name && (p.isLoggedIn !== false));
-  },
-
-  getRegisteredUsers() {
-    try {
-      const u = localStorage.getItem('farmup_registered_users');
-      if (u) return JSON.parse(u);
-    } catch(e){}
-    return [];
-  },
-
-  findUser(identifier) {
-    if (!identifier) return null;
-    const clean = identifier.toString().trim().toLowerCase();
-    const cleanDigits = clean.replace(/\D/g, '').slice(-10);
-
-    const users = this.getRegisteredUsers();
-    const localMatch = users.find(u => {
-      const uDigits = (u.phone || '').replace(/\D/g, '').slice(-10);
-      const uEmail = (u.gmail || u.email || '').toLowerCase();
-      const uUid = (u.uid || '').toLowerCase();
-      return (cleanDigits && uDigits === cleanDigits) || (clean && uEmail === clean) || (clean && uUid === clean);
-    });
-
-    if (localMatch) return localMatch;
-
-    const active = this.getProfile();
-    if (active) {
-      const aDigits = (active.phone || '').replace(/\D/g, '').slice(-10);
-      const aEmail = (active.gmail || active.email || '').toLowerCase();
-      const aUid = (active.uid || '').toLowerCase();
-      if ((cleanDigits && aDigits === cleanDigits) || (clean && aEmail === clean) || (clean && aUid === clean)) {
-        return active;
-      }
-    }
-
-    return null;
-  },
-
-  async isRegistered(identifier) {
-    if (!identifier) return null;
-    const clean = identifier.toString().trim().toLowerCase();
-    const cleanDigits = clean.replace(/\D/g, '').slice(-10);
-
-    const localMatch = this.findUser(clean);
-    if (localMatch) return localMatch;
-
-    if (typeof FarmUpFirebaseAuth !== 'undefined' && FarmUpFirebaseAuth.getFarmerProfile) {
-      try {
-        const remoteMatch = await FarmUpFirebaseAuth.getFarmerProfile(clean);
-        if (remoteMatch) return remoteMatch;
-      } catch(e){}
-    }
-
-    return null;
-  },
-
-  updateProfile(profileData) {
-    return this.registerUser(profileData);
-  },
-
-  registerUser(profileData) {
-    const users = this.getRegisteredUsers();
-    const cleanDigits = (profileData.phone || '').replace(/\D/g, '').slice(-10);
-    const email = (profileData.gmail || profileData.email || '').toLowerCase();
-
-    const existingIdx = users.findIndex(u => {
-      const uDigits = (u.phone || '').replace(/\D/g, '').slice(-10);
-      const uEmail = (u.gmail || u.email || '').toLowerCase();
-      const uUid = (u.uid || '').toLowerCase();
-      return (cleanDigits && uDigits === cleanDigits) || (email && uEmail === email) || (profileData.uid && uUid === profileData.uid.toLowerCase());
-    });
-
+  async register(formData) {
+    const crops = Array.isArray(formData.crops) ? formData.crops : (formData.crops ? formData.crops.split(',').map(s=>s.trim()) : ['Wheat']);
     const fullProfile = {
-      uid: profileData.uid || (cleanDigits ? `farmer_${cleanDigits}` : `farmer_${Date.now()}`),
-      isLoggedIn: true,
-      name: profileData.name || 'Kisan Farmer',
-      phone: cleanDigits || profileData.phone || '',
-      gmail: email || profileData.gmail || profileData.email || '',
-      email: email || profileData.email || profileData.gmail || '',
-      aadhaar: profileData.aadhaar || '',
-      state: profileData.state || 'Punjab',
-      district: profileData.district || 'Ludhiana',
-      village: profileData.village || 'Gram Panchayat',
-      acres: parseFloat(profileData.acres) || 1.0,
-      soil: profileData.soil || 'Alluvial Soil',
-      crops: Array.isArray(profileData.crops) ? profileData.crops : (profileData.crops ? profileData.crops.split(',').map(s=>s.trim()) : ['Wheat']),
-      irrigation: profileData.irrigation || 'Canal Water Grid',
-      cropStage: profileData.cropStage || 'Vegetative Growth',
-      totalDebt: profileData.totalDebt || 0,
-      informalDebtRatio: profileData.informalDebtRatio || 0,
-      loanDueDays: profileData.loanDueDays || 90,
-      kisanId: profileData.kisanId || `KID-${(profileData.state||'IND').substring(0,3).toUpperCase()}-2026-${Math.floor(1000 + Math.random()*9000)}`,
-      verified: profileData.verified || { phone: true, google: true, email: true },
-      updatedAt: new Date().toISOString()
+      uid: formData.uid || ('usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7)),
+      name: formData.name || 'Kisan Farmer',
+      phone: formData.phone || '',
+      gmail: formData.gmail || formData.email || '',
+      email: formData.email || formData.gmail || '',
+      aadhaar: formData.aadhaar || '',
+      state: formData.state || 'Odisha',
+      district: formData.district || 'Sundargarh',
+      village: formData.village || 'Rourkela',
+      acres: parseFloat(formData.acres) || 2.5,
+      soil: formData.soil || 'Alluvial Clay Loam',
+      crops: crops,
+      irrigation: formData.irrigation || 'Borewell + Drip',
+      kisanId: formData.kisanId || ('KID-' + (formData.state||'IND').substring(0,3).toUpperCase() + '-2026-' + Math.floor(1000 + Math.random()*9000)),
+      verified: formData.verified || { phone: true, google: true }
     };
 
-    if (existingIdx >= 0) {
-      users[existingIdx] = { ...users[existingIdx], ...fullProfile };
-    } else {
-      users.push(fullProfile);
-    }
-    localStorage.setItem('farmup_registered_users', JSON.stringify(users));
-
-    // Two-Way Sync to Cloud Firestore
-    if (typeof FarmUpFirebaseAuth !== 'undefined' && FarmUpFirebaseAuth.saveFarmerProfile) {
+    if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.saveFarmerProfile === 'function') {
       try {
-        FarmUpFirebaseAuth.saveFarmerProfile(fullProfile.uid, fullProfile);
+        await FarmUpFirebaseAuth.saveFarmerProfile(fullProfile.uid, fullProfile);
       } catch(e) {
         console.warn("Firestore sync warning:", e);
       }
@@ -1836,14 +1750,14 @@ const FarmUpAuth = {
       gmail: profileData.gmail || profileData.email || '',
       email: profileData.email || profileData.gmail || '',
       aadhaar: profileData.aadhaar || '',
-      state: profileData.state || 'Punjab',
-      district: profileData.district || 'Ludhiana',
-      village: profileData.village || 'Gram Panchayat',
-      acres: parseFloat(profileData.acres) || 1.0,
+      state: profileData.state || 'Odisha',
+      district: profileData.district || 'Sundargarh',
+      village: profileData.village || 'Rourkela',
+      acres: parseFloat(profileData.acres) || 2.5,
       soil: profileData.soil || 'Alluvial Soil',
       crops: crops,
-      irrigation: profileData.irrigation || 'Borewell + Drip Irrigation',
-      kisanId: profileData.kisanId || `KID-${(profileData.state||'IND').substring(0,3).toUpperCase()}-2026-${Math.floor(1000 + Math.random()*9000)}`,
+      irrigation: profileData.irrigation || 'Borewell + Drip',
+      kisanId: profileData.kisanId || ('KID-' + (profileData.state||'IND').substring(0,3).toUpperCase() + '-2026-' + Math.floor(1000 + Math.random()*9000)),
       verified: profileData.verified || { phone: true, google: true }
     };
     localStorage.setItem('farmup_profile', JSON.stringify(data));
@@ -1865,7 +1779,6 @@ const FarmUpAuth = {
       console.warn('Sign out error:', e);
     }
 
-    // Broadcast sign-out event
     window.dispatchEvent(new CustomEvent('farmup_account_synced', { detail: null }));
 
     if (window.location.pathname.includes('profile.html') || window.location.pathname.includes('distress.html')) {
@@ -1945,242 +1858,342 @@ const FarmUpAuth = {
   },
 
   syncUI() {
-    this.initGlobalHamburger();
-
     const profile = this.getProfile();
     const loggedIn = this.isLoggedIn();
-    const isProfilePage = window.location.pathname.includes('profile.html');
-    // Inject Desktop vs Mobile Drawer Auth Styling
-    if (!document.getElementById('farmupDrawerAuthStyles')) {
+
+    // Inject Unified Taskbar Styles with Borderless Hamburger & Sharp Dropdown
+    if (!document.getElementById('farmupUnifiedNavStyles')) {
       const st = document.createElement('style');
-      st.id = 'farmupDrawerAuthStyles';
-      
-      
+      st.id = 'farmupUnifiedNavStyles';
       st.textContent = `
-        @media (min-width: 1024px) { .mobile-drawer-footer-sec { display: none !important; } }
+        .taskbar-wrap {
+          position: sticky !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          width: 100% !important;
+          background: #FFFFFF !important;
+          border-bottom: 1.5px solid rgba(0, 0, 0, 0.08) !important;
+          z-index: 999999 !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        .floating-taskbar {
+          width: 100% !important;
+          max-width: 1240px !important;
+          height: 60px !important;
+          margin: 0 auto !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          padding: 0 16px !important;
+          box-sizing: border-box !important;
+        }
+        .tb-left {
+          display: flex !important;
+          align-items: center !important;
+          gap: 10px !important;
+          flex-shrink: 0 !important;
+        }
+        .tb-logo {
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 8px !important;
+          text-decoration: none !important;
+          line-height: 1 !important;
+        }
+        .logo-mark {
+          width: 28px !important;
+          height: 28px !important;
+          object-fit: contain !important;
+          display: block !important;
+        }
+        .tb-name {
+          font-size: 18px !important;
+          font-weight: 800 !important;
+          color: #0D0C22 !important;
+          letter-spacing: -0.03em !important;
+          line-height: 1 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .tb-links {
+          display: flex !important;
+          align-items: center !important;
+          gap: 2px !important;
+          list-style: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .tb-link {
+          font-size: 13.5px !important;
+          font-weight: 600 !important;
+          color: #0D0C22 !important;
+          text-decoration: none !important;
+          padding: 7px 12px !important;
+          border-radius: 4px !important;
+          transition: background-color 0.15s ease !important;
+          white-space: nowrap !important;
+          line-height: 1.2 !important;
+        }
+        .tb-link:hover, .tb-link.active {
+          background: #F1F3F5 !important;
+          color: #0D0C22 !important;
+        }
+        .nav-dropdown {
+          position: relative !important;
+          display: inline-flex !important;
+          align-items: center !important;
+        }
+        .nav-dropdown-trigger {
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 5px !important;
+          font-size: 13.5px !important;
+          font-weight: 600 !important;
+          color: #0D0C22 !important;
+          text-decoration: none !important;
+          padding: 7px 12px !important;
+          border-radius: 4px !important;
+          cursor: pointer !important;
+          transition: background-color 0.15s ease !important;
+          line-height: 1.2 !important;
+        }
+        .nav-dropdown-trigger:hover,
+        .nav-dropdown:hover .nav-dropdown-trigger {
+          background: #F1F3F5 !important;
+        }
+        .chevron-icon {
+          width: 14px !important;
+          height: 14px !important;
+          stroke: #0D0C22 !important;
+          stroke-width: 2.5 !important;
+          transition: transform 0.2s ease !important;
+        }
+        .nav-dropdown:hover .chevron-icon {
+          transform: rotate(180deg) !important;
+        }
+        .nav-dropdown-menu {
+          position: absolute !important;
+          top: 100% !important;
+          left: 0 !important;
+          width: 180px !important;
+          background: #FFFFFF !important;
+          border: 1.5px solid #0D0C22 !important;
+          border-radius: 0px !important;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important;
+          padding: 4px !important;
+          display: none !important;
+          flex-direction: column !important;
+          gap: 2px !important;
+          z-index: 999999 !important;
+        }
+        .nav-dropdown:hover .nav-dropdown-menu {
+          display: flex !important;
+        }
+        .dd-item {
+          display: flex !important;
+          align-items: center !important;
+          gap: 10px !important;
+          padding: 8px 10px !important;
+          border-radius: 0px !important;
+          text-decoration: none !important;
+          color: #0D0C22 !important;
+          transition: background-color 0.15s ease !important;
+        }
+        .dd-item:hover {
+          background: #F4F6F8 !important;
+        }
+        .dd-icon-box {
+          width: 26px !important;
+          height: 26px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: #F1F3F5 !important;
+          border-radius: 0px !important;
+          flex-shrink: 0 !important;
+        }
+        .dd-title {
+          font-size: 13.5px !important;
+          font-weight: 700 !important;
+          color: #0D0C22 !important;
+        }
+        .tb-right {
+          display: flex !important;
+          align-items: center !important;
+          gap: 10px !important;
+          flex-shrink: 0 !important;
+        }
+        .btn-nav-auth {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 8px 18px !important;
+          border-radius: 100px !important;
+          background: #0D0C22 !important;
+          color: #FFFFFF !important;
+          font-size: 13.5px !important;
+          font-weight: 700 !important;
+          text-decoration: none !important;
+          border: none !important;
+          white-space: nowrap !important;
+          cursor: pointer !important;
+          transition: transform 0.15s ease, background-color 0.15s ease !important;
+        }
+        .btn-nav-auth:hover {
+          background: #242238 !important;
+        }
+        .hamburger {
+          display: none;
+          flex-direction: column !important;
+          justify-content: center !important;
+          align-items: center !important;
+          width: 36px !important;
+          height: 36px !important;
+          min-width: 36px !important;
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          cursor: pointer !important;
+          padding: 0 !important;
+          gap: 4px !important;
+          z-index: 1000000 !important;
+        }
+        .hamburger span {
+          display: block !important;
+          width: 18px !important;
+          height: 2px !important;
+          background: #0D0C22 !important;
+          border-radius: 1px !important;
+          transition: transform 0.2s ease, opacity 0.2s ease !important;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-        .drawer-auth-card { display: none !important; }
-        .tb-links.open .drawer-auth-card { display: flex !important; }
+        @media (max-width: 1023px) {
+          .hamburger { display: flex !important; }
+          .floating-taskbar { padding: 0 12px !important; }
+          .tb-links {
+            position: fixed !important;
+            top: 60px !important;
+            left: 0 !important;
+            right: 0 !important;
+            background: #FFFFFF !important;
+            border-bottom: 2px solid #0D0C22 !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+            padding: 14px 16px 24px !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            display: none !important;
+            z-index: 999998 !important;
+            max-height: calc(100vh - 60px) !important;
+            overflow-y: auto !important;
+          }
+          .tb-links.open { display: flex !important; }
+          .tb-link {
+            width: 100% !important;
+            padding: 12px 4px !important;
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+            border-radius: 0 !important;
+          }
+          .nav-dropdown {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+          .nav-dropdown-trigger {
+            width: 100% !important;
+            justify-content: space-between !important;
+            padding: 12px 4px !important;
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+          }
+          .nav-dropdown-menu {
+            position: static !important;
+            width: 100% !important;
+            border: none !important;
+            border-left: 2px solid #0D0C22 !important;
+            padding: 4px 8px !important;
+            display: flex !important;
+            box-shadow: none !important;
+            background: #FDFCF8 !important;
+            margin: 4px 0 8px 10px !important;
+          }
+        }
       `;
-
-
       document.head.appendChild(st);
     }
 
-            // 1. Taskbar Sync - Dribbble Style Auth Buttons / Circular Profile Avatar & Mobile Drawer
     document.querySelectorAll('.floating-taskbar').forEach(tb => {
+      const left = tb.querySelector('.tb-left');
       const right = tb.querySelector('.tb-right');
-      const navLinks = tb.querySelector('.tb-links');
 
-      tb.querySelectorAll('.tb-profile-link, .tb-auth-action-btn, .nav-login-link, .nav-signup-btn, .user-avatar-wrap').forEach(el => el.remove());
-      tb.querySelectorAll('button').forEach(btn => {
-        if (btn.textContent.trim().toLowerCase() === 'logout') btn.remove();
-      });
-
-      // Populate Mobile Drawer Actions inside navLinks
-      if (navLinks) {
-        navLinks.querySelectorAll('.mobile-drawer-footer-sec').forEach(e => e.remove());
-
-        const drawerFooter = document.createElement('li');
-        drawerFooter.className = 'mobile-drawer-footer-sec';
-        drawerFooter.style.cssText = 'width:100%;margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.08);list-style:none;display:flex;flex-direction:column;gap:10px;';
-
-        const currentLang = (typeof FarmUpTranslator !== 'undefined' && FarmUpTranslator.currentLang) || 'en-IN';
-
-        if (loggedIn && profile) {
-          drawerFooter.innerHTML = `
-            <div style="background:#F8F9FA;padding:12px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;">
-              <div>
-                <div style="font-weight:800;font-size:14px;color:#0D0C22;">${profile.name || 'Farmer'}</div>
-                <div style="font-size:11.5px;color:#5E636E;font-family:'IBM Plex Mono',monospace;">${profile.kisanId || 'KID-IND-2026'}</div>
-              </div>
-              <button type="button" onclick="FarmUpAuth.logout()" style="padding:6px 12px;font-size:12px;font-weight:700;color:#D32F2F;background:#FFF;border:1px solid rgba(211,47,47,0.3);border-radius:100px;cursor:pointer;">Sign Out</button>
-            </div>
-            <button type="button" onclick="if(window.FarmUpCopilot)FarmUpCopilot.openModal()" style="width:100%;padding:11px;border-radius:100px;background:#0D0C22;color:#FFF;border:none;font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <span>Ask FarmUp AI Assistant</span>
-            </button>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 2px;">
-              <span style="font-size:13px;font-weight:700;color:#0D0C22;">Language</span>
-              <select onchange="if(window.FarmUpTranslator)FarmUpTranslator.setLanguage(this.value)" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.15);font-size:13px;font-weight:600;background:#FFF;">
-                <option value="en-IN" ${currentLang==='en-IN'?'selected':''}>English</option>
-                <option value="hi-IN" ${currentLang==='hi-IN'?'selected':''}>हिंदी (Hindi)</option>
-                <option value="or-IN" ${currentLang==='or-IN'?'selected':''}>ଓଡ଼ିଆ (Odia)</option>
-                <option value="pa-IN" ${currentLang==='pa-IN'?'selected':''}>ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="bn-IN" ${currentLang==='bn-IN'?'selected':''}>বাংলা (Bengali)</option>
-                <option value="mr-IN" ${currentLang==='mr-IN'?'selected':''}>मराठी (Marathi)</option>
-              </select>
-            </div>
-          `;
-        } else {
-          drawerFooter.innerHTML = `
-            <div style="display:flex;gap:8px;">
-              <a href="login.html" onclick="sessionStorage.setItem('farmup_tab','login')" style="flex:1;text-align:center;padding:10px;border-radius:100px;background:#0D0C22;color:#FFF;font-weight:700;font-size:13.5px;text-decoration:none;">Log in</a>
-              <a href="login.html?tab=signup" onclick="sessionStorage.setItem('farmup_tab','signup')" style="flex:1;text-align:center;padding:10px;border-radius:100px;background:#FFF;color:#0D0C22;border:1.5px solid rgba(0,0,0,0.15);font-weight:700;font-size:13.5px;text-decoration:none;">Sign up</a>
-            </div>
-            <button type="button" onclick="if(window.FarmUpCopilot)FarmUpCopilot.openModal()" style="width:100%;padding:11px;border-radius:100px;background:#F8F9FA;color:#0D0C22;border:1px solid rgba(0,0,0,0.12);font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <span>Ask FarmUp AI Assistant</span>
-            </button>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 2px;">
-              <span style="font-size:13px;font-weight:700;color:#0D0C22;">Language</span>
-              <select onchange="if(window.FarmUpTranslator)FarmUpTranslator.setLanguage(this.value)" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.15);font-size:13px;font-weight:600;background:#FFF;">
-                <option value="en-IN" ${currentLang==='en-IN'?'selected':''}>English</option>
-                <option value="hi-IN" ${currentLang==='hi-IN'?'selected':''}>हिंदी (Hindi)</option>
-                <option value="or-IN" ${currentLang==='or-IN'?'selected':''}>ଓଡ଼ିଆ (Odia)</option>
-                <option value="pa-IN" ${currentLang==='pa-IN'?'selected':''}>ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="bn-IN" ${currentLang==='bn-IN'?'selected':''}>বাংলা (Bengali)</option>
-                <option value="mr-IN" ${currentLang==='mr-IN'?'selected':''}>मराठी (Marathi)</option>
-              </select>
-            </div>
-          `;
+      if (left) {
+        let hamburger = left.querySelector('.hamburger');
+        if (!hamburger) {
+          hamburger = document.createElement('button');
+          hamburger.className = 'hamburger';
+          hamburger.id = 'hamburger';
+          hamburger.type = 'button';
+          hamburger.setAttribute('aria-label', 'Open Navigation Menu');
+          hamburger.innerHTML = '<span></span><span></span><span></span>';
+          left.insertBefore(hamburger, left.firstChild);
         }
-        navLinks.appendChild(drawerFooter);
+        
+        hamburger.onclick = (e) => {
+          e.stopPropagation();
+          const navLinks = tb.querySelector('.tb-links') || document.getElementById('navLinks');
+          if (navLinks) {
+            navLinks.classList.toggle('open');
+            hamburger.classList.toggle('open');
+          }
+        };
       }
 
       if (right) {
-        const authContainer = document.createElement('div');
-        authContainer.className = 'tb-auth-action-btn';
-        authContainer.style.display = 'inline-flex';
-        authContainer.style.alignItems = 'center';
-        authContainer.style.gap = '10px';
-        authContainer.style.flexShrink = '0';
+        right.innerHTML = '';
 
         if (loggedIn && profile) {
-          const name = profile.name || 'Kisan Farmer';
+          const name = profile.name || 'Farmer';
           const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || 'KF';
           
-          authContainer.innerHTML = `
-            <div class="user-avatar-wrap" style="position:relative;display:inline-block;">
-              <button type="button" class="user-avatar-btn" id="navUserAvatarBtn" onclick="FarmUpAuth.toggleAvatarDropdown(event)" aria-label="Farmer Profile Menu" style="width:38px;height:38px;border-radius:50%;background:#0D0C22;color:#FFFFFF;border:2px solid #FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,0.14);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13.5px;cursor:pointer;position:relative;padding:0;outline:none;transition:transform .18s ease;">
-                <span>${initials}</span>
-                <span class="avatar-online-dot" style="position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:#268549;border:2px solid #FFFFFF;"></span>
-              </button>
-              
-              <!-- Avatar Dropdown Popup -->
-              <div id="navAvatarDropdown" class="avatar-dropdown-popup" style="display:none;position:absolute;top:48px;right:0;width:240px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);border-radius:16px;box-shadow:0 18px 42px -6px rgba(0,0,0,0.18);padding:14px;z-index:99999;flex-direction:column;gap:6px;">
-                <div style="padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,0.06);">
-                  <div style="font-weight:700;font-size:14.5px;color:#0D0C22;">${name}</div>
-                  <div style="font-size:11.5px;color:#6C7A68;font-family:'IBM Plex Mono',monospace;margin-top:2px;">${profile.kisanId || 'Kisan ID'}</div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:2px;padding:6px 0;">
-                  <a href="profile.html" style="padding:8px 10px;border-radius:8px;font-size:13.5px;font-weight:600;color:#0D0C22;display:flex;align-items:center;gap:8px;text-decoration:none;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span>Dashboard</span>
-                  </a>
-                  <a href="mandi.html" style="padding:8px 10px;border-radius:8px;font-size:13.5px;font-weight:600;color:#0D0C22;display:flex;align-items:center;gap:8px;text-decoration:none;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> <span>Live Mandi Rates</span>
-                  </a>
-                  <a href="disease.html" style="padding:8px 10px;border-radius:8px;font-size:13.5px;font-weight:600;color:#0D0C22;display:flex;align-items:center;gap:8px;text-decoration:none;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 18 8-8"/><path d="M9 15l-3 3"/><path d="M14 10l3-3"/><circle cx="18" cy="6" r="3"/></svg> <span>AI Crop Doctor</span>
-                  </a>
-                  <a href="schemes.html" style="padding:8px 10px;border-radius:8px;font-size:13.5px;font-weight:600;color:#0D0C22;display:flex;align-items:center;gap:8px;text-decoration:none;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg> <span>Govt Schemes</span>
-                  </a>
-                </div>
-                <div style="padding-top:8px;border-top:1px solid rgba(0,0,0,0.06);">
-                  <button type="button" onclick="FarmUpAuth.logout()" style="width:100%;text-align:left;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:600;color:#C0392B;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> <span>Sign Out</span>
-                  </button>
-                </div>
+          const avatarWrap = document.createElement('div');
+          avatarWrap.className = 'user-avatar-wrap';
+          avatarWrap.style.cssText = 'position:relative;display:inline-block;';
+          avatarWrap.innerHTML = `
+            <button type="button" class="user-avatar-btn" id="navUserAvatarBtn" onclick="FarmUpAuth.toggleAvatarDropdown(event)" aria-label="Farmer Profile Menu" style="width:36px;height:36px;border-radius:50%;background:#0D0C22;color:#FFFFFF;border:2px solid #FFFFFF;box-shadow:0 2px 6px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;cursor:pointer;position:relative;padding:0;">
+              <span>${initials}</span>
+              <span style="position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border-radius:50%;background:#268549;border:2px solid #FFFFFF;"></span>
+            </button>
+            <div id="navAvatarDropdown" style="display:none;position:absolute;top:44px;right:0;width:200px;background:#FFFFFF;border:1.5px solid #0D0C22;border-radius:0px;box-shadow:0 10px 25px rgba(0,0,0,0.15);padding:10px;z-index:999999;flex-direction:column;gap:4px;">
+              <div style="padding-bottom:6px;border-bottom:1px solid rgba(0,0,0,0.08);">
+                <div style="font-weight:700;font-size:13.5px;color:#0D0C22;">${name}</div>
+                <div style="font-size:11px;color:#6C7A68;font-family:'IBM Plex Mono',monospace;">${profile.kisanId || 'KID-IND-2026'}</div>
               </div>
+              <a href="profile.html" style="padding:6px 8px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;">Dashboard</a>
+              <a href="distress.html" style="padding:6px 8px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;">Distress Scorer</a>
+              <a href="helpline.html" style="padding:6px 8px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;">Helpline</a>
+              <button type="button" onclick="FarmUpAuth.logout()" style="width:100%;text-align:left;padding:6px 8px;font-size:13px;font-weight:600;color:#D32F2F;background:none;border:none;cursor:pointer;border-top:1px solid rgba(0,0,0,0.08);margin-top:4px;">Sign Out</button>
             </div>
           `;
+          right.appendChild(avatarWrap);
         } else {
-          authContainer.innerHTML = `
-            <a href="login.html" onclick="sessionStorage.setItem('farmup_tab','signup')" class="nav-signup-link" style="font-size:14px;font-weight:600;color:#0D0C22;padding:8px 12px;text-decoration:none;transition:color .18s ease;">
-              Sign up
-            </a>
-            <a href="login.html" onclick="sessionStorage.setItem('farmup_tab','login')" class="btn-dribbble-login" style="padding:9px 20px;font-size:13.5px;border-radius:100px;font-weight:600;white-space:nowrap;background:#0D0C22;color:#FFFFFF;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:background-color .18s ease;">
-              Log in
-            </a>
-          `;
-        }
-
-        right.insertBefore(authContainer, right.firstChild);
-      }
-    });
-
-    // Toggle Avatar Dropdown Logic
-    if (!window._avatarDropdownInitialized) {
-      window._avatarDropdownInitialized = true;
-      document.addEventListener('click', (e) => {
-        const popup = document.getElementById('navAvatarDropdown');
-        const btn = document.getElementById('navUserAvatarBtn');
-        if (popup && popup.style.display === 'flex') {
-          if (!popup.contains(e.target) && (!btn || !btn.contains(e.target))) {
-            popup.style.display = 'none';
-          }
-        }
-      });
-    }
-
-    
-    // 1.1 Mobile drawer keeps clean flat text links and contains Ask AI, Language, Sign up
-    document.querySelectorAll('.tb-links').forEach(drawer => {
-      drawer.querySelectorAll('.tb-drawer-extra').forEach(el => el.remove());
-
-      const extraWrap = document.createElement('div');
-      extraWrap.className = 'tb-drawer-extra';
-      extraWrap.style.width = '100%';
-
-      let extraHtml = '';
-      if (!loggedIn) {
-        extraHtml += `
-          <a href="login.html?tab=signup" class="tb-link tb-drawer-only" style="border-bottom:1px solid rgba(0,0,0,0.06);font-weight:700;">
-            <span>Sign up</span>
-            <span style="font-size:13px;color:var(--ink-dim,#8E8D9F);">Join FarmUp →</span>
-          </a>
-        `;
-      }
-
-      extraHtml += `
-        <button type="button" class="tb-link tb-drawer-only" onclick="if(window.FarmUpSarvamAI&&window.FarmUpSarvamAI.openAssistant){window.FarmUpSarvamAI.openAssistant();}else{window.location.href='disease.html';}" style="width:100%;text-align:left;border:none;background:none;cursor:pointer;font-family:inherit;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;">
-          <span>Ask AI Assistant</span>
-          <span style="font-size:16px;"></span>
-        </button>
-        <div class="tb-link tb-drawer-only" style="border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;">
-          <span>Language / भाषा</span>
-          <select onchange="if(window.FarmUpTranslator&&window.FarmUpTranslator.setLanguage){FarmUpTranslator.setLanguage(this.value);}" style="border:1.5px solid rgba(0,0,0,0.12);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;font-weight:600;background:#FFFFFF;color:#0D0C22;outline:none;">
-            <option value="en-IN" selected>English</option>
-            <option value="hi-IN">हिन्दी (Hindi)</option>
-            <option value="pa-IN">ਪੰਜਾਬੀ (Punjabi)</option>
-            <option value="gu-IN">ગુજરાતી (Gujarati)</option>
-            <option value="mr-IN">मराठी (Marathi)</option>
-            <option value="te-IN">తెలుగు (Telugu)</option>
-            <option value="ta-IN">தமிழ் (Tamil)</option>
-            <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
-            <option value="bn-IN">বাংলা (Bengali)</option>
-          </select>
-        </div>
-      `;
-
-      if (loggedIn) {
-        extraHtml += `
-          <button type="button" class="tb-link tb-drawer-only" onclick="FarmUpAuth.logout()" style="width:100%;text-align:left;border:none;background:none;cursor:pointer;font-family:inherit;color:#C0392B !important;display:flex;justify-content:space-between;align-items:center;padding-top:14px;">
-            <span>Sign Out</span>
-            <span style="font-size:15px;"></span>
-          </button>
-        `;
-      }
-
-      extraWrap.innerHTML = extraHtml;
-      drawer.appendChild(extraWrap);
-    });
-
-    // 2. Hero CTA Button Sync
-    document.querySelectorAll('.hero-cta').forEach(cta => {
-      let heroAuthBtn = cta.querySelector('.hero-auth-cta-btn');
-      if (heroAuthBtn) {
-        if (loggedIn && profile) {
-          const firstName = (profile.name || 'Kisan').split(' ')[0];
-          heroAuthBtn.href = 'profile.html';
-          heroAuthBtn.innerHTML = `Open My Dashboard (${firstName}) →`;
-        } else {
-          heroAuthBtn.href = 'login.html';
-          heroAuthBtn.innerHTML = `Dashboard →`;
+          const loginBtn = document.createElement('a');
+          loginBtn.href = 'login.html';
+          loginBtn.className = 'btn-nav-auth';
+          loginBtn.id = 'navAuthBtn';
+          loginBtn.textContent = 'Log in';
+          right.appendChild(loginBtn);
         }
       }
     });
+
+    this.initGlobalHamburger();
   }
 };
 
