@@ -1822,6 +1822,17 @@ const FarmUpAuth = {
     }
   },
 
+  toggleDistressDropdown(e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    const dropdown = (e && e.currentTarget && e.currentTarget.closest('.nav-dropdown')) || document.querySelector('.nav-dropdown');
+    if (dropdown) {
+      dropdown.classList.toggle('open');
+    }
+  },
+
   initGlobalHamburger() {
     document.querySelectorAll('.floating-taskbar').forEach(tb => {
       const hamburger = tb.querySelector('.hamburger');
@@ -1861,278 +1872,12 @@ const FarmUpAuth = {
     const profile = this.getProfile();
     const loggedIn = this.isLoggedIn();
 
-    // Inject Unified Taskbar Styles with Borderless Hamburger & Sharp Dropdown
-    if (!document.getElementById('farmupUnifiedNavStyles')) {
-      const st = document.createElement('style');
-      st.id = 'farmupUnifiedNavStyles';
-      st.textContent = `
-        .taskbar-wrap {
-          position: sticky !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          width: 100% !important;
-          background: #FFFFFF !important;
-          border-bottom: 1.5px solid rgba(0, 0, 0, 0.08) !important;
-          z-index: 999999 !important;
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-        .floating-taskbar {
-          width: 100% !important;
-          max-width: 1240px !important;
-          height: 60px !important;
-          margin: 0 auto !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: space-between !important;
-          padding: 0 16px !important;
-          box-sizing: border-box !important;
-        }
-        .tb-left {
-          display: flex !important;
-          align-items: center !important;
-          gap: 10px !important;
-          flex-shrink: 0 !important;
-        }
-        .tb-logo {
-          display: inline-flex !important;
-          align-items: center !important;
-          gap: 8px !important;
-          text-decoration: none !important;
-          line-height: 1 !important;
-        }
-        .logo-mark {
-          width: 28px !important;
-          height: 28px !important;
-          object-fit: contain !important;
-          display: block !important;
-        }
-        .tb-name {
-          font-size: 18px !important;
-          font-weight: 800 !important;
-          color: #0D0C22 !important;
-          letter-spacing: -0.03em !important;
-          line-height: 1 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-        }
-        .tb-links {
-          display: flex !important;
-          align-items: center !important;
-          gap: 2px !important;
-          list-style: none !important;
-          margin: 0 !important;
-          padding: 0 !important;
-        }
-        .tb-link {
-          font-size: 13.5px !important;
-          font-weight: 600 !important;
-          color: #0D0C22 !important;
-          text-decoration: none !important;
-          padding: 7px 12px !important;
-          border-radius: 4px !important;
-          transition: background-color 0.15s ease !important;
-          white-space: nowrap !important;
-          line-height: 1.2 !important;
-        }
-        .tb-link:hover, .tb-link.active {
-          background: #F1F3F5 !important;
-          color: #0D0C22 !important;
-        }
-        .nav-dropdown {
-          position: relative !important;
-          display: inline-flex !important;
-          align-items: center !important;
-        }
-        .nav-dropdown-trigger {
-          display: inline-flex !important;
-          align-items: center !important;
-          gap: 5px !important;
-          font-size: 13.5px !important;
-          font-weight: 600 !important;
-          color: #0D0C22 !important;
-          text-decoration: none !important;
-          padding: 7px 12px !important;
-          border-radius: 4px !important;
-          cursor: pointer !important;
-          transition: background-color 0.15s ease !important;
-          line-height: 1.2 !important;
-        }
-        .nav-dropdown-trigger:hover,
-        .nav-dropdown:hover .nav-dropdown-trigger {
-          background: #F1F3F5 !important;
-        }
-        .chevron-icon {
-          width: 14px !important;
-          height: 14px !important;
-          stroke: #0D0C22 !important;
-          stroke-width: 2.5 !important;
-          transition: transform 0.2s ease !important;
-        }
-        .nav-dropdown:hover .chevron-icon {
-          transform: rotate(180deg) !important;
-        }
-        .nav-dropdown-menu {
-          position: absolute !important;
-          top: 100% !important;
-          left: 0 !important;
-          width: 180px !important;
-          background: #FFFFFF !important;
-          border: 1.5px solid #0D0C22 !important;
-          border-radius: 0px !important;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important;
-          padding: 4px !important;
-          display: none !important;
-          flex-direction: column !important;
-          gap: 2px !important;
-          z-index: 999999 !important;
-        }
-        .nav-dropdown:hover .nav-dropdown-menu {
-          display: flex !important;
-        }
-        .dd-item {
-          display: flex !important;
-          align-items: center !important;
-          gap: 10px !important;
-          padding: 8px 10px !important;
-          border-radius: 0px !important;
-          text-decoration: none !important;
-          color: #0D0C22 !important;
-          transition: background-color 0.15s ease !important;
-        }
-        .dd-item:hover {
-          background: #F4F6F8 !important;
-        }
-        .dd-icon-box {
-          width: 26px !important;
-          height: 26px !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          background: #F1F3F5 !important;
-          border-radius: 0px !important;
-          flex-shrink: 0 !important;
-        }
-        .dd-title {
-          font-size: 13.5px !important;
-          font-weight: 700 !important;
-          color: #0D0C22 !important;
-        }
-        .tb-right {
-          display: flex !important;
-          align-items: center !important;
-          gap: 10px !important;
-          flex-shrink: 0 !important;
-        }
-        .btn-nav-auth {
-          display: inline-flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          padding: 8px 18px !important;
-          border-radius: 100px !important;
-          background: #0D0C22 !important;
-          color: #FFFFFF !important;
-          font-size: 13.5px !important;
-          font-weight: 700 !important;
-          text-decoration: none !important;
-          border: none !important;
-          white-space: nowrap !important;
-          cursor: pointer !important;
-          transition: transform 0.15s ease, background-color 0.15s ease !important;
-        }
-        .btn-nav-auth:hover {
-          background: #242238 !important;
-        }
-        .hamburger {
-          display: none;
-          flex-direction: column !important;
-          justify-content: center !important;
-          align-items: center !important;
-          width: 36px !important;
-          height: 36px !important;
-          min-width: 36px !important;
-          background: transparent !important;
-          border: none !important;
-          box-shadow: none !important;
-          cursor: pointer !important;
-          padding: 0 !important;
-          gap: 4px !important;
-          z-index: 1000000 !important;
-        }
-        .hamburger span {
-          display: block !important;
-          width: 18px !important;
-          height: 2px !important;
-          background: #0D0C22 !important;
-          border-radius: 1px !important;
-          transition: transform 0.2s ease, opacity 0.2s ease !important;
-        }
-        .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-        @media (max-width: 1023px) {
-          .hamburger { display: flex !important; }
-          .floating-taskbar { padding: 0 12px !important; }
-          .tb-links {
-            position: fixed !important;
-            top: 60px !important;
-            left: 0 !important;
-            right: 0 !important;
-            background: #FFFFFF !important;
-            border-bottom: 2px solid #0D0C22 !important;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
-            padding: 14px 16px 24px !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            display: none !important;
-            z-index: 999998 !important;
-            max-height: calc(100vh - 60px) !important;
-            overflow-y: auto !important;
-          }
-          .tb-links.open { display: flex !important; }
-          .tb-link {
-            width: 100% !important;
-            padding: 12px 4px !important;
-            font-size: 15px !important;
-            font-weight: 700 !important;
-            border-bottom: 1px solid rgba(0,0,0,0.06) !important;
-            border-radius: 0 !important;
-          }
-          .nav-dropdown {
-            width: 100% !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-          }
-          .nav-dropdown-trigger {
-            width: 100% !important;
-            justify-content: space-between !important;
-            padding: 12px 4px !important;
-            font-size: 15px !important;
-            font-weight: 700 !important;
-            border-bottom: 1px solid rgba(0,0,0,0.06) !important;
-          }
-          .nav-dropdown-menu {
-            position: static !important;
-            width: 100% !important;
-            border: none !important;
-            border-left: 2px solid #0D0C22 !important;
-            padding: 4px 8px !important;
-            display: flex !important;
-            box-shadow: none !important;
-            background: #FDFCF8 !important;
-            margin: 4px 0 8px 10px !important;
-          }
-        }
-      `;
-      document.head.appendChild(st);
-    }
-
     document.querySelectorAll('.floating-taskbar').forEach(tb => {
       const left = tb.querySelector('.tb-left');
       const right = tb.querySelector('.tb-right');
+      const navLinks = tb.querySelector('.tb-links') || document.getElementById('navLinks');
 
+      // 1. Ensure borderless hamburger on the left next to logo
       if (left) {
         let hamburger = left.querySelector('.hamburger');
         if (!hamburger) {
@@ -2146,18 +1891,73 @@ const FarmUpAuth = {
         }
         
         hamburger.onclick = (e) => {
-          e.stopPropagation();
-          const navLinks = tb.querySelector('.tb-links') || document.getElementById('navLinks');
-          if (navLinks) {
-            navLinks.classList.toggle('open');
-            hamburger.classList.toggle('open');
-          }
+          FarmUpAuth.toggleMobileDrawer(e);
         };
       }
 
+      // 2. Attach click toggle on mobile for Distress dropdown
+      if (navLinks) {
+        const distressTrigger = navLinks.querySelector('.nav-dropdown-trigger');
+        if (distressTrigger) {
+          distressTrigger.onclick = (e) => {
+            // If on mobile / tablet, prevent default link navigation and toggle accordion
+            if (window.innerWidth < 1024) {
+              e.preventDefault();
+              FarmUpAuth.toggleDistressDropdown(e);
+            }
+          };
+        }
+      }
+
+      // 3. Clean and Populate Right Side (Language Selector + Login Button / Avatar)
       if (right) {
         right.innerHTML = '';
 
+        // Inject Language Selector
+        if (typeof FarmUpTranslator !== 'undefined' && typeof FARMUP_LANGUAGES !== 'undefined') {
+          const curLang = FARMUP_LANGUAGES.find(l => l.code === FarmUpTranslator.currentLang) || FARMUP_LANGUAGES[0];
+          const langWrap = document.createElement('div');
+          langWrap.className = 'farmup-lang-container';
+          langWrap.innerHTML = `
+            <button type="button" class="farmup-lang-btn" aria-label="Select Language">
+              <span class="lang-cur-name">${curLang.native}</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="farmup-lang-dropdown">
+              ${FARMUP_LANGUAGES.map(l => `
+                <button type="button" class="farmup-lang-opt" data-code="${l.code}">
+                  <span>${l.native}</span>
+                  <span style="font-size:11px;color:#6C7A68;font-weight:500;">${l.name}</span>
+                </button>
+              `).join('')}
+            </div>
+          `;
+
+          const langBtn = langWrap.querySelector('.farmup-lang-btn');
+          const langDd = langWrap.querySelector('.farmup-lang-dropdown');
+
+          langBtn.onclick = (e) => {
+            e.stopPropagation();
+            const isOpen = langDd.classList.contains('show');
+            document.querySelectorAll('.farmup-lang-dropdown').forEach(d => d.classList.remove('show'));
+            if (!isOpen) langDd.classList.add('show');
+          };
+
+          langWrap.querySelectorAll('.farmup-lang-opt').forEach(opt => {
+            opt.onclick = (e) => {
+              e.stopPropagation();
+              const code = opt.getAttribute('data-code');
+              FarmUpTranslator.setLanguage(code);
+              langDd.classList.remove('show');
+              const selectedL = FARMUP_LANGUAGES.find(l => l.code === code);
+              if (selectedL) langBtn.querySelector('.lang-cur-name').textContent = selectedL.native;
+            };
+          });
+
+          right.appendChild(langWrap);
+        }
+
+        // Inject Auth State (Avatar when logged in, Log in button when logged out)
         if (loggedIn && profile) {
           const name = profile.name || 'Farmer';
           const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || 'KF';
@@ -2170,7 +1970,7 @@ const FarmUpAuth = {
               <span>${initials}</span>
               <span style="position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border-radius:50%;background:#268549;border:2px solid #FFFFFF;"></span>
             </button>
-            <div id="navAvatarDropdown" style="display:none;position:absolute;top:44px;right:0;width:200px;background:#FFFFFF;border:1.5px solid #0D0C22;border-radius:0px;box-shadow:0 10px 25px rgba(0,0,0,0.15);padding:10px;z-index:999999;flex-direction:column;gap:4px;">
+            <div id="navAvatarDropdown" style="display:none;position:absolute;top:44px;right:0;width:200px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);border-radius:14px;box-shadow:0 15px 35px rgba(0,0,0,0.15);padding:10px;z-index:999999;flex-direction:column;gap:4px;">
               <div style="padding-bottom:6px;border-bottom:1px solid rgba(0,0,0,0.08);">
                 <div style="font-weight:700;font-size:13.5px;color:#0D0C22;">${name}</div>
                 <div style="font-size:11px;color:#6C7A68;font-family:'IBM Plex Mono',monospace;">${profile.kisanId || 'KID-IND-2026'}</div>
