@@ -1106,15 +1106,16 @@ const FarmUpSarvamAI = {
               padding:6px 10px;border-radius:100px;border:1px solid rgba(37,92,52,0.25);
               background:#F5FAF6;font-size:12px;font-weight:700;color:#255C34;outline:none;cursor:pointer;
             ">
-              <option value="en-IN"> English</option>
-              <option value="hi-IN" selected> हिन्दी (Hindi)</option>
-              <option value="pa-IN"> ਪੰਜਾਬੀ (Punjabi)</option>
-              <option value="bn-IN"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 4 3.9c-2.4 1-4.2 1-5.7.5-1.1-.3-2.1-1.1-2.9-2.5 1.7-.8 3.3-1.4 4.6-1.9z"/></svg> বাংলা (Bengali)</option>
-              <option value="mr-IN"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/></svg> मराठी (Marathi)</option>
-              <option value="te-IN">☀️ తెలుగు (Telugu)</option>
-              <option value="ta-IN"> தமிழ் (Tamil)</option>
-              <option value="gu-IN"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 4 3.9c-2.4 1-4.2 1-5.7.5-1.1-.3-2.1-1.1-2.9-2.5 1.7-.8 3.3-1.4 4.6-1.9z"/></svg> ગુજરાતી (Gujarati)</option>
-              <option value="kn-IN"> ಕನ್ನಡ (Kannada)</option>
+              <option value="en-IN">English</option>
+              <option value="hi-IN" selected>हिन्दी (Hindi)</option>
+              <option value="pa-IN">ਪੰਜਾਬੀ (Punjabi)</option>
+              <option value="bn-IN">বাংলা (Bengali)</option>
+              <option value="mr-IN">मराठी (Marathi)</option>
+              <option value="te-IN">తెలుగు (Telugu)</option>
+              <option value="ta-IN">தமிழ் (Tamil)</option>
+              <option value="gu-IN">ગુજરાતી (Gujarati)</option>
+              <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
+              <option value="od-IN">ଓଡ଼ିଆ (Odia)</option>
             </select>
 
             <button type="button" id="closeSarvamModalBtn" style="
@@ -1132,7 +1133,7 @@ const FarmUpSarvamAI = {
           <!-- Initial Welcome Greeting -->
           <div class="ai-chat-bubble-bot">
             <div style="font-weight:700;color:#255C34;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
-              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 4 3.9c-2.4 1-4.2 1-5.7.5-1.1-.3-2.1-1.1-2.9-2.5 1.7-.8 3.3-1.4 4.6-1.9z"/></svg> Namaste Kisan! How can I assist your field today?</span>
+              <span>Namaste Kisan! How can I assist your field today?</span>
             </div>
             <p style="margin:0 0 10px;font-size:13.5px;color:#263829;">
               You can ask me anything about <strong>crop diseases, organic bio-remedies, chemical spray dosages, live APMC mandi prices</strong>, or <strong>PM-Kisan & PMFBY subsidies</strong>.

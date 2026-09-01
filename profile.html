@@ -1619,8 +1619,8 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
 
-          if (gpsBadge) gpsBadge.textContent = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> GPS Active: ${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E`;
-          if (deviceGpsSub) deviceGpsSub.textContent = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Live Device GPS: ${lat.toFixed(4)}°N, ${lon.toFixed(4)}°E (Precision: ±${Math.round(position.coords.accuracy)}m)`;
+          if (gpsBadge) gpsBadge.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> GPS Active: ' + lat.toFixed(2) + '°N, ' + lon.toFixed(2) + '°E';
+          if (deviceGpsSub) deviceGpsSub.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Live Device GPS: ' + lat.toFixed(4) + '°N, ' + lon.toFixed(4) + '°E (Precision: ±' + Math.round(position.coords.accuracy) + 'm)';
           if (syncBtn) syncBtn.classList.add('gps-active-btn');
 
           if (showNotice) {
@@ -1633,7 +1633,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
         function(error) {
           console.warn("GPS Geolocation error:", error.message);
           if (gpsBadge) gpsBadge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> GPS Ready (Using Registered Farm Coordinates)`;
-          if (deviceGpsSub) deviceGpsSub.textContent = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Farm Coordinates: 21.4934°N, 86.9135°E (${userProfileData.district || 'Balasore'}, ${userProfileData.state || 'Odisha'})`;
+          if (deviceGpsSub) deviceGpsSub.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Farm Coordinates: 21.4934°N, 86.9135°E (' + (userProfileData.district || 'Balasore') + ', ' + (userProfileData.state || 'Odisha') + ')';
           fetchRegisteredFarmWeather(21.4934, 86.9135);
         },
         { enableHighAccuracy: true, timeout: 6000 }
@@ -1657,12 +1657,12 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
           const humidity = data.current.relative_humidity_2m;
           const wind = Math.round(data.current.wind_speed_10m);
           if (weatherTag) {
-            weatherTag.textContent = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg> ${district}, ${state}: ${temp}°C · Humidity ${humidity}% · Wind ${wind} km/h`;
+            weatherTag.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg> ' + district + ', ' + state + ': ' + temp + '°C · Humidity ' + humidity + '% · Wind ' + wind + ' km/h';
           }
         }
       }
     } catch(e) {
-      if (weatherTag) weatherTag.textContent = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg> ${district}, ${state}: 28°C · Optimal Field Conditions`;
+      if (weatherTag) weatherTag.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg> ' + district + ', ' + state + ': 28°C · Optimal Field Conditions';
     }
   }
 
