@@ -699,22 +699,43 @@ async function handleGoogleLogin() {
 
   if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.signInWithGoogle === 'function') {
     try {
-      const user = await window.FarmUpFirebaseAuth.signInWithGoogle();
-      if (user) {
-        const profile = await window.FarmUpFirebaseAuth.getFarmerProfile(user.uid);
+      const res = await window.FarmUpFirebaseAuth.signInWithGoogle();
+      if (res && res.success) {
+        // If an existing profile was found during Google Sign-In
+        if (res.profile && !res.isNewUser) {
+          FarmUpAuth.login(res.profile);
+          window.location.href = 'profile.html';
+          return;
+        }
+
+        const fbUser = res.user;
+        let profile = null;
+
+        if (fbUser && fbUser.uid) {
+          profile = await window.FarmUpFirebaseAuth.getFarmerProfile(fbUser.uid);
+        }
+        if (!profile && fbUser && fbUser.email) {
+          profile = await window.FarmUpFirebaseAuth.getFarmerProfile(fbUser.email);
+        }
+        if (!profile && typeof FarmUpAuth !== 'undefined') {
+          profile = FarmUpAuth.findUser((fbUser && fbUser.email) || (fbUser && fbUser.uid));
+        }
+
+        // If existing profile exists, log in directly to dashboard
         if (profile) {
           FarmUpAuth.login(profile);
           window.location.href = 'profile.html';
         } else {
+          // Genuinely new user with no registered land holding
           switchTab('signup');
           const notice = document.getElementById('googleSignupRequiredBanner');
           const emailSpan = document.getElementById('googleVerifiedEmail');
-          if (notice && emailSpan) {
-            emailSpan.textContent = user.email;
+          if (notice && emailSpan && fbUser) {
+            emailSpan.textContent = fbUser.email || '';
             notice.style.display = 'block';
           }
           const nameInput = document.getElementById('signupName');
-          if (nameInput && user.displayName) nameInput.value = user.displayName;
+          if (nameInput && fbUser && fbUser.displayName) nameInput.value = fbUser.displayName;
         }
       }
     } catch (e) {
@@ -740,7 +761,36 @@ function handlePhoneLogin() {
     }
     return;
   }
-  loginDemoUser();
+  
+  // Look up if profile exists for this phone
+  let profile = (typeof FarmUpAuth !== 'undefined') ? FarmUpAuth.findUser(phone) : null;
+  if (!profile) {
+    const saved = (typeof FarmUpAuth !== 'undefined') ? FarmUpAuth.getProfile() : null;
+    if (saved && saved.phone && (saved.phone.includes(phone) || phone.includes(saved.phone))) {
+      profile = saved;
+    }
+  }
+
+  if (profile) {
+    FarmUpAuth.login(profile);
+    window.location.href = 'profile.html';
+  } else {
+    FarmUpAuth.login({
+      name: 'Kisan Farmer',
+      phone: phone,
+      gmail: `farmer.${phone}@kisan.in`,
+      state: 'Odisha',
+      district: 'Sundargarh',
+      village: 'Gram Panchayat',
+      acres: 3.5,
+      soil: 'Alluvial Clay Loam',
+      crops: ['Paddy', 'Mustard'],
+      irrigation: 'Canal + Borewell (Drip Connected)',
+      kisanId: `KID-ODI-2026-${phone.slice(-4)}`,
+      verified: { phone: true, google: false }
+    });
+    window.location.href = 'profile.html';
+  }
 }
 
 // Signup with Google Verification
@@ -754,12 +804,36 @@ async function handleSignupWithGoogleVerification() {
   const acres = parseFloat(document.getElementById('signupAcres').value) || 2.5;
   const crops = document.getElementById('signupCrops').value.split(',').map(s => s.trim());
 
+  const newProfile = {
+    name,
+    phone,
+    aadhaar,
+    state,
+    district,
+    village,
+    acres,
+    crops,
+    soil: 'Alluvial Clay Loam',
+    irrigation: 'Canal + Borewell (Drip Connected)',
+    kisanId: `KID-${state.slice(0, 3).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+    verified: { phone: true, google: true }
+  };
+
   if (typeof FarmUpAuth !== 'undefined') {
-    await FarmUpAuth.register({
-      name, phone, aadhaar, state, district, village, acres, crops
-    });
-    window.location.href = 'profile.html';
+    await FarmUpAuth.register(newProfile);
+    FarmUpAuth.login(newProfile);
   }
+
+  if (window.FarmUpFirebaseAuth && typeof window.FarmUpFirebaseAuth.saveFarmerProfile === 'function') {
+    try {
+      const authUser = window.FarmUpFirebaseAuth.auth && window.FarmUpFirebaseAuth.auth.currentUser;
+      if (authUser) {
+        await window.FarmUpFirebaseAuth.saveFarmerProfile(authUser.uid, newProfile);
+      }
+    } catch(e) {}
+  }
+
+  window.location.href = 'profile.html';
 }
 
 function updateDistrictOptions() {
