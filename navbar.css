@@ -1,8 +1,7 @@
 /* ==========================================================================
-   FARMUP UNIVERSAL TASKBAR & NAVIGATION STYLES
+   FARMUP UNIVERSAL SMOOTH TASKBAR & NAVIGATION STYLES
    ========================================================================== */
 
-/* Universal Taskbar Wrapper */
 .taskbar-wrap {
   position: sticky !important;
   top: 0 !important;
@@ -28,7 +27,6 @@
   box-sizing: border-box !important;
 }
 
-/* Left: Hamburger (mobile) + Logo */
 .tb-left {
   display: flex !important;
   align-items: center !important;
@@ -61,7 +59,6 @@
   padding: 0 !important;
 }
 
-/* Desktop Navigation Links */
 .tb-links {
   display: flex !important;
   align-items: center !important;
@@ -90,7 +87,7 @@
   color: #0D0C22 !important;
 }
 
-/* Distress Dropdown (Dribbble Layout) */
+/* Distress Dropdown */
 .nav-dropdown {
   position: relative !important;
   display: inline-flex !important;
@@ -127,7 +124,7 @@
   height: 14px !important;
   stroke: #0D0C22 !important;
   stroke-width: 2.5 !important;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .nav-dropdown:hover .chevron-icon,
@@ -135,59 +132,60 @@
   transform: rotate(180deg) !important;
 }
 
-/* Desktop Dribbble Card Dropdown */
+/* Wide Smooth Landscape Card (Not tall/long down) */
 @media (min-width: 1024px) {
   .nav-dropdown-menu {
     position: absolute !important;
-    top: calc(100% + 8px) !important;
+    top: calc(100% + 6px) !important;
     left: 0 !important;
-    width: 320px !important;
+    width: 360px !important; /* Wide landscape card */
     background: #FFFFFF !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.15), 0 0 1px 1px rgba(0, 0, 0, 0.04) !important;
-    padding: 14px !important;
+    border-radius: 14px !important; /* Smooth modern curve */
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    padding: 8px !important;
     display: none !important;
     flex-direction: column !important;
     gap: 4px !important;
     z-index: 999999 !important;
+    transform-origin: top left !important;
+    animation: ddropFade 0.16s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
   .nav-dropdown:hover .nav-dropdown-menu {
     display: flex !important;
-    animation: ddropFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 }
 
-@keyframes ddropFadeIn {
+@keyframes ddropFade {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .dd-item {
   display: flex !important;
-  align-items: flex-start !important;
+  align-items: center !important;
   gap: 12px !important;
   padding: 10px 12px !important;
-  border-radius: 12px !important;
+  border-radius: 10px !important;
   text-decoration: none !important;
   color: #0D0C22 !important;
-  transition: background-color 0.15s ease, transform 0.15s ease !important;
+  transition: background-color 0.15s ease !important;
 }
 
 .dd-item:hover {
   background: #F8FAFC !important;
-  transform: translateX(2px) !important;
 }
 
 .dd-icon {
-  width: 28px !important;
-  height: 28px !important;
+  width: 32px !important;
+  height: 32px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  background: #F1F3F5 !important;
+  border-radius: 8px !important;
   flex-shrink: 0 !important;
-  margin-top: 2px !important;
 }
 
 .dd-content {
@@ -197,49 +195,18 @@
 }
 
 .dd-title {
-  font-size: 14.5px !important;
+  font-size: 14px !important;
   font-weight: 700 !important;
   color: #0D0C22 !important;
-  letter-spacing: -0.01em !important;
   line-height: 1.2 !important;
 }
 
 .dd-desc {
-  font-size: 12.5px !important;
+  font-size: 12px !important;
   font-weight: 400 !important;
   color: #6E6D7A !important;
-  line-height: 1.4 !important;
-}
-
-.dd-divider {
-  height: 1px !important;
-  background: rgba(0, 0, 0, 0.06) !important;
-  margin: 6px 0 !important;
-}
-
-.dd-footer-strip {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 4px 6px 2px !important;
-  flex-wrap: wrap !important;
-  gap: 6px !important;
-}
-
-.dd-badge-link {
-  font-size: 11.5px !important;
-  font-weight: 700 !important;
-  font-family: 'IBM Plex Mono', monospace !important;
-  color: #1B5E20 !important;
-  background: #E8F5E9 !important;
-  padding: 2px 8px !important;
-  border-radius: 100px !important;
-  text-decoration: none !important;
-  transition: background-color 0.15s ease !important;
-}
-
-.dd-badge-link:hover {
-  background: #C8E6C9 !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
 }
 
 /* Right Controls */
@@ -432,12 +399,11 @@
     position: static !important;
     border: none !important;
     box-shadow: none !important;
-    border-radius: 0 !important;
-    background: #F9FAFB !important;
-    border-left: 3px solid #0D0C22 !important;
-    padding: 6px 10px !important;
-    margin: 4px 0 8px 6px !important;
     border-radius: 8px !important;
+    background: #F8FAFC !important;
+    border-left: 3px solid #0D0C22 !important;
+    padding: 4px 8px !important;
+    margin: 4px 0 8px 6px !important;
   }
 
   /* Expands when .open class is toggled on click */
@@ -446,10 +412,10 @@
   }
 
   .dd-item {
-    padding: 8px 10px !important;
+    padding: 8px 8px !important;
   }
 
-  .dd-desc, .dd-divider, .dd-footer-strip {
+  .dd-desc {
     display: none !important; /* Keep mobile drawer ultra clean and minimal */
   }
 }
