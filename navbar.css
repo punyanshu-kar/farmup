@@ -189,13 +189,14 @@
 }
 
 .dd-icon {
-  width: 32px !important;
-  height: 32px !important;
+  width: 22px !important;
+  height: 22px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: #F1F3F5 !important;
-  border-radius: 8px !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
   flex-shrink: 0 !important;
 }
 
@@ -451,4 +452,26 @@ html.user-logged-out .btn-nav-auth {
 }
 html.user-logged-out .user-avatar-wrap {
   display: none !important;
+}
+
+
+/* ==========================================================================
+   PERFECT ABSOLUTE MIDDLE TASKBAR CENTERING
+   ========================================================================== */
+.floating-taskbar {
+  position: relative !important;
+}
+
+@media (min-width: 1024px) {
+  .tb-links {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
