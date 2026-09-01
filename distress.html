@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-<title>Predictive Kisan Distress Scorer v2.6 — FarmUp</title>
+<title>Distress Risk Scorer & Kisan Helpline Directory — FarmUp</title>
 <link rel="icon" type="image/png" href="farmup-logo.png">
 <link rel="apple-touch-icon" href="farmup-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,15 +18,22 @@
     --ink-muted: #5E636E;
     --ink-dim: #8E929C;
     --line: rgba(0,0,0,0.08);
+    --line-strong: rgba(0,0,0,0.16);
     --radius: 16px;
     --brand-pink: #EA4C89;
     --success: #268549;
+    --success-light: #E8F5E9;
     --warning: #F57C00;
     --danger: #D32F2F;
+    --danger-light: #FEECEB;
+    --primary: #123B1E;
+    --primary-accent: #268549;
+    --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-main);
     background: var(--bg-page);
     color: var(--ink);
     line-height: 1.5;
@@ -42,7 +49,7 @@
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    background: rgba(255, 255, 255, 0.95) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
@@ -73,13 +80,11 @@
   .tb-links { display: flex !important; align-items: center !important; gap: 4px !important; list-style: none !important; margin: 0 !important; padding: 0 !important; }
   .tb-link { font-size: 14px !important; font-weight: 600 !important; color: #0D0C22 !important; padding: 8px 14px !important; border-radius: 8px !important; text-decoration: none !important; white-space: nowrap !important; transition: all 0.15s ease !important; }
   .tb-link:hover { color: #EA4C89 !important; background: rgba(0, 0, 0, 0.04) !important; }
-  .tb-link.active { font-weight: 800 !important; color: #0D0C22 !important; }
+  .tb-link.active { font-weight: 800 !important; color: #D32F2F !important; }
   .tb-right { display: flex !important; align-items: center !important; gap: 10px !important; margin-left: auto !important; flex-shrink: 0 !important; }
-  .tb-drawer-only, .tb-drawer-extra { display: none !important; }
 
   @media (max-width: 1023px) {
     .floating-taskbar { padding: 0 16px !important; height: 58px !important; }
-    .tb-drawer-only { display: flex !important; }
     .tb-links {
       position: fixed !important;
       top: 58px !important;
@@ -87,7 +92,6 @@
       right: 0 !important;
       background: #FFFFFF !important;
       border-bottom: 1px solid rgba(0,0,0,0.08) !important;
-      border-radius: 0 !important;
       box-shadow: 0 20px 40px rgba(0,0,0,0.10) !important;
       padding: 16px 20px 24px !important;
       flex-direction: column !important;
@@ -106,13 +110,7 @@
   }
 
   @media (min-width: 1024px) {
-    .hamburger {
-    position: relative !important;
-    z-index: 10005 !important;
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
- display: none !important; }
-    .tb-drawer-only, .tb-drawer-extra { display: none !important; }
+    .hamburger { display: none !important; }
     .tb-links {
       position: static !important;
       flex-direction: row !important;
@@ -150,10 +148,61 @@
   }
   @media (max-width: 1023px) { .hamburger { display: flex; } }
 
-  /* Page Header */
-  .page-header { padding: 36px 0 20px; text-align: center; }
-  .page-header h1 { font-size: clamp(26px, 3.8vw, 40px); font-weight: 800; letter-spacing: -0.035em; margin: 8px 0; }
+  /* Page Header & Navigation Switcher */
+  .page-header { padding: 32px 0 16px; text-align: center; }
+  .page-header .category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    background: #FEECEB;
+    color: #D32F2F;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .page-header h1 { font-size: clamp(26px, 3.8vw, 38px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; color: var(--ink); }
   .page-header p { font-size: 15px; color: var(--ink-muted); max-width: 740px; margin: 0 auto; line-height: 1.55; }
+
+  /* Section Switcher Tabs */
+  .hub-tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px auto 28px;
+    max-width: 600px;
+    background: #EAECE7;
+    padding: 5px;
+    border-radius: 100px;
+  }
+  .hub-tab-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .hub-tab-btn.active {
+    background: #FFFFFF;
+    color: #0D0C22;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .hub-tab-btn:hover:not(.active) {
+    color: #0D0C22;
+  }
 
   /* Test State Switcher Bar */
   .state-tester-bar {
@@ -167,7 +216,7 @@
   .state-pill-btn {
     padding: 6px 14px;
     border-radius: 100px;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 700;
     border: 1px solid rgba(0,0,0,0.12);
     background: #FFFFFF;
@@ -186,10 +235,10 @@
     background: #FFFFFF;
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 20px;
-    padding: 48px 24px;
+    padding: 40px 24px;
     text-align: center;
-    max-width: 600px;
-    margin: 40px auto;
+    max-width: 680px;
+    margin: 20px auto 36px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.04);
   }
 
@@ -254,7 +303,7 @@
     position: relative;
     font-size: 38px;
     font-weight: 800;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     color: var(--ink);
     line-height: 1;
   }
@@ -269,7 +318,7 @@
 
   .distress-status-badge {
     display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 700;
     padding: 6px 14px;
@@ -279,7 +328,6 @@
     margin-bottom: 8px;
   }
 
-  /* Validation Badge Under Gauge */
   .validation-metric-pill {
     background: #E8F5E9;
     border: 1px solid #C8E6C9;
@@ -302,7 +350,6 @@
     box-shadow: 0 4px 18px rgba(0,0,0,0.02);
   }
 
-  /* Ranked Drivers List */
   .driver-item-card {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -318,7 +365,6 @@
     .driver-item-card { grid-template-columns: 1fr; gap: 8px; }
   }
 
-  /* Provenance Table */
   .prov-table {
     width: 100%;
     border-collapse: collapse;
@@ -342,7 +388,7 @@
     vertical-align: middle;
   }
   .prov-badge {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 700;
     padding: 3px 8px;
@@ -365,11 +411,259 @@
   }
   .domain-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .domain-title { font-size: 13px; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-  .domain-weight-tag { font-size: 11px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; padding: 2px 8px; background: #F1F3F5; border-radius: 100px; color: var(--ink); }
+  .domain-weight-tag { font-size: 11px; font-family: var(--font-mono); font-weight: 700; padding: 2px 8px; background: #F1F3F5; border-radius: 100px; color: var(--ink); }
   .domain-score-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-  .domain-score-val { font-size: 26px; font-weight: 800; font-family: 'IBM Plex Mono', monospace; }
+  .domain-score-val { font-size: 26px; font-weight: 800; font-family: var(--font-mono); }
   .domain-bar-bg { width: 100%; height: 6px; background: #E9ECEF; border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
   .domain-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+
+  /* Emergency Helpline Specific Styles */
+  .emergency-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .em-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .em-card:hover {
+    border-color: #0D0C22;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+  .em-info h4 {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .em-info p {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+  .em-number {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #1B5E20;
+    margin-top: 4px;
+  }
+  .btn-call {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 100px;
+    background: #123B1E;
+    color: #FFFFFF !important;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .btn-call:hover {
+    background: #268549;
+    transform: scale(1.03);
+  }
+
+  /* Filter Panel */
+  .filter-panel {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: 20px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+  }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+  }
+  .search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px 0 40px;
+    border-radius: 100px;
+    border: 1.5px solid var(--line-strong);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #FDFCF8;
+    outline: none;
+    transition: all 0.15s ease;
+  }
+  .search-input:focus {
+    border-color: #0D0C22;
+    background: #FFFFFF;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--ink-dim);
+  }
+
+  .state-select {
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--line-strong);
+    background: #FFFFFF;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    margin-top: 14px;
+  }
+  .f-pill {
+    padding: 7px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: #F8FAFC;
+    color: var(--ink-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .f-pill:hover, .f-pill.active {
+    background: #0D0C22;
+    color: #FFFFFF;
+    border-color: #0D0C22;
+  }
+
+  /* Helpline Cards Grid */
+  .helpline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .h-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .h-card:hover {
+    border-color: rgba(0,0,0,0.25);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+  .h-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .h-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .h-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .h-badge.national { background: #E3F2FD; color: #1565C0; }
+  .h-badge.state { background: #E8F5E9; color: #2E7D32; }
+
+  .h-dept {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    margin-bottom: 12px;
+  }
+  .h-desc {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    flex-grow: 1;
+  }
+  .h-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .h-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .h-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    gap: 10px;
+  }
+  .h-phone-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .h-phone-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .h-phone-num {
+    font-family: var(--font-mono);
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #0D0C22;
+  }
 
   /* Buttons */
   .btn {
@@ -390,8 +684,8 @@
   .btn-primary:hover { background: #262447; transform: translateY(-1px); }
   .btn-danger { background: #D32F2F; color: #FFFFFF; }
   .btn-danger:hover { background: #B71C1C; }
-  .btn-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; }
-  .btn-outline:hover { background: rgba(255,255,255,0.1); }
+  .btn-outline { background: transparent; border: 1.5px solid rgba(0,0,0,0.18); color: #0D0C22; }
+  .btn-outline:hover { background: rgba(0,0,0,0.04); }
 
   /* Modals */
   .modal-overlay {
@@ -415,450 +709,439 @@
     max-height: 90vh;
     overflow-y: auto;
   }
-/* ==========================================================================
-     UNIFIED ROCK-SOLID TASKBAR & MOBILE DRAWER (ALL SCREENS & VIEWPORTS)
-     ========================================================================== */
-  .taskbar-wrap {
-    position: sticky !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    background: #FFFFFF !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-    z-index: 99999 !important;
-    display: flex !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  .floating-taskbar {
-    width: 100% !important;
-    max-width: 1240px !important;
-    height: 62px !important;
-    margin: 0 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 0 16px !important;
-    box-sizing: border-box !important;
-  }
-  .tb-left {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    flex-shrink: 0 !important;
-  }
-  .tb-logo {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    text-decoration: none !important;
-  }
-  .logo-mark {
-    width: 32px !important;
-    height: 32px !important;
-    object-fit: contain !important;
-    flex-shrink: 0 !important;
-  }
-  .tb-name {
-    font-size: 18px !important;
-    font-weight: 800 !important;
-    color: #0D0C22 !important;
-    letter-spacing: -0.03em !important;
-  }
 
-  /* Hamburger Menu Button */
-  .hamburger {
-    display: none;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    background: transparent !important;
-    border: none !important;
-    cursor: pointer !important;
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
-    position: relative !important;
-    z-index: 100005 !important;
-    padding: 0 !important;
-    gap: 5px !important;
-    -webkit-tap-highlight-color: transparent !important;
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 36px 0;
+    margin-top: 64px;
+    background: transparent;
   }
-  .hamburger span {
-    display: block !important;
-    width: 22px !important;
-    height: 2.4px !important;
-    background: #0D0C22 !important;
-    border-radius: 2px !important;
-    pointer-events: none !important;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease !important;
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
   }
-  .hamburger.open span:nth-child(1) { transform: translateY(7.4px) rotate(45deg) !important; }
-  .hamburger.open span:nth-child(2) { opacity: 0 !important; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg) !important; }
-
-  /* Mobile Drawer (Screen < 1024px) */
-  @media (max-width: 1023px) {
-    .hamburger { display: flex !important; }
-    .tb-drawer-only { display: flex !important; }
-    .tb-links {
-      position: fixed !important;
-      top: 62px !important;
-      left: 0 !important;
-      right: 0 !important;
-      background: #FFFFFF !important;
-      border-bottom: 1.5px solid rgba(0,0,0,0.08) !important;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.12) !important;
-      padding: 16px 20px 28px !important;
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 0 !important;
-      transform: translateY(-120%) !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
-      z-index: 99998 !important;
-      max-height: calc(100vh - 62px) !important;
-      overflow-y: auto !important;
-      display: flex !important;
-    }
-    .tb-links.open {
-      transform: translateY(0) !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-    }
-    .tb-link {
-      font-size: 15.5px !important;
-      font-weight: 700 !important;
-      color: #0D0C22 !important;
-      padding: 13px 0 !important;
-      width: 100% !important;
-      border-bottom: 1px solid rgba(0,0,0,0.05) !important;
-      background: transparent !important;
-      border-radius: 0 !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      text-decoration: none !important;
-    }
-    .floating-taskbar .farmup-lang-container,
-    .floating-taskbar .nav-signup-link,
-    .floating-taskbar .tb-ask-btn,
-    .floating-taskbar .tb-lang-btn,
-    .floating-taskbar #langSelectWrap,
-    .floating-taskbar .tb-lang-wrapper {
-      display: none !important;
-    }
+  .footer-col h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
   }
-
-  /* Desktop View (Screen >= 1024px) */
-  @media (min-width: 1024px) {
-    .hamburger { display: none !important; }
-    .tb-drawer-only, .tb-drawer-extra, .mobile-drawer-footer-sec { display: none !important; }
-    .tb-links {
-      position: static !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      padding: 0 !important;
-      box-shadow: none !important;
-      border: none !important;
-      background: transparent !important;
-      transform: none !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      gap: 4px !important;
-      display: flex !important;
-      max-height: none !important;
-      overflow: visible !important;
-    }
-    .tb-link {
-      font-size: 14px !important;
-      font-weight: 600 !important;
-      color: #0D0C22 !important;
-      padding: 8px 14px !important;
-      border-radius: 8px !important;
-      border: none !important;
-      text-decoration: none !important;
-      white-space: nowrap !important;
-      transition: all 0.15s ease !important;
-    }
-    .tb-link:hover { color: #EA4C89 !important; background: rgba(0,0,0,0.04) !important; }
-    .tb-link.active { font-weight: 800 !important; color: #0D0C22 !important; }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
-
-footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
+  .footer-col ul li a {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .footer-col ul li a:hover { color: var(--ink); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-dim);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 </style>
+<link rel="stylesheet" href="navbar.css">
 </head>
 <body>
 
-<!-- Flat Top Taskbar -->
+<!-- Flat Top Navigation Taskbar -->
+<!-- Flat Top Navigation Taskbar -->
+
+<!-- Unified Taskbar -->
 <header class="taskbar-wrap">
   <nav class="floating-taskbar">
     <div class="tb-left">
-      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle Menu">
+      <button class="hamburger" id="hamburger" type="button" aria-label="Open Navigation Menu">
         <span></span><span></span><span></span>
       </button>
-      <a href="homepage.html" class="tb-logo" aria-label="FarmUp Home">
-        <img src="farmup-logo.png" alt="FarmUp Logo" class="logo-mark">
+      <a href="index.html" class="tb-logo" aria-label="FarmUp Home">
+        <img src="farmup-logo.png" alt="FarmUp" class="logo-mark" onerror="this.src='favicon.png'">
         <span class="tb-name">FarmUp</span>
       </a>
     </div>
 
     <div class="tb-links" id="navLinks">
-      <a href="homepage.html" class="tb-link">Home</a>
-      <a href="mandi.html" class="tb-link">Mandi Bhav</a>
-      <a href="weather.html" class="tb-link">Weather</a>
-      <a href="disease.html" class="tb-link">Crop Doctor</a>
-      <a href="schemes.html" class="tb-link">Govt Schemes</a>
-      <a href="distress.html" class="tb-link">Distress Scorer</a>
-      <a href="helpline.html" class="tb-link">Helpline</a>
-      <a href="distress.html" class="tb-link active" style="color:#D32F2F;font-weight:800;">Distress Risk</a>
-      <a href="profile.html" class="tb-link" style="color:#EA4C89;">Dashboard →</a>
+      <a href="index.html" class="tb-link ">Home</a>
+      <a href="mandi.html" class="tb-link ">Mandi Bhav</a>
+      <a href="weather.html" class="tb-link ">Weather</a>
+      <a href="disease.html" class="tb-link ">Crop Doctor</a>
+      <a href="schemes.html" class="tb-link ">Govt Schemes</a>
+
+      <!-- Sharp Rectangular Distress Dropdown -->
+      <div class="nav-dropdown">
+        <a href="distress.html" class="nav-dropdown-trigger active">
+          <span>Distress</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </a>
+
+        <div class="nav-dropdown-menu">
+          <a href="distress.html" class="dd-item">
+            <div class="dd-icon-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <span class="dd-title">Distress Score</span>
+          </a>
+
+          <a href="helpline.html" class="dd-item">
+            <div class="dd-icon-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <span class="dd-title">Helpline</span>
+          </a>
+        </div>
+      </div>
+
+      <a href="profile.html" class="tb-link ">Dashboard →</a>
     </div>
 
     <div class="tb-right">
-      <button type="button" class="tb-ask-btn" id="tbAskBtn" aria-label="Ask FarmUp AI Assistant" style="padding:7px 14px;border-radius:100px;background:#fff;border:1.5px solid rgba(0,0,0,0.12);font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+      <button type="button" class="btn-nav-ask tb-ask-trigger" onclick="if(window.FarmUpSarvamAI&&window.FarmUpSarvamAI.openAssistant){window.FarmUpSarvamAI.openAssistant();}else{window.location.href='disease.html';}" aria-label="Ask FarmUp AI Assistant">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
         <span>Ask AI</span>
       </button>
+      <a href="login.html" class="btn-nav-auth" id="navAuthBtn">Log in</a>
     </div>
   </nav>
 </header>
 
-<main class="wrap" style="margin-top:24px;">
 
-  <!-- VIEW 1: LOCKED GUEST STATE -->
-  <section class="auth-lock-card" id="guestLockSection" style="display:none;">
-    <div style="width:64px;height:64px;border-radius:50%;background:#FEECEB;color:#D32F2F;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-    </div>
-    <h2 style="font-size:24px;font-weight:800;margin-bottom:8px;">Farmer Sign-In Required</h2>
-    <p style="font-size:14px;color:var(--ink-muted);line-height:1.6;margin-bottom:24px;">
-      The <strong>Predictive Distress Risk Engine</strong> requires your verified land plot coordinates, crop phenology, and active KCC debt status to synthesize live district satellite feeds.
-    </p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="login.html" class="btn btn-primary" style="padding:10px 24px;text-decoration:none;">
-        Log In with Mobile Number →
-      </a>
-      <a href="login.html?tab=signup" class="btn btn-outline" style="color:#0D0C22;border-color:rgba(0,0,0,0.2);text-decoration:none;">
-        Register New Farm
-      </a>
-    </div>
-  </section>
+<!-- Mobile Slide-Over Backdrop -->
+<main class="wrap">
 
-  <!-- VIEW 2: AUTHENTICATED FARMER COCKPIT -->
-  <div id="authenticatedDistressView" style="display:none;">
+  <!-- Page Header -->
+  <div class="page-header">
+    <span class="category-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      Crisis Support & Agrarian Risk Center
+    </span>
+    <h1>Distress Risk Scorer</h1>
+   <p>Predictive multi-factor vulnerability assessment backed by live rainfall telemetry, APMC price deficits, and institutional debt exposure.</p>
+  </div>
 
-    <!-- Page Header & Model Version -->
-    <div class="page-header">
-      <h1>Predictive Kisan Distress Scorer</h1>
-      <p>Combining live weather & satellite telemetry with your stored profile parameters. Best-effort evaluation with transparent provenance and freshness auditing.</p>
-    </div>
+  
 
-    <!-- Quick State Switcher for Verification & Screenshots -->
-    <div class="state-tester-bar">
-      <span style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;">Diagnostic State:</span>
-      <button type="button" class="state-pill-btn active" id="btnStateAllFresh" onclick="setAuditState('fresh')">🟢 All Inputs Fresh (100% Verified)</button>
-      <button type="button" class="state-pill-btn" id="btnStateStale" onclick="setAuditState('stale')">🟡 Partial Stale State (Crop & Debt Outdated)</button>
-      <button type="button" class="state-pill-btn" id="btnStateApiDown" onclick="setAuditState('apidown')">🔴 Live Feed Offline (Simulated Mandi Outage)</button>
-    </div>
+  <!-- =========================================================================
+       SECTION A: DISTRESS RISK ENGINE
+       ========================================================================= -->
+  <div id="distressSectionView" style="display:block;">
+    
+    <!-- VIEW 1: LOCKED GUEST STATE -->
+    <section class="auth-lock-card" id="guestLockSection" style="display:none;">
+      <div style="width:56px;height:56px;border-radius:50%;background:#FEECEB;color:#D32F2F;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Farmer Profile Required for Risk Telemetry</h2>
+      <p style="font-size:14px;color:var(--ink-muted);line-height:1.6;margin-bottom:20px;">
+        The <strong>Predictive Distress Risk Engine</strong> synthesizes your verified land plot coordinates, crop phenology stage, and KCC debt exposure against live district satellite streams.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+        <a href="login.html" class="btn btn-primary" style="padding:10px 24px;text-decoration:none;">
+          Log In with Mobile Number →
+        </a>
+        <a href="helpline.html" class="btn btn-outline" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">Go to Kisan Helpline Directory (100% Free) →</a>
+      </div>
+    </section>
 
-    <!-- Data Freshness & Stale Audit Warning Banner -->
-    <div id="staleFreshnessBanner" class="stale-freshness-banner" style="display:none;">
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:22px;line-height:1;">⚠️</span>
-        <div>
-          <div style="font-weight:800;font-size:14.5px;">Best-Effort Assessment: Outdated Profile Inputs Detected</div>
-          <div style="font-size:12.5px;margin-top:2px;" id="staleBannerText">
-            Some profile fields exceed freshness thresholds. The report uses the latest available values, but updating your profile will improve score precision.
+    <!-- VIEW 2: AUTHENTICATED FARMER COCKPIT -->
+    <div id="authenticatedDistressView" style="display:none;">
+
+      <!-- Quick State Switcher for Verification -->
+      <div class="state-tester-bar">
+        <span style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;">Diagnostic State:</span>
+        <button type="button" class="state-pill-btn active" id="btnStateAllFresh" onclick="setAuditState('fresh')">🟢 All Inputs Fresh (100% Verified)</button>
+        <button type="button" class="state-pill-btn" id="btnStateStale" onclick="setAuditState('stale')">🟡 Partial Stale State</button>
+        <button type="button" class="state-pill-btn" id="btnStateApiDown" onclick="setAuditState('apidown')">🔴 Live Feed Offline</button>
+      </div>
+
+      <!-- Data Freshness Warning Banner -->
+      <div id="staleFreshnessBanner" class="stale-freshness-banner" style="display:none;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="font-size:22px;line-height:1;">⚠️</span>
+          <div>
+            <div style="font-weight:800;font-size:14.5px;">Best-Effort Assessment: Outdated Profile Inputs Detected</div>
+            <div style="font-size:12.5px;margin-top:2px;" id="staleBannerText">
+              Some profile fields exceed freshness thresholds. Updating your profile will improve precision.
+            </div>
           </div>
         </div>
+        <div id="staleActionButtons" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
       </div>
-      <div id="staleActionButtons" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+
+      <!-- 1. MAIN HERO ASSESSMENT CARD -->
+      <section class="distress-hero-card">
+        <div class="distress-gauge-box">
+          <div class="gauge-circle" id="gaugeCircle" style="--gauge-deg: 94deg; --gauge-color: #268549;">
+            <span class="gauge-score-val" id="scoreVal">26%</span>
+            <span class="gauge-score-lbl">Distress Index</span>
+          </div>
+          <div class="distress-status-badge" id="statusBadge" style="--badge-bg: rgba(38,133,73,0.12); --badge-color: #268549;">
+            🟢 LOW VULNERABILITY (RESILIENT)
+          </div>
+          <div style="font-size:12px;color:var(--ink-dim);font-weight:600;" id="assessmentConfidence">
+            Confidence: High (All Inputs Fresh)
+          </div>
+
+          <div class="validation-metric-pill">
+            <div style="font-size:12px;font-weight:800;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;display:inline-block;"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Empirical Recall: 91.4% (NSSO 77th Benchmark)</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink-dim);text-transform:uppercase;margin-bottom:4px;" id="locationSubtitle">
+            Evaluating Live Telemetry for Balasore, Odisha (3.2 Acres · Wheat)
+          </div>
+          <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;" id="distressHeadline">Agronomic & Cashflow Buffers Stable</h2>
+          <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.6;margin-bottom:20px;" id="distressSummary">
+            Current rainfall deficit (-24%) is buffered by active canal irrigation. Trailing APMC mandi rates for Wheat are trading above baseline MSP (+₹205 over MSP).
+          </p>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-danger" onclick="openReviewGateModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Authorize Relief Submission →
+            </button>
+            <button type="button" class="btn btn-primary" onclick="playVoiceBriefing(this)" id="btnAudioVoiceBrief">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice
+            </button>
+            <button type="button" class="btn btn-outline" onclick="openSmsModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> 2G SMS Summary
+            </button>
+            <button type="button" class="btn btn-outline" onclick="generateDossierPDF()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Export PDF
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PRIMARY RISK DRIVERS -->
+      <section class="section-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+          <div>
+            <h3 style="font-size:18px;font-weight:800;">Primary Risk Drivers & Parameter Attribution</h3>
+            <p style="font-size:13px;color:var(--ink-muted);">Ranked breakdown of which exact empirical parameters are escalating or buffering your distress score:</p>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:11px;padding:3px 10px;background:#F1F3F5;border-radius:100px;font-weight:700;">
+            Dynamic Impact Ranking
+          </span>
+        </div>
+        <div id="rankedDriversContainer" style="margin-top:14px;"></div>
+      </section>
+
+      <!-- 3. DATA PROVENANCE AUDIT TABLE -->
+      <section class="section-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div>
+            <h3 style="font-size:18px;font-weight:800;">Data Provenance & Real-Time Telemetry Audit</h3>
+            <p style="font-size:13px;color:var(--ink-muted);">Every input source, live API status, and timestamp backing this assessment:</p>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:11px;padding:3px 10px;background:#F1F3F5;border-radius:100px;font-weight:700;">
+            Zero Black-Box Transparency
+          </span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="prov-table">
+            <thead>
+              <tr>
+                <th>Data Dimension</th>
+                <th>Source / API Stream</th>
+                <th>Captured Parameter</th>
+                <th>Value Used</th>
+                <th>Freshness & Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="provenanceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. FOUR RISK DOMAINS BREAKDOWN -->
+      <section class="domain-grid">
+        <div class="domain-card">
+          <div class="domain-head">
+            <span class="domain-title">1. Production & Climate</span>
+            <span class="domain-weight-tag">Weight: 30%</span>
+          </div>
+          <div class="domain-score-row">
+            <span class="domain-score-val" id="domScoreProd" style="color:#268549;">24%</span>
+            <span style="font-size:12px;color:var(--ink-muted);">Rainfall & Soil Health</span>
+          </div>
+          <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarProd" style="width:24%;background:#268549;"></div></div>
+          <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescProd"></div>
+        </div>
+
+        <div class="domain-card">
+          <div class="domain-head">
+            <span class="domain-title">2. Market & Volatility</span>
+            <span class="domain-weight-tag">Weight: 25%</span>
+          </div>
+          <div class="domain-score-row">
+            <span class="domain-score-val" id="domScoreMarket" style="color:#268549;">18%</span>
+            <span style="font-size:12px;color:var(--ink-muted);">Price vs MSP Spread</span>
+          </div>
+          <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarMarket" style="width:18%;background:#268549;"></div></div>
+          <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescMarket"></div>
+        </div>
+
+        <div class="domain-card">
+          <div class="domain-head">
+            <span class="domain-title">3. Debt & Liquidity</span>
+            <span class="domain-weight-tag">Weight: 25%</span>
+          </div>
+          <div class="domain-score-row">
+            <span class="domain-score-val" id="domScoreFin" style="color:#F57C00;">38%</span>
+            <span style="font-size:12px;color:var(--ink-muted);">Debt / Holding & Informal Share</span>
+          </div>
+          <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarFin" style="width:38%;background:#F57C00;"></div></div>
+          <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescFin"></div>
+        </div>
+
+        <div class="domain-card">
+          <div class="domain-head">
+            <span class="domain-title">4. Structural Resilience</span>
+            <span class="domain-weight-tag">Weight: 20%</span>
+          </div>
+          <div class="domain-score-row">
+            <span class="domain-score-val" id="domScoreStruct" style="color:#268549;">25%</span>
+            <span style="font-size:12px;color:var(--ink-muted);">Tenancy & Holding Diversity</span>
+          </div>
+          <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarStruct" style="width:25%;background:#268549;"></div></div>
+          <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescStruct"></div>
+        </div>
+      </section>
+
+      <!-- 5. DOCUMENTED WEIGHT METHODOLOGY -->
+      <section class="section-card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <h3 style="font-size:17px;font-weight:800;">Regulatory Weight Methodology</h3>
+        </div>
+        <p style="font-size:13px;color:var(--ink-muted);line-height:1.6;margin-bottom:10px;">
+          <strong>Formulation:</strong> Composite Distress Index = <code>(0.30 × Production) + (0.25 × Market) + (0.25 × Financial) + (0.20 × Structural)</code>.
+        </p>
+        <div style="background:#F8F9FA;border-left:3px solid #268549;padding:12px 16px;font-size:12.5px;color:var(--ink);line-height:1.55;border-radius:4px 8px 8px 4px;">
+          Standardized 30/25/25/20 macro proportions establish a regulator-auditable benchmark across all Indian states, preventing arbitrary distortion while allowing dynamic regional crop adjustments.
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SECTION B: INTEGRATED KISAN HELPLINE DIRECTORY
+       ========================================================================= -->
+  <div id="helplinesSectionView" style="display:none;">
+
+    <!-- Quick Dial Emergency Strip -->
+    <div class="emergency-strip">
+      <div class="em-card">
+        <div class="em-info">
+          <h4>Kisan Call Centre (KCC)</h4>
+          <p>Agronomy, Pest Control, 22 Languages</p>
+          <div class="em-number">1800-180-1551</div>
+        </div>
+        <a href="tel:18001801551" class="btn-call">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call 1551
+        </a>
+      </div>
+
+      <div class="em-card">
+        <div class="em-info">
+          <h4>PM-Kisan DBT Support</h4>
+          <p>Direct Bank Transfer & eKYC Inquiries</p>
+          <div class="em-number">155261 / 011-24300606</div>
+        </div>
+        <a href="tel:155261" class="btn-call">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call 155261
+        </a>
+      </div>
+
+      <div class="em-card">
+        <div class="em-info">
+          <h4>PMFBY Crop Insurance</h4>
+          <p>Immediate 72hr Crop Loss Intimation</p>
+          <div class="em-number">14447 (Toll-Free)</div>
+        </div>
+        <a href="tel:14447" class="btn-call">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call 14447
+        </a>
+      </div>
     </div>
 
-    <!-- 1. MAIN HERO ASSESSMENT CARD -->
-    <section class="distress-hero-card">
-      <div class="distress-gauge-box">
-        <div class="gauge-circle" id="gaugeCircle" style="--gauge-deg: 94deg; --gauge-color: #268549;">
-          <span class="gauge-score-val" id="scoreVal">26%</span>
-          <span class="gauge-score-lbl">Distress Index</span>
-        </div>
-        <div class="distress-status-badge" id="statusBadge" style="--badge-bg: rgba(38,133,73,0.12); --badge-color: #268549;">
-          🟢 LOW VULNERABILITY (RESILIENT)
-        </div>
-        <div style="font-size:12px;color:var(--ink-dim);font-weight:600;" id="assessmentConfidence">
-          Confidence: High (All Inputs Fresh)
+    <!-- Interactive Filter Controls -->
+    <div class="filter-panel">
+      <div class="filter-row">
+        <div class="search-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="helplineSearch" class="search-input" placeholder="Search helpline by scheme, issue, department, or keyword..." oninput="filterHelplines()">
         </div>
 
-        <!-- Model Empirical Validation Metric Pill -->
-        <div class="validation-metric-pill">
-          <div style="font-size:12px;font-weight:800;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Empirical Validation: 91.4% Sensitivity (Recall)</div>
-          <div style="font-size:11px;color:#2E7D32;margin-top:2px;">88.7% Specificity · 0.932 AUC-ROC (NSSO 77th Round Benchmark)</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <select id="scopeFilter" class="state-select" onchange="filterHelplines()">
+            <option value="ALL">All Levels (National & State)</option>
+            <option value="NATIONAL">National Only (All-India)</option>
+            <option value="STATE">State Directorates Only</option>
+          </select>
+
+          <select id="stateFilter" class="state-select" onchange="filterHelplines()">
+            <option value="ALL">All States / UTs</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Haryana">Haryana</option>
+            <option value="West Bengal">West Bengal</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Telangana">Telangana</option>
+            <option value="Kerala">Kerala</option>
+          </select>
         </div>
       </div>
 
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--ink-dim);text-transform:uppercase;margin-bottom:4px;" id="locationSubtitle">
-          Evaluating Live Telemetry for Balasore, Odisha (3.2 Acres · Wheat)
-        </div>
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;" id="distressHeadline">Agronomic & Cashflow Buffers Stable</h2>
-        <p style="font-size:13.5px;color:var(--ink-muted);line-height:1.6;margin-bottom:20px;" id="distressSummary">
-          Current rainfall deficit (-24%) is buffered by active canal irrigation. Trailing APMC mandi rates for Wheat are trading comfortably above baseline MSP (+₹205 over MSP), and informal debt exposure is below critical thresholds.
-        </p>
-
-        <!-- Multi-Modal Output Options (PDF, Voice, 2G SMS) -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button type="button" class="btn btn-danger" onclick="openReviewGateModal()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Authorize Relief Submission →
-          </button>
-          <button type="button" class="btn btn-primary" onclick="playVoiceBriefing(this)" id="btnAudioVoiceBrief">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice Briefing
-          </button>
-          <button type="button" class="btn btn-outline" style="color:#0D0C22;border-color:rgba(0,0,0,0.18);" onclick="openSmsModal()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> 2G SMS Summary
-          </button>
-          <button type="button" class="btn btn-outline" style="color:#0D0C22;border-color:rgba(0,0,0,0.18);" onclick="generateDossierPDF()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Export PDF
-          </button>
-        </div>
+      <div class="filter-pills">
+        <button type="button" class="f-pill active" data-cat="ALL" onclick="setCategory('ALL')">All Helplines</button>
+        <button type="button" class="f-pill" data-cat="advisory" onclick="setCategory('advisory')">Crop & Pest Advisory</button>
+        <button type="button" class="f-pill" data-cat="dbt" onclick="setCategory('dbt')">DBT & Subsidies</button>
+        <button type="button" class="f-pill" data-cat="insurance" onclick="setCategory('insurance')">Crop Insurance & Claims</button>
+        <button type="button" class="f-pill" data-cat="loan" onclick="setCategory('loan')">KCC & Credit Support</button>
+        <button type="button" class="f-pill" data-cat="market" onclick="setCategory('market')">e-NAM & Mandi Marketing</button>
+        <button type="button" class="f-pill" data-cat="disaster" onclick="setCategory('disaster')">Emergency & Cyclone Relief</button>
       </div>
-    </section>
+    </div>
 
-    <!-- 2. PRIMARY RISK DRIVERS (Sub-Parameters Up/Down) -->
-    <section class="section-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-        <div>
-          <h3 style="font-size:18px;font-weight:800;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Primary Risk Drivers & Sub-Parameter Attribution</h3>
-          <p style="font-size:13px;color:var(--ink-muted);">Ranked breakdown of which exact empirical parameters are escalating or buffering your distress score:</p>
-        </div>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;padding:3px 10px;background:#F1F3F5;border-radius:100px;font-weight:700;">
-          Dynamic Impact Ranking
-        </span>
-      </div>
+    <!-- Result Count -->
+    <div style="font-size:13px;font-weight:700;color:var(--ink-muted);margin-bottom:16px;" id="helplineCount">
+      Showing verified agricultural helplines across India...
+    </div>
 
-      <div id="rankedDriversContainer" style="margin-top:14px;">
-        <!-- Injected dynamically by JS -->
-      </div>
-    </section>
-
-    <!-- 3. DATA PROVENANCE & TRACEABILITY AUDIT TABLE -->
-    <section class="section-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <div>
-          <h3 style="font-size:18px;font-weight:800;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Data Provenance & Real-Time Telemetry Audit</h3>
-          <p style="font-size:13px;color:var(--ink-muted);">Every input source, live API status, and timestamp backing this assessment:</p>
-        </div>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;padding:3px 10px;background:#F1F3F5;border-radius:100px;font-weight:700;">
-          Zero Black-Box Transparency
-        </span>
-      </div>
-
-      <div style="overflow-x:auto;">
-        <table class="prov-table">
-          <thead>
-            <tr>
-              <th>Data Dimension</th>
-              <th>Source / API Stream</th>
-              <th>Captured Parameter</th>
-              <th>Value Used</th>
-              <th>Freshness & Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="provenanceTableBody">
-            <!-- Injected dynamically by JS -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 4. FOUR RISK DOMAINS BREAKDOWN (30% + 25% + 25% + 20%) -->
-    <section class="domain-grid">
-      <!-- Domain 1: Production -->
-      <div class="domain-card">
-        <div class="domain-head">
-          <span class="domain-title">1. Production & Climate</span>
-          <span class="domain-weight-tag">Weight: 30%</span>
-        </div>
-        <div class="domain-score-row">
-          <span class="domain-score-val" id="domScoreProd" style="color:#268549;">24%</span>
-          <span style="font-size:12px;color:var(--ink-muted);">Rainfall Anomaly & Phenology</span>
-        </div>
-        <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarProd" style="width:24%;background:#268549;"></div></div>
-        <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescProd">
-          Rolling Rain Deficit: -24% · Soil Moisture: 34% · Irrigation: Canal Buffer
-        </div>
-      </div>
-
-      <!-- Domain 2: Market -->
-      <div class="domain-card">
-        <div class="domain-head">
-          <span class="domain-title">2. Market & Volatility</span>
-          <span class="domain-weight-tag">Weight: 25%</span>
-        </div>
-        <div class="domain-score-row">
-          <span class="domain-score-val" id="domScoreMarket" style="color:#268549;">18%</span>
-          <span style="font-size:12px;color:var(--ink-muted);">Price vs MSP & 3-Yr Modal</span>
-        </div>
-        <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarMarket" style="width:18%;background:#268549;"></div></div>
-        <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescMarket">
-          Mandi Spot: ₹2,480/Qtl (MSP: ₹2,275) · 30-Day Volatility: Low (8.5%)
-        </div>
-      </div>
-
-      <!-- Domain 3: Financial & Debt -->
-      <div class="domain-card">
-        <div class="domain-head">
-          <span class="domain-title">3. Debt & Liquidity</span>
-          <span class="domain-weight-tag">Weight: 25%</span>
-        </div>
-        <div class="domain-score-row">
-          <span class="domain-score-val" id="domScoreFin" style="color:#F57C00;">38%</span>
-          <span style="font-size:12px;color:var(--ink-muted);">D/A Ratio & Informal Debt</span>
-        </div>
-        <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarFin" style="width:38%;background:#F57C00;"></div></div>
-        <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescFin">
-          Debt/Acre: ₹46,875 · Informal Share: 35% · Repayment Due: 45 Days
-        </div>
-      </div>
-
-      <!-- Domain 4: Structural & Holding -->
-      <div class="domain-card">
-        <div class="domain-head">
-          <span class="domain-title">4. Structural Resilience</span>
-          <span class="domain-weight-tag">Weight: 20%</span>
-        </div>
-        <div class="domain-score-row">
-          <span class="domain-score-val" id="domScoreStruct" style="color:#268549;">25%</span>
-          <span style="font-size:12px;color:var(--ink-muted);">Tenancy & Diversification</span>
-        </div>
-        <div class="domain-bar-bg"><div class="domain-bar-fill" id="domBarStruct" style="width:25%;background:#268549;"></div></div>
-        <div style="font-size:12px;color:var(--ink-muted);line-height:1.45;" id="domDescStruct">
-          Holding: 3.2 Acres · Tenure: Owner-Cultivator · 2 Diversified Crops
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. DOCUMENTED WEIGHT METHODOLOGY & REGULATORY JUSTIFICATION -->
-    <section class="section-card">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></span>
-        <h3 style="font-size:17px;font-weight:800;">Documented Weight Architecture & Regulatory Justification</h3>
-      </div>
-      <p style="font-size:13px;color:var(--ink-muted);line-height:1.6;margin-bottom:12px;">
-        <strong>Category Weight Formulation:</strong> Composite Distress Index = <code>(0.30 × Production) + (0.25 × Market) + (0.25 × Financial) + (0.20 × Structural)</code>.
-      </p>
-      <div style="background:#F8F9FA;border-left:3px solid #268549;padding:12px 16px;font-size:12.5px;color:var(--ink);line-height:1.55;border-radius:4px 8px 8px 4px;">
-        <strong>Why are macro weights fixed?</strong> Fixed 30/25/25/20 macro proportions establish a standardized, regulator-auditable benchmark across all Indian states and prevent arbitrary weight-gaming by local money lenders or regional intermediaries. Regional crop and agro-climatic specificities are accommodated dynamically <em>within</em> each category through crop phenology stages (e.g. flowering stage multiplier = 1.25×) and local APMC modal pricing.
-      </div>
-    </section>
-
+    <!-- Helpline Cards Grid -->
+    <div class="helpline-grid" id="helplineGrid"></div>
   </div>
 
 </main>
@@ -877,64 +1160,60 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     <form id="quickUpdateForm" onsubmit="event.preventDefault(); saveQuickFieldUpdate();">
       <div id="quickUpdateInputContainer" style="margin-bottom:20px;"></div>
       <div style="display:flex;justify-content:flex-end;gap:10px;">
-        <button type="button" class="btn btn-outline" style="color:#0D0C22;border-color:rgba(0,0,0,0.2);" onclick="closeQuickUpdateModal()">Cancel</button>
+        <button type="button" class="btn btn-outline" onclick="closeQuickUpdateModal()">Cancel</button>
         <button type="submit" class="btn btn-primary">Save & Recalculate Score →</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- MODAL 2: 2G SMS / FEATURE PHONE SUMMARY -->
+<!-- MODAL 2: 2G SMS SUMMARY -->
 <div class="modal-overlay" id="smsModalOverlay">
   <div class="modal-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid rgba(0,0,0,0.08);padding-bottom:12px;">
       <div>
-        <h3 style="font-size:18px;font-weight:800;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> 2G Cellular SMS & USSD Summary</h3>
+        <h3 style="font-size:18px;font-weight:800;">2G Cellular SMS & USSD Summary</h3>
         <p style="font-size:12.5px;color:var(--ink-muted);">Plain text summary formatted for 160-character 2G feature phone delivery</p>
       </div>
       <button type="button" onclick="closeSmsModal()" style="border:none;background:none;font-size:18px;cursor:pointer;font-weight:700;">✕</button>
     </div>
 
-    <div style="background:#F1F3F5;border:1.5px solid rgba(0,0,0,0.12);border-radius:12px;padding:16px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#0D0C22;margin-bottom:16px;white-space:pre-wrap;" id="smsTextPreview"></div>
+    <div style="background:#F1F3F5;border:1.5px solid rgba(0,0,0,0.12);border-radius:12px;padding:16px;font-family:var(--font-mono);font-size:13px;color:#0D0C22;margin-bottom:16px;white-space:pre-wrap;" id="smsTextPreview"></div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
       <span style="font-size:12px;color:var(--ink-muted);">Target Mobile: <strong id="smsTargetPhone">+91 8327708489</strong></span>
       <div style="display:flex;gap:8px;">
-        <button type="button" class="btn btn-outline" style="color:#0D0C22;border-color:rgba(0,0,0,0.2);" onclick="copySmsText()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Copy SMS Text</button>
-        <button type="button" class="btn btn-primary" onclick="alert('2G cellular SMS summary queued for transmission to registered SIM via Kisan Telecom Gateway!')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Dispatch to Mobile</button>
+        <button type="button" class="btn btn-outline" onclick="copySmsText()">Copy SMS Text</button>
+        <button type="button" class="btn btn-primary" onclick="alert('2G cellular SMS summary queued for transmission to registered SIM via Kisan Telecom Gateway!')">Dispatch to Mobile</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL 3: HUMAN-IN-THE-LOOP GRANULAR CONSENT (DPDP ACT 2023) -->
+<!-- MODAL 3: DPDP ACT RELIEF CONSENT -->
 <div class="modal-overlay" id="consentModalOverlay">
   <div class="modal-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid rgba(0,0,0,0.08);padding-bottom:12px;">
       <div>
-        <h3 style="font-size:18px;font-weight:800;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Institutional Relief Authorization</h3>
+        <h3 style="font-size:18px;font-weight:800;">Institutional Relief Authorization</h3>
         <p style="font-size:12px;color:var(--ink-muted);">Explicit data disclosure under Digital Personal Data Protection (DPDP) Act 2023</p>
       </div>
       <button type="button" onclick="closeReviewGateModal()" style="border:none;background:none;font-size:18px;cursor:pointer;font-weight:700;">✕</button>
     </div>
 
-    <!-- Disclosure Breakdown -->
     <div style="font-size:12.5px;color:var(--ink);line-height:1.5;margin-bottom:16px;background:#F8F9FA;padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);">
-      <div style="font-weight:800;margin-bottom:6px;color:#0D0C22;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Designated Recipient Institutions & Purpose:</div>
-      
+      <div style="font-weight:800;margin-bottom:6px;color:#0D0C22;">Designated Recipient Institutions & Purpose:</div>
       <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.05);">
-        <strong>1. District Agriculture Office (DAO), Balasore</strong><br>
-        <span style="color:var(--ink-muted);">Purpose: SDRF Input Subsidy Assessment & Local Field Survey Dispatch.<br>Data Disclosed: Plot coordinates (21.49°N, 86.91°E), Acreage (3.2 Ac), Sowing date, 14-day rainfall deficit (-24%).</span>
+        <strong>1. District Agriculture Office (DAO)</strong><br>
+        <span style="color:var(--ink-muted);">SDRF Input Subsidy Assessment & Local Field Survey Dispatch.</span>
       </div>
-
       <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.05);">
         <strong>2. PMFBY Crop Insurance Nodal Office</strong><br>
-        <span style="color:var(--ink-muted);">Purpose: Fast-Track Satellite NDVI Yield Loss Claim Assessment.<br>Data Disclosed: Multi-spectral vegetative anomaly, crop stage, policy enrollment verification.</span>
+        <span style="color:var(--ink-muted);">Satellite NDVI Yield Loss Claim Assessment.</span>
       </div>
-
       <div>
         <strong>3. Lead District Bank (LDB) & NABARD KCC Desk</strong><br>
-        <span style="color:var(--ink-muted);">Purpose: RBI-Compliant 90-Day KCC Debt Moratorium & Interest Rescheduling.<br>Data Disclosed: Total outstanding crop debt (₹1.5L), informal moneylender exposure (35%), scheduled repayment deadline.</span>
+        <span style="color:var(--ink-muted);">RBI-Compliant 90-Day KCC Debt Moratorium & Rescheduling.</span>
       </div>
     </div>
 
@@ -956,17 +1235,301 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       </div>
 
       <div style="display:flex;justify-content:flex-end;gap:10px;">
-        <button type="button" class="btn btn-outline" style="color:#0D0C22;border-color:rgba(0,0,0,0.2);" onclick="closeReviewGateModal()">✕ Decline & Exit</button>
-        <button type="submit" class="btn btn-primary" id="btnSubmitConsent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Authorize & Transmit Official Dossier →</button>
+        <button type="button" class="btn btn-outline" onclick="closeReviewGateModal()">✕ Decline & Exit</button>
+        <button type="submit" class="btn btn-primary" id="btnSubmitConsent">Authorize & Transmit Official Dossier →</button>
       </div>
     </form>
   </div>
 </div>
 
+<!-- Footer -->
+<footer class="wrap">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h5>FarmUp Agriculture</h5>
+      <p style="font-size:13px;color:var(--ink-muted);line-height:1.5;">Practical agricultural intelligence for Indian farmers — mandi rates, weather alerts, disease detection, and emergency helplines.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform Tools</h5>
+      <ul>
+        <li><a href="mandi.html">Mandi Bhav & APMC Trends</a></li>
+        <li><a href="weather.html">Hyper-Local Weather</a></li>
+        <li><a href="disease.html">Crop Doctor & Scanner</a></li>
+        <li><a href="schemes.html">Govt Schemes & Subsidies</a></li>
+        <li><a href="distress.html">Distress & Helplines Hub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Data Sources</h5>
+      <ul>
+        <li><a href="https://agmarknet.gov.in" target="_blank" rel="noopener">National APMC Network</a></li>
+        <li><a href="https://data.gov.in" target="_blank" rel="noopener">Open Government Data</a></li>
+        <li><a href="https://icar.org.in" target="_blank" rel="noopener">Public Agricultural Research</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 FarmUp. Free Tools for Indian Farmers.</div>
+    <div>11 Indian Languages Supported · Toll-Free Helpline: 1551</div>
+  </div>
+</footer>
+
 <script src="farmup-api.js"></script>
 <script>
+  // =========================================================================
+  // HELPLINE DATASET
+  // =========================================================================
+  const HELPLINES_DATABASE = [
+    {
+      id: 'nat_kcc',
+      title: 'Kisan Call Centre (KCC)',
+      dept: 'Ministry of Agriculture & Farmers Welfare, Govt of India',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-180-1551',
+      dial: '18001801551',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM (All 365 Days)',
+      langs: '22 Indian Languages',
+      desc: 'Expert agronomist telephone advice on crop pests, disease management, fertilizer dosages, soil preparation, and weather forecasts with zero call charges.'
+    },
+    {
+      id: 'nat_pmkisan',
+      title: 'PM-Kisan Direct Benefit Transfer (DBT) Helpline',
+      dept: 'Department of Agriculture & Farmers Welfare',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '155261 / 011-24300606',
+      dial: '155261',
+      category: 'dbt',
+      hours: '9:30 AM – 6:00 PM (Mon–Sat)',
+      langs: 'Hindi, English, Regional',
+      desc: 'Official assistance for PM-Kisan ₹6,000 installment tracking, land record seeding, eKYC status verification, and uncredited installment resolution.'
+    },
+    {
+      id: 'nat_pmfby',
+      title: 'PMFBY Crop Insurance & Loss Claim Toll-Free',
+      dept: 'Pradhan Mantri Fasal Bima Yojana',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '14447',
+      dial: '14447',
+      category: 'insurance',
+      hours: '24x7 Dedicated Toll-Free',
+      langs: 'Pan-India Multilingual',
+      desc: 'Mandatory 72-hour localized crop loss reporting for unseasonal rainfall, hailstorms, flooding, and landslide claim settlement dispatch.'
+    },
+    {
+      id: 'nat_kcc_loan',
+      title: 'Kisan Credit Card (KCC) Subsidized Loan Support',
+      dept: 'National Bank for Agriculture and Rural Development (NABARD)',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-11-5526',
+      dial: '1800115526',
+      category: 'loan',
+      hours: '10:00 AM – 5:30 PM (Working Days)',
+      langs: 'English, Hindi',
+      desc: 'Guidance on 4% interest subvention crop loans, KCC renewal, zero-collateral limit eligibility up to ₹1.6 Lakh, and bank branch escalations.'
+    },
+    {
+      id: 'nat_enam',
+      title: 'e-NAM National Agriculture Market Helpdesk',
+      dept: 'Small Farmers Agri-Business Consortium (SFAC)',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1800-270-0224',
+      dial: '18002700224',
+      category: 'market',
+      hours: '9:00 AM – 6:00 PM',
+      langs: 'Multilingual',
+      desc: 'Assistance with online APMC mandi auction trading, inter-state unified license bidding, electronic payment settlement, and assaying support.'
+    },
+    {
+      id: 'nat_ndrf',
+      title: 'National Disaster / Cyclone & Flood Emergency (NDRF)',
+      dept: 'National Disaster Management Authority (NDMA)',
+      scope: 'NATIONAL',
+      state: 'All-India',
+      phone: '1078 / 011-24363260',
+      dial: '1078',
+      category: 'disaster',
+      hours: '24x7 Emergency Control Room',
+      langs: 'All Languages',
+      desc: 'Emergency rescue, flood evacuation, cyclone warnings, and field relief coordination for farming communities during severe climatic disasters.'
+    },
+    // Odisha
+    {
+      id: 'st_od_amakrushi',
+      title: 'AMA KRUSHI Agronomic & Scheme Helpline',
+      dept: 'Dept of Agriculture & Farmers Empowerment, Odisha',
+      scope: 'STATE',
+      state: 'Odisha',
+      phone: '155333',
+      dial: '155333',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Odia, Sambalpuri, English',
+      desc: 'Personalized agricultural advice in Odia, Krushak Odisha portal registration support, soil health card recommendations, and weather alerts.'
+    },
+    {
+      id: 'st_od_kalia',
+      title: 'KALIA Scheme Financial Assistance Helpline',
+      dept: 'Government of Odisha',
+      scope: 'STATE',
+      state: 'Odisha',
+      phone: '1800-572-1122',
+      dial: '18005721122',
+      category: 'dbt',
+      hours: '7:00 AM – 9:00 PM',
+      langs: 'Odia, English',
+      desc: 'Assistance regarding direct livelihood support of ₹10,000/year for small/marginal farmers and landless agricultural households in Odisha.'
+    },
+    // Punjab
+    {
+      id: 'st_pb_pau',
+      title: 'PAU Kisan Advisory Helpline (Ludhiana)',
+      dept: 'Punjab Agricultural University (PAU)',
+      scope: 'STATE',
+      state: 'Punjab',
+      phone: '0161-2401960',
+      dial: '01612401960',
+      category: 'advisory',
+      hours: '9:00 AM – 5:00 PM (Mon–Fri)',
+      langs: 'Punjabi, Hindi, English',
+      desc: 'Direct consultation with PAU university agronomists for wheat yellow rust, paddy stem borer, stubble management, and certified seed varieties.'
+    },
+    // Maharashtra
+    {
+      id: 'st_mh_mahaagri',
+      title: 'MahaAgri Farmer Call Centre',
+      dept: 'Department of Agriculture, Govt of Maharashtra',
+      scope: 'STATE',
+      state: 'Maharashtra',
+      phone: '1800-233-4000',
+      dial: '18002334000',
+      category: 'advisory',
+      hours: '8:00 AM – 8:00 PM',
+      langs: 'Marathi, Hindi',
+      desc: 'Maharashtra state crop advisory, MahaDBT farmer scheme subsidies, drip irrigation grants, and cotton pink bollworm outbreak remedies.'
+    },
+    // Uttar Pradesh
+    {
+      id: 'st_up_mitra',
+      title: 'UP Kisan Mitra Helpline',
+      dept: 'Department of Agriculture, Uttar Pradesh',
+      scope: 'STATE',
+      state: 'Uttar Pradesh',
+      phone: '1800-180-1551',
+      dial: '18001801551',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Hindi',
+      desc: 'Direct consultation for sugarcane crop calendar, certified wheat/paddy seed distribution at block godowns, and KCC loan camps in UP.'
+    },
+    // Rajasthan
+    {
+      id: 'st_rj_sewa',
+      title: 'Rajasthan Kisan Sewa Kendra',
+      dept: 'Agriculture Department, Govt of Rajasthan',
+      scope: 'STATE',
+      state: 'Rajasthan',
+      phone: '1800-180-1551',
+      dial: '18001801551',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Hindi, Rajasthani',
+      desc: 'Mustard and cumin crop protection, farm pond subsidy (Khet Talai), solar pump grants under KUSUM, and locust emergency alerts.'
+    },
+    // Gujarat
+    {
+      id: 'st_gj_ikhedut',
+      title: 'i-Khedut Portal & Kisan Sahay Helpline',
+      dept: 'Agriculture & Co-operation Dept, Gujarat',
+      scope: 'STATE',
+      state: 'Gujarat',
+      phone: '079-23256101',
+      dial: '07923256101',
+      category: 'dbt',
+      hours: '10:30 AM – 6:10 PM',
+      langs: 'Gujarati, Hindi',
+      desc: 'Assistance with i-Khedut online application tracking for tractor subsidies, pipeline grants, and Mukhyamantri Kisan Sahay Yojana.'
+    },
+    // Haryana
+    {
+      id: 'st_hr_kisan',
+      title: 'Haryana Kisan Help Desk (Panchkula)',
+      dept: 'Dept of Agriculture & Farmers Welfare, Haryana',
+      scope: 'STATE',
+      state: 'Haryana',
+      phone: '1800-180-2117',
+      dial: '18001802117',
+      category: 'advisory',
+      hours: '9:00 AM – 5:00 PM',
+      langs: 'Hindi, Haryanvi',
+      desc: 'Meri Fasal Mera Byora portal registration, DSR direct seeded rice incentives (₹4,000/acre), and tubewell electricity support.'
+    },
+    // West Bengal
+    {
+      id: 'st_wb_matir',
+      title: 'Matir Katha Farmer Toll-Free (West Bengal)',
+      dept: 'Department of Agriculture, Govt of West Bengal',
+      scope: 'STATE',
+      state: 'West Bengal',
+      phone: '1800-103-1000',
+      dial: '18001031000',
+      category: 'advisory',
+      hours: '6:00 AM – 10:00 PM',
+      langs: 'Bengali, English',
+      desc: 'Krishak Bandhu financial assistance inquiries, jute grading advisory, and Bangla Shasya Bima insurance claims in Bengali.'
+    },
+    // Bihar
+    {
+      id: 'st_br_krishi',
+      title: 'Bihar Krishi Helpline',
+      dept: 'Department of Agriculture, Govt of Bihar',
+      scope: 'STATE',
+      state: 'Bihar',
+      phone: '1800-345-6221',
+      dial: '18003456221',
+      category: 'advisory',
+      hours: '7:00 AM – 7:00 PM',
+      langs: 'Hindi, Bhojpuri, Maithili',
+      desc: 'Bihar Rajya Fasal Sahayata Yojana claims, diesel subsidy applications, and certified seed booking on DBT Agriculture portal.'
+    },
+    // Karnataka
+    {
+      id: 'st_ka_raitha',
+      title: 'Raitha Samparka Kendra Helpline',
+      dept: 'Department of Agriculture, Govt of Karnataka',
+      scope: 'STATE',
+      state: 'Karnataka',
+      phone: '1800-425-3553',
+      dial: '18004253553',
+      category: 'advisory',
+      hours: '8:00 AM – 8:00 PM',
+      langs: 'Kannada, English',
+      desc: 'FRUITS portal farmer registration, Raitha Siri millet assistance, borewell recharge scheme, and district RSK advisory in Kannada.'
+    },
+    // Tamil Nadu
+    {
+      id: 'st_tn_uzhavan',
+      title: 'Uzhavan Farmer Help Desk (Tamil Nadu)',
+      dept: 'Dept of Agriculture and Farmers Welfare, Tamil Nadu',
+      scope: 'STATE',
+      state: 'Tamil Nadu',
+      phone: '1800-425-4444',
+      dial: '18004254444',
+      category: 'advisory',
+      hours: '8:00 AM – 8:00 PM',
+      langs: 'Tamil, English',
+      desc: 'Uzhavan app guidance, Kalaignar All Village Scheme, micro-irrigation 100% subsidy for small farmers, and paddy advisory.'
+    }
+  ];
+
+  let selectedCategory = 'ALL';
   let currentFarmerProfile = null;
-  let activeAuditState = 'fresh'; // 'fresh', 'stale', 'apidown'
+  let activeAuditState = 'fresh';
   let activeFieldBeingUpdated = null;
   let latestDistressReport = null;
   let voiceAudioObj = null;
@@ -981,8 +1544,140 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     liveMandiStatus: { live: true, latencyMs: 210, source: 'data.gov.in Agmarknet Stream' }
   };
 
+  function switchHubSection(section) {
+    const distressView = document.getElementById('distressSectionView');
+    const helplinesView = document.getElementById('helplinesSectionView');
+    const btnDistress = document.getElementById('tabBtnDistress');
+    const btnHelplines = document.getElementById('tabBtnHelplines');
+
+    if (section === 'distress') {
+      distressView.style.display = 'block';
+      helplinesView.style.display = 'none';
+      btnDistress.classList.add('active');
+      btnHelplines.classList.remove('active');
+    } else {
+      distressView.style.display = 'none';
+      helplinesView.style.display = 'block';
+      btnDistress.classList.remove('active');
+      btnHelplines.classList.add('active');
+      filterHelplines();
+    }
+  }
+
+  function setCategory(cat) {
+    selectedCategory = cat;
+    document.querySelectorAll('.f-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.getAttribute('data-cat') === cat);
+    });
+    filterHelplines();
+  }
+
+  function filterHelplines() {
+    const searchVal = (document.getElementById('helplineSearch').value || '').toLowerCase().trim();
+    const scopeVal = document.getElementById('scopeFilter').value;
+    const stateVal = document.getElementById('stateFilter').value;
+
+    const filtered = HELPLINES_DATABASE.filter(item => {
+      const matchSearch = !searchVal || 
+        item.title.toLowerCase().includes(searchVal) ||
+        item.dept.toLowerCase().includes(searchVal) ||
+        item.state.toLowerCase().includes(searchVal) ||
+        item.desc.toLowerCase().includes(searchVal) ||
+        item.phone.includes(searchVal);
+
+      const matchScope = scopeVal === 'ALL' || item.scope === scopeVal;
+      const matchState = stateVal === 'ALL' || item.state === 'All-India' || item.state.toLowerCase() === stateVal.toLowerCase();
+      const matchCat = selectedCategory === 'ALL' || item.category === selectedCategory;
+
+      return matchSearch && matchScope && matchState && matchCat;
+    });
+
+    renderHelplineGrid(filtered);
+  }
+
+  function renderHelplineGrid(list) {
+    const grid = document.getElementById('helplineGrid');
+    const countEl = document.getElementById('helplineCount');
+
+    if (countEl) {
+      countEl.textContent = `Showing ${list.length} verified agricultural helplines across India`;
+    }
+
+    if (list.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align:center; padding: 48px 20px; background:#FFF; border-radius:18px; border:1px solid var(--line);">
+          <div style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;">No helplines matching your filter</div>
+          <p style="font-size:13.5px;color:var(--ink-muted);margin-bottom:16px;">Try clearing search keywords or selecting "All States / UTs".</p>
+          <button type="button" class="btn btn-primary" onclick="resetHelplineFilters()">Reset All Filters</button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = list.map(item => {
+      const isNat = item.scope === 'NATIONAL';
+      const badgeClass = isNat ? 'national' : 'state';
+      const badgeText = isNat ? 'National (All-India)' : item.state;
+
+      return `
+        <div class="h-card">
+          <div>
+            <div class="h-header">
+              <div class="h-title">${item.title}</div>
+              <span class="h-badge ${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="h-dept">${item.dept}</div>
+            <div class="h-desc">${item.desc}</div>
+            
+            <div class="h-meta-row">
+              <div class="h-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>${item.hours}</span>
+              </div>
+              <div class="h-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+                <span>${item.langs}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-footer">
+            <div class="h-phone-box">
+              <span class="h-phone-label">Toll-Free Helpline</span>
+              <span class="h-phone-num">${item.phone}</span>
+            </div>
+            <a href="tel:${item.dial}" class="btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Now
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function resetHelplineFilters() {
+    document.getElementById('helplineSearch').value = '';
+    document.getElementById('scopeFilter').value = 'ALL';
+    document.getElementById('stateFilter').value = 'ALL';
+    setCategory('ALL');
+  }
+
+  // =========================================================================
+  // DISTRESS ENGINE INITIALIZATION
+  // =========================================================================
   document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Post-Login Verification
+    const urlParams = new URLSearchParams(window.location.search);
+    
+
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
+
     const loggedIn = typeof FarmUpAuth !== 'undefined' && FarmUpAuth.isLoggedIn();
     const guestSec = document.getElementById('guestLockSection');
     const authView = document.getElementById('authenticatedDistressView');
@@ -990,6 +1685,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     if (!loggedIn) {
       guestSec.style.display = 'block';
       authView.style.display = 'none';
+      filterHelplines();
       return;
     }
 
@@ -1003,16 +1699,16 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       name: (savedProf && savedProf.name) || 'Kisan Farmer',
       phone: (savedProf && savedProf.phone) || '',
       village: (savedProf && savedProf.village) || 'Gram Panchayat',
-      district: (savedProf && savedProf.district) || 'Ludhiana',
-      state: (savedProf && savedProf.state) || 'Punjab',
-      acres: parseFloat(savedProf && savedProf.acres) || 2.5,
+      district: (savedProf && savedProf.district) || 'Balasore',
+      state: (savedProf && savedProf.state) || 'Odisha',
+      acres: parseFloat(savedProf && savedProf.acres) || 3.2,
       soil: (savedProf && savedProf.soil) || 'Alluvial Soil',
       irrigation: (savedProf && savedProf.irrigation) || 'Canal Irrigation',
       crops: cleanCrops,
       cropStage: (savedProf && savedProf.cropStage) || 'Vegetative Growth & Tiller Stage',
-      totalDebt: parseFloat(savedProf && savedProf.totalDebt) || Math.round((parseFloat(savedProf && savedProf.acres) || 2.5) * 45000),
-      informalDebtRatio: parseFloat(savedProf && savedProf.informalDebtRatio) || 0.25,
-      loanDueDays: parseInt(savedProf && savedProf.loanDueDays) || 60,
+      totalDebt: parseFloat(savedProf && savedProf.totalDebt) || 150000,
+      informalDebtRatio: parseFloat(savedProf && savedProf.informalDebtRatio) || 0.35,
+      loanDueDays: parseInt(savedProf && savedProf.loanDueDays) || 45,
       tenancyStatus: (savedProf && savedProf.tenancyStatus) || 'Owner-Cultivator',
       timestamps: {
         crop: new Date(Date.now() - (12 * 86400000)).toISOString(),
@@ -1021,25 +1717,31 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       }
     };
 
-    // Pre-fill Signatory Name in Consent Modal
+    if (currentFarmerProfile.state) {
+      const stateSelect = document.getElementById('stateFilter');
+      for (let opt of stateSelect.options) {
+        if (opt.value.toLowerCase() === currentFarmerProfile.state.toLowerCase()) {
+          stateSelect.value = opt.value;
+          break;
+        }
+      }
+    }
+
     const sigInput = document.getElementById('modalSignatory');
     if (sigInput) sigInput.value = currentFarmerProfile.name;
 
-    // 2. Fetch Live Telemetry for User's Exact Location & Crop
     await fetchLiveParallelFeeds();
-
-    // 3. Initial Assessment
     evaluateAndRenderDistress();
+    filterHelplines();
   });
 
   async function fetchLiveParallelFeeds() {
     const district = currentFarmerProfile.district || 'Balasore';
     const state = currentFarmerProfile.state || 'Odisha';
     const crop = (currentFarmerProfile.crops && currentFarmerProfile.crops[0]) || 'Wheat';
-    const acres = parseFloat(currentFarmerProfile.acres) || 2.5;
+    const acres = parseFloat(currentFarmerProfile.acres) || 3.2;
 
     try {
-      // 1. Precise District Coordinates
       let lat = 21.4934, lon = 86.9135;
       if (typeof FarmUpLocations !== 'undefined') {
         const coords = FarmUpLocations.getCoordinates(state, district);
@@ -1048,7 +1750,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       currentFarmerProfile.lat = lat;
       currentFarmerProfile.lon = lon;
 
-      // 2. Query Live Open-Meteo Weather for exact District Lat/Lon
       const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum,temperature_2m_max&past_days=14&forecast_days=7&timezone=auto`;
       const [weatherRes, mandiRes] = await Promise.allSettled([
         fetch(weatherUrl),
@@ -1059,34 +1760,23 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
         const wData = await weatherRes.value.json();
         if (wData.daily && wData.daily.precipitation_sum) {
           const totalRain = wData.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0);
-          // Regional normal rainfall baseline varies by agro-climatic zone
-          const baselineNormal = (state.includes('Punjab') || state.includes('Haryana')) ? 18.0 : (state.includes('Odisha') || state.includes('Bengal') ? 38.0 : 26.0);
+          const baselineNormal = (state.includes('Punjab') || state.includes('Haryana')) ? 18.0 : 34.0;
           baseTelemetry.rainfallDeficitPct = Math.max(-75, Math.min(45, Math.round(((totalRain - baselineNormal) / baselineNormal) * 100)));
         }
       } else {
-        // Deterministic hash based on district name so different districts get realistic distinct values
-        let dHash = 0;
-        for (let i = 0; i < district.length; i++) dHash = (dHash * 31 + district.charCodeAt(i)) % 50;
-        baseTelemetry.rainfallDeficitPct = -15 - (dHash % 30);
+        baseTelemetry.rainfallDeficitPct = -24;
       }
 
-      // Soil Moisture based on soil type & irrigation
-      if (currentFarmerProfile.irrigation.includes('Canal') || currentFarmerProfile.irrigation.includes('Drip')) {
-        baseTelemetry.soilMoisturePct = 34 + ((acres * 3) % 8);
-      } else {
-        baseTelemetry.soilMoisturePct = 22 + ((acres * 2) % 6);
-      }
+      baseTelemetry.soilMoisturePct = currentFarmerProfile.irrigation.includes('Canal') ? 34 : 24;
 
-      // Live Mandi Rate
-      const baseline = FarmUpDistressEngine.mspBaselines[crop] || 2275;
+      const baseline = (typeof FarmUpDistressEngine !== 'undefined' && FarmUpDistressEngine.mspBaselines[crop]) || 2275;
       if (mandiRes.status === 'fulfilled' && mandiRes.value && mandiRes.value.records && mandiRes.value.records.length > 0) {
         baseTelemetry.currentMandiRate = mandiRes.value.records[0].modal || baseline;
       } else {
-        let cHash = (district.length * 17 + crop.length * 29) % 320;
-        baseTelemetry.currentMandiRate = baseline + (cHash - 100);
+        baseTelemetry.currentMandiRate = baseline + 205;
       }
 
-      document.getElementById('locationSubtitle').textContent = `Evaluating Live Telemetry for ${district}, ${state} (${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E · ${acres} Acres · ${currentFarmerProfile.crops.join(', ')})`;
+      document.getElementById('locationSubtitle').textContent = `Live Telemetry: ${district}, ${state} (${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E · ${acres} Acres · ${currentFarmerProfile.crops.join(', ')})`;
     } catch(e) {
       console.warn('Distress live feed error:', e);
     }
@@ -1107,20 +1797,21 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     } else if (state === 'stale') {
       document.getElementById('btnStateStale').classList.add('active');
       currentFarmerProfile.timestamps = {
-        crop: new Date(Date.now() - (45 * 86400000)).toISOString(), // 45 days > 30 threshold
-        loan: new Date(Date.now() - (98 * 86400000)).toISOString(), // 98 days > 90 threshold
+        crop: new Date(Date.now() - (45 * 86400000)).toISOString(),
+        loan: new Date(Date.now() - (98 * 86400000)).toISOString(),
         land: new Date(Date.now() - (20 * 86400000)).toISOString()
       };
       baseTelemetry.liveMandiStatus = { live: true, latencyMs: 210, source: 'data.gov.in Agmarknet Stream' };
     } else if (state === 'apidown') {
       document.getElementById('btnStateApiDown').classList.add('active');
-      baseTelemetry.liveMandiStatus = { live: false, latencyMs: 0, source: 'data.gov.in Agmarknet Stream (Offline · Using Cached Value)' };
+      baseTelemetry.liveMandiStatus = { live: false, latencyMs: 0, source: 'data.gov.in Agmarknet Stream (Offline · Cached)' };
     }
 
     evaluateAndRenderDistress();
   }
 
   function evaluateAndRenderDistress() {
+    if (typeof FarmUpDistressEngine === 'undefined') return;
     const freshnessAudit = FarmUpDistressEngine.auditProfileFreshness(currentFarmerProfile);
     const primaryCrop = (currentFarmerProfile.crops && currentFarmerProfile.crops[0]) || 'Wheat';
 
@@ -1136,10 +1827,10 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       irrigationType: currentFarmerProfile.irrigation || 'Canal Irrigation',
       cropStage: currentFarmerProfile.cropStage || 'Vegetative Growth',
       pestIncidence: 'Low',
-      totalDebt: currentFarmerProfile.totalDebt || 100000,
-      acres: parseFloat(currentFarmerProfile.acres) || 2.5,
-      informalDebtRatio: currentFarmerProfile.informalDebtRatio || 0.25,
-      loanDueDays: currentFarmerProfile.loanDueDays || 60,
+      totalDebt: currentFarmerProfile.totalDebt || 150000,
+      acres: parseFloat(currentFarmerProfile.acres) || 3.2,
+      informalDebtRatio: currentFarmerProfile.informalDebtRatio || 0.35,
+      loanDueDays: currentFarmerProfile.loanDueDays || 45,
       pmfbyEnrolled: true,
       tenancyStatus: currentFarmerProfile.tenancyStatus || 'Owner-Cultivator',
       cropDiversificationCount: (currentFarmerProfile.crops && currentFarmerProfile.crops.length) || 1,
@@ -1153,7 +1844,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
   function renderUI(rep) {
     if (!currentFarmerProfile) return;
 
-    // 1. Freshness Banner
     const banner = document.getElementById('staleFreshnessBanner');
     const bannerText = document.getElementById('staleBannerText');
     const btnBox = document.getElementById('staleActionButtons');
@@ -1161,7 +1851,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     if (rep.freshnessAudit && !rep.freshnessAudit.isAllFresh) {
       banner.style.display = 'flex';
       const staleCount = rep.freshnessAudit.staleFields.length;
-      bannerText.innerHTML = `${staleCount} profile input${staleCount > 1 ? 's are' : ' is'} outdated: <strong>${rep.freshnessAudit.staleFields.map(f => f.label).join(', ')}</strong>. Update for full confidence score.`;
+      bannerText.innerHTML = `${staleCount} profile input${staleCount > 1 ? 's are' : ' is'} outdated: <strong>${rep.freshnessAudit.staleFields.map(f => f.label).join(', ')}</strong>.`;
       btnBox.innerHTML = '';
       rep.freshnessAudit.staleFields.forEach(f => {
         const btn = document.createElement('button');
@@ -1176,7 +1866,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       banner.style.display = 'none';
     }
 
-    // 2. Score Gauge
     const circle = document.getElementById('gaugeCircle');
     const scoreVal = document.getElementById('scoreVal');
     const statusBadge = document.getElementById('statusBadge');
@@ -1198,11 +1887,11 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
 
     const cropList = Array.isArray(currentFarmerProfile.crops) ? currentFarmerProfile.crops.join(' & ') : currentFarmerProfile.crops;
     const rainStatus = baseTelemetry.rainfallDeficitPct < 0 ? `rainfall deficit (${baseTelemetry.rainfallDeficitPct}%)` : `healthy rainfall (+${baseTelemetry.rainfallDeficitPct}%)`;
-    summary.textContent = `Current ${rainStatus} in ${currentFarmerProfile.district} is buffered by ${currentFarmerProfile.irrigation}. Live APMC mandi rates for ${currentFarmerProfile.crops[0] || 'crops'} are trading at ₹${baseTelemetry.currentMandiRate.toLocaleString('en-IN')}/Qtl, and informal debt exposure across your ${currentFarmerProfile.acres} Acres is within manageable thresholds.`;
+    summary.textContent = `Current ${rainStatus} in ${currentFarmerProfile.district} is buffered by ${currentFarmerProfile.irrigation}. Live APMC mandi rates for ${currentFarmerProfile.crops[0] || 'crops'} are trading at ₹${baseTelemetry.currentMandiRate.toLocaleString('en-IN')}/Qtl, and debt exposure is within manageable limits.`;
     
     confEl.textContent = `Confidence: ${rep.confidenceRating}`;
 
-    // 3. Ranked Drivers
+    // Ranked Drivers
     const driversBox = document.getElementById('rankedDriversContainer');
     driversBox.innerHTML = '';
     rep.rankedDrivers.forEach((d, idx) => {
@@ -1221,7 +1910,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
           </div>
         </div>
         <div style="text-align:right;">
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:700;color:${isEscalator ? '#D32F2F' : '#268549'};background:${isEscalator ? 'rgba(211,47,47,0.08)' : 'rgba(38,133,73,0.08)'};padding:4px 10px;border-radius:100px;white-space:nowrap;">
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:${isEscalator ? '#D32F2F' : '#268549'};background:${isEscalator ? 'rgba(211,47,47,0.08)' : 'rgba(38,133,73,0.08)'};padding:4px 10px;border-radius:100px;white-space:nowrap;">
             ${isEscalator ? '🔺 ' : '🟢 '}${d.pts} (${isEscalator ? 'Risk Escalator' : 'Protective Buffer'})
           </span>
         </div>
@@ -1229,7 +1918,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       driversBox.appendChild(item);
     });
 
-    // 4. Provenance Table
+    // Provenance Table
     const tbody = document.getElementById('provenanceTableBody');
     tbody.innerHTML = '';
     rep.provenanceAudit.forEach(p => {
@@ -1251,29 +1940,17 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
       tbody.appendChild(row);
     });
 
-    // 5. Four Risk Domains Breakdown with Dynamic Account Text
-    const prodScore = rep.domainScores.production.score;
-    const marketScore = rep.domainScores.market.score;
-    const finScore = rep.domainScores.financial.score;
-    const structScore = rep.domainScores.structural.score;
+    // Four Domains
+    renderDomain('Prod', rep.domainScores.production.score);
+    renderDomain('Market', rep.domainScores.market.score);
+    renderDomain('Fin', rep.domainScores.financial.score);
+    renderDomain('Struct', rep.domainScores.structural.score);
 
-    renderDomain('Prod', prodScore);
-    renderDomain('Market', marketScore);
-    renderDomain('Fin', finScore);
-    renderDomain('Struct', structScore);
-
-    const descProd = document.getElementById('domDescProd');
-    if (descProd) descProd.textContent = `Rolling Rain Deficit: ${baseTelemetry.rainfallDeficitPct}% · Soil Moisture: ${baseTelemetry.soilMoisturePct}% · Irrigation: ${currentFarmerProfile.irrigation}`;
-
-    const descMarket = document.getElementById('domDescMarket');
-    if (descMarket) descMarket.textContent = `Mandi Spot: ₹${baseTelemetry.currentMandiRate.toLocaleString('en-IN')}/Qtl for ${currentFarmerProfile.crops[0] || 'Crop'} in ${currentFarmerProfile.district}`;
-
+    document.getElementById('domDescProd').textContent = `Rain Deficit: ${baseTelemetry.rainfallDeficitPct}% · Soil Moisture: ${baseTelemetry.soilMoisturePct}% · Irrigation: ${currentFarmerProfile.irrigation}`;
+    document.getElementById('domDescMarket').textContent = `Mandi Spot: ₹${baseTelemetry.currentMandiRate.toLocaleString('en-IN')}/Qtl for ${currentFarmerProfile.crops[0] || 'Crop'}`;
     const debtPerAcre = Math.round(currentFarmerProfile.totalDebt / Math.max(0.5, currentFarmerProfile.acres));
-    const descFin = document.getElementById('domDescFin');
-    if (descFin) descFin.textContent = `Debt/Acre: ₹${debtPerAcre.toLocaleString('en-IN')} · Informal Share: ${Math.round(currentFarmerProfile.informalDebtRatio * 100)}% · Repayment Due: ${currentFarmerProfile.loanDueDays} Days`;
-
-    const descStruct = document.getElementById('domDescStruct');
-    if (descStruct) descStruct.textContent = `Holding: ${currentFarmerProfile.acres} Acres · Tenure: ${currentFarmerProfile.tenancyStatus} · ${currentFarmerProfile.crops.length} Diversified Crops (${cropList})`;
+    document.getElementById('domDescFin').textContent = `Debt/Acre: ₹${debtPerAcre.toLocaleString('en-IN')} · Informal Share: ${Math.round(currentFarmerProfile.informalDebtRatio * 100)}% · Repayment: ${currentFarmerProfile.loanDueDays} Days`;
+    document.getElementById('domDescStruct').textContent = `Holding: ${currentFarmerProfile.acres} Acres · Tenure: ${currentFarmerProfile.tenancyStatus} · ${currentFarmerProfile.crops.length} Diversified Crops (${cropList})`;
   }
 
   function renderDomain(key, score) {
@@ -1289,7 +1966,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     if (voiceAudioObj) {
       voiceAudioObj.pause();
       voiceAudioObj = null;
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice Briefing`;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice`;
       return;
     }
 
@@ -1302,17 +1979,16 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
         voiceAudioObj = await FarmUpSarvamAI.playVoice(summaryText, lang, (status) => {
           if (status === 'playing') btn.textContent = '⏹️ Stop Voice Audio';
           if (status === 'ended' || status === 'error') {
-            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice Briefing`;
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice`;
             voiceAudioObj = null;
           }
         });
       }
     } catch(e) {
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;display:inline-block;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice Briefing`;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg> Listen to Voice`;
     }
   }
 
-  /* 2G SMS Modal */
   function openSmsModal() {
     if (!latestDistressReport) return;
     document.getElementById('smsTextPreview').textContent = latestDistressReport.smsSummaryText;
@@ -1330,7 +2006,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     alert('2G SMS plain text copied to clipboard!');
   }
 
-  /* Inline Field Refresh Modal */
   function openQuickUpdateModal(fieldKey) {
     activeFieldBeingUpdated = fieldKey;
     const title = document.getElementById('quickModalTitle');
@@ -1344,7 +2019,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
         <select id="quickCropStageSelect" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid rgba(0,0,0,0.14);font-size:13.5px;font-weight:600;outline:none;">
           <option value="Sowing & Germination">Sowing & Germination</option>
           <option value="Vegetative & Tillering">Vegetative & Tillering</option>
-          <option value="Flowering & Grain Filling" selected>Flowering & Grain Filling (Critical Moisture Stage)</option>
+          <option value="Flowering & Grain Filling" selected>Flowering & Grain Filling</option>
           <option value="Maturity & Pre-Harvest">Maturity & Pre-Harvest</option>
         </select>
       `;
@@ -1389,8 +2064,7 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     if (!currentFarmerProfile.timestamps) currentFarmerProfile.timestamps = {};
 
     if (activeFieldBeingUpdated === 'crop') {
-      const stage = document.getElementById('quickCropStageSelect').value;
-      currentFarmerProfile.cropStage = stage;
+      currentFarmerProfile.cropStage = document.getElementById('quickCropStageSelect').value;
       currentFarmerProfile.timestamps.crop = new Date().toISOString();
     } else if (activeFieldBeingUpdated === 'loan') {
       currentFarmerProfile.totalDebt = parseFloat(document.getElementById('quickLoanAmount').value) || 150000;
@@ -1407,7 +2081,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
     evaluateAndRenderDistress();
   }
 
-  /* Human-in-the-Loop Consent Modal */
   function openReviewGateModal() {
     if (!latestDistressReport) return;
     document.getElementById('modalSignatory').value = currentFarmerProfile.name || 'Punyanshu Kar';
@@ -1431,5 +2104,6 @@ footer{border-top:1px solid rgba(0,0,0,0.08);padding:32px 0;margin-top:64px;}
   }
 </script>
 
+<script src="navbar.js"></script>
 </body>
 </html>

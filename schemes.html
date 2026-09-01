@@ -1164,42 +1164,176 @@ background:#FFFFFF;
 
 footer{border-top:1px solid var(--line);padding:32px 0;margin-top:64px;}
 </style>
+<link rel="stylesheet" href="navbar.css">
 </head>
 <body>
 
 <!-- Surinder.design-inspired Floating Pill Taskbar -->
+<!-- Flat Top Navigation Taskbar -->
+
+<!-- Unified Taskbar -->
 <header class="taskbar-wrap">
   <nav class="floating-taskbar">
     <div class="tb-left">
-      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle Menu">
+      <button class="hamburger" id="hamburger" type="button" aria-label="Open Navigation Menu">
         <span></span><span></span><span></span>
       </button>
-      <a href="homepage.html" class="tb-logo" aria-label="FarmUp Home">
-        <img src="farmup-logo.png" alt="FarmUp Logo" class="logo-mark">
+      <a href="index.html" class="tb-logo" aria-label="FarmUp Home">
+        <img src="farmup-logo.png" alt="FarmUp" class="logo-mark" onerror="this.src='favicon.png'">
         <span class="tb-name">FarmUp</span>
       </a>
     </div>
 
     <div class="tb-links" id="navLinks">
-      <a href="homepage.html" class="tb-link">Home</a>
-      <a href="mandi.html" class="tb-link">Mandi Bhav</a>
-      <a href="weather.html" class="tb-link">Weather</a>
-      <a href="disease.html" class="tb-link">Crop Doctor</a>
+      <a href="index.html" class="tb-link ">Home</a>
+      <a href="mandi.html" class="tb-link ">Mandi Bhav</a>
+      <a href="weather.html" class="tb-link ">Weather</a>
+      <a href="disease.html" class="tb-link ">Crop Doctor</a>
       <a href="schemes.html" class="tb-link active">Govt Schemes</a>
-      <a href="distress.html" class="tb-link" style="color:#D32F2F;font-weight:700;">Distress Risk</a>
-      <a href="profile.html" class="tb-link" style="color:#EA4C89;">Dashboard →</a>
+
+      <!-- Sharp Rectangular Distress Dropdown -->
+      <div class="nav-dropdown">
+        <a href="distress.html" class="nav-dropdown-trigger ">
+          <span>Distress</span>
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </a>
+
+        <div class="nav-dropdown-menu">
+          <a href="distress.html" class="dd-item">
+            <div class="dd-icon-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <span class="dd-title">Distress Score</span>
+          </a>
+
+          <a href="helpline.html" class="dd-item">
+            <div class="dd-icon-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0C22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <span class="dd-title">Helpline</span>
+          </a>
+        </div>
+      </div>
+
+      <a href="profile.html" class="tb-link ">Dashboard →</a>
     </div>
 
     <div class="tb-right">
-      <button type="button" class="tb-ask-btn" id="tbAskBtn" aria-label="Ask FarmUp AI Assistant">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
+      <button type="button" class="btn-nav-ask tb-ask-trigger" onclick="if(window.FarmUpSarvamAI&&window.FarmUpSarvamAI.openAssistant){window.FarmUpSarvamAI.openAssistant();}else{window.location.href='disease.html';}" aria-label="Ask FarmUp AI Assistant">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
         <span>Ask AI</span>
       </button>
+      <a href="login.html" class="btn-nav-auth" id="navAuthBtn">Log in</a>
     </div>
   </nav>
 </header>
+
+
+<!-- Mobile Slide-Over Backdrop -->
+<div class="nav-backdrop" id="mobileBackdrop"></div>
+
+<!-- Mobile Slide-Over Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-header">
+    <a href="index.html" class="tb-logo">
+      <img src="farmup-logo.png" alt="FarmUp" class="logo-mark" onerror="this.src='favicon.png'">
+      <span class="tb-name">FarmUp</span>
+    </a>
+    <button type="button" class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close Menu">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <a href="index.html" class="mob-link ">
+      <span>Home</span>
+      <span style="font-size:12px;color:var(--nav-dim);">→</span>
+    </a>
+    <a href="mandi.html" class="mob-link ">
+      <span>Mandi Bhav</span>
+      <span style="font-size:12px;color:var(--nav-dim);">→</span>
+    </a>
+    <a href="weather.html" class="mob-link ">
+      <span>Weather</span>
+      <span style="font-size:12px;color:var(--nav-dim);">→</span>
+    </a>
+    <a href="disease.html" class="mob-link ">
+      <span>Crop Doctor</span>
+      <span style="font-size:12px;color:var(--nav-dim);">→</span>
+    </a>
+    <a href="schemes.html" class="mob-link active">
+      <span>Govt Schemes</span>
+      <span style="font-size:12px;color:var(--nav-dim);">→</span>
+    </a>
+
+    <!-- Mobile Drawer Accordion for Distress & Helplines -->
+    <div class="mob-accordion " id="mobDistressAccordion">
+      <button type="button" class="mob-accordion-btn" id="mobDistressAccordionBtn">
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span>Distress & Helplines</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;background:#FEECEB;color:#D32F2F;">Hub</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div class="mob-accordion-content">
+        <!-- Sub-item 1: Risk Scorer -->
+        <a href="distress.html?tab=distress" class="mob-sub-card">
+          <div class="dd-icon-box red">📊</div>
+          <div>
+            <div class="mob-sub-title">
+              <span>Distress Risk Scorer</span>
+              <span class="dd-badge pink">Telemetry</span>
+            </div>
+            <div class="mob-sub-desc">Predictive AI multi-factor vulnerability assessment</div>
+          </div>
+        </a>
+
+        <!-- Sub-item 2: Kisan Helplines -->
+        <a href="distress.html?tab=helplines" class="mob-sub-card">
+          <div class="dd-icon-box green">📞</div>
+          <div>
+            <div class="mob-sub-title">
+              <span>Helplines Directory</span>
+              <span class="dd-badge green">Free</span>
+            </div>
+            <div class="mob-sub-desc">Toll-free national & state directorate numbers</div>
+          </div>
+        </a>
+
+        <!-- Quick 1-Tap Emergency Hotlines -->
+        <div class="mob-hotlines-box">
+          <span>⚡ 1-Tap Toll-Free Emergency:</span>
+          <div class="mob-hotlines-grid">
+            <a href="tel:18001801551">📞 KCC 1551</a>
+            <a href="tel:155261">📞 PM-Kisan 155261</a>
+            <a href="tel:14447">📞 PMFBY 14447</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="profile.html" class="mob-link " style="color:var(--nav-pink);">
+      <span>Farmer Dashboard</span>
+      <span style="font-size:14px;">→</span>
+    </a>
+  </div>
+
+  <div class="drawer-footer">
+    <button type="button" class="btn-nav-ask tb-ask-trigger" style="width:100%;justify-content:center;padding:10px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>Ask FarmUp AI Assistant</span>
+    </button>
+    <a href="login.html" class="btn-nav-auth" style="width:100%;justify-content:center;padding:10px;">
+      <span>Sign In / Farmer Profile →</span>
+    </a>
+  </div>
+</div>
 
 <main class="wrap">
   <section class="page-hero">
@@ -1601,5 +1735,6 @@ footer{border-top:1px solid var(--line);padding:32px 0;margin-top:64px;}
 </script>
 <script type="module" src="firebase-config.js"></script>
 <script src="farmup-api.js"></script>
+<script src="navbar.js"></script>
 </body>
 </html>
