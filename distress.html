@@ -615,6 +615,7 @@ window.addEventListener('farmup_account_synced', () => {
 });
 
 
+
 async function autoFetchAndCalculateLiveDistress() {
   if (!currentFarmerProfile) return;
 
@@ -623,54 +624,52 @@ async function autoFetchAndCalculateLiveDistress() {
   const primaryCrop = currentFarmerProfile.crops[0] || 'Paddy';
   const acres = currentFarmerProfile.acres;
 
-  // 1. Instant calculation and render (0ms - zero delay)
-  let liveTemp = 28;
-  let rainDeficitPct = -15;
+  // 1. Resolve district coordinates
+  let lat = 22.12, lon = 84.03;
+  if (typeof FarmUpLocations !== 'undefined') {
+    const coords = FarmUpLocations.getCoordinates(state, district);
+    if (coords) { lat = coords.lat; lon = coords.lon; }
+  }
+
+  // 2. Fetch Live Real-Time Weather & Mandi Telemetry
+  let liveTemp = 26;
+  let rain7dSum = 28;
+  let rainDeficitPct = 0;
   const baseMsp = (typeof FarmUpDistressEngine !== 'undefined' && FarmUpDistressEngine.mspBaselines[primaryCrop]) || 2183;
   let mandiSpotRate = baseMsp + 180;
+  let mandiMarketName = district + ' APMC Mandi';
 
-  calculateAndRender(liveTemp, rainDeficitPct, mandiSpotRate);
-
-  // 2. Fast background live update with 2.5s network timeout
   try {
-    let lat = 22.12, lon = 84.03;
-    if (typeof FarmUpLocations !== 'undefined') {
-      const coords = FarmUpLocations.getCoordinates(state, district);
-      if (coords) { lat = coords.lat; lon = coords.lon; }
-    }
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2500);
-
-    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=precipitation_sum,temperature_2m_max&timezone=auto`;
     const [weatherRes, mandiRes] = await Promise.allSettled([
-      fetch(weatherUrl, { signal: controller.signal }),
-      (typeof FarmUpMandiAPI !== 'undefined') ? FarmUpMandiAPI.fetchLivePrices({ state, commodity: primaryCrop, limit: 5 }) : Promise.resolve(null)
+      fetch(weatherUrl),
+      (typeof FarmUpMandiAPI !== 'undefined') ? FarmUpMandiAPI.fetchLivePrices({ state, commodity: primaryCrop, limit: 10 }) : Promise.resolve(null)
     ]);
-    clearTimeout(timeoutId);
 
+    // Parse Live Weather
     if (weatherRes.status === 'fulfilled' && weatherRes.value && weatherRes.value.ok) {
       const wData = await weatherRes.value.json();
       if (wData.current_weather) {
         liveTemp = Math.round(wData.current_weather.temperature);
-        rainDeficitPct = -12;
+      }
+      if (wData.daily && wData.daily.precipitation_sum) {
+        rain7dSum = Math.round(wData.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0) * 10) / 10;
+        const baselineNormal = (state.includes('Punjab') || state.includes('Haryana') || state.includes('Rajasthan')) ? 15.0 : 30.0;
+        rainDeficitPct = Math.max(-80, Math.min(60, Math.round(((rain7dSum - baselineNormal) / baselineNormal) * 100)));
       }
     }
 
+    // Parse Live APMC Mandi Rate
     if (mandiRes.status === 'fulfilled' && mandiRes.value && mandiRes.value.records && mandiRes.value.records.length > 0) {
-      mandiSpotRate = mandiRes.value.records[0].modal || baseMsp;
+      const bestRecord = mandiRes.value.records.find(r => r.dist && r.dist.toLowerCase().includes(district.toLowerCase())) || mandiRes.value.records[0];
+      mandiSpotRate = bestRecord.modal || baseMsp;
+      if (bestRecord.mandi) mandiMarketName = bestRecord.mandi;
     }
-
-    calculateAndRender(liveTemp, rainDeficitPct, mandiSpotRate);
   } catch(e) {
-    console.warn("Background live telemetry sync notice:", e);
+    console.warn("Live telemetry network notice:", e);
   }
-}
 
-function calculateAndRender(liveTemp, rainDeficitPct, mandiSpotRate) {
-  const primaryCrop = currentFarmerProfile.crops[0] || 'Paddy';
-  const acres = currentFarmerProfile.acres;
-
+  // 3. Compute Real-Time Calibrated Distress Score
   if (typeof FarmUpDistressEngine !== 'undefined') {
     latestDistressReport = FarmUpDistressEngine.calculateDistressScore({
       rainfallDeficitPct: rainDeficitPct,
@@ -692,11 +691,11 @@ function calculateAndRender(liveTemp, rainDeficitPct, mandiSpotRate) {
     };
   }
 
-  renderLiveTelemetryUI(liveTemp, rainDeficitPct, mandiSpotRate);
+  // 4. Update UI with Real Calculated Telemetry
+  renderLiveTelemetryUI(liveTemp, rain7dSum, rainDeficitPct, mandiSpotRate, mandiMarketName);
 }
 
-
-function renderLiveTelemetryUI(liveTemp, rainDeficitPct, mandiSpotRate) {
+function renderLiveTelemetryUI(liveTemp, rain7dSum, rainDeficitPct, mandiSpotRate, mandiMarketName) {
   if (!latestDistressReport || !currentFarmerProfile) return;
 
   const rep = latestDistressReport;
@@ -720,33 +719,35 @@ function renderLiveTelemetryUI(liveTemp, rainDeficitPct, mandiSpotRate) {
   statusBadge.style.setProperty('--badge-color', rep.badgeColor);
   statusBadge.style.setProperty('--badge-bg', rep.severityBand === 'CRITICAL' ? 'rgba(211,47,47,0.12)' : (rep.severityBand === 'MODERATE' ? 'rgba(245,124,0,0.12)' : 'rgba(38,133,73,0.12)'));
 
-  locationSub.textContent = `Live Telemetry: ${currentFarmerProfile.district}, ${currentFarmerProfile.state} (${currentFarmerProfile.acres} Acres · ${currentFarmerProfile.crops.join(', ')})`;
+  const nowTime = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  locationSub.textContent = `Live Telemetry: ${currentFarmerProfile.district}, ${currentFarmerProfile.state} · ${currentFarmerProfile.acres} Acres · Synced at ${nowTime}`;
 
   headline.textContent = rep.severityBand === 'CRITICAL' 
-    ? 'High Vulnerability Detected · Action Recommended' 
+    ? 'Critical Multi-Factor Agrarian Distress Detected' 
     : (rep.severityBand === 'MODERATE' ? 'Moderate Climate & Cashflow Risk' : 'Agronomic & Market Buffers Healthy');
   headline.style.color = rep.badgeColor;
 
-  const rainWord = rainDeficitPct < 0 ? `rainfall deficit (${rainDeficitPct}%)` : `healthy rainfall (+${rainDeficitPct}%)`;
+  const rainWord = rainDeficitPct < 0 ? `rainfall deficit of ${Math.abs(rainDeficitPct)}% (${rain7dSum}mm recorded)` : `healthy rainfall of ${rain7dSum}mm (+${rainDeficitPct}% vs normal)`;
   const mspDiff = mandiSpotRate - baseMsp;
-  const mandiWord = mspDiff >= 0 ? `trading above MSP (+₹${mspDiff}/Qtl)` : `trading below MSP (-₹${Math.abs(mspDiff)}/Qtl)`;
+  const mandiWord = mspDiff >= 0 ? `trading +₹${mspDiff}/Qtl above statutory MSP` : `trading -₹${Math.abs(mspDiff)}/Qtl below statutory MSP`;
 
-  summary.textContent = `Namaste ${currentFarmerProfile.name}. In ${currentFarmerProfile.district}, current ${rainWord} is cushioned by your ${currentFarmerProfile.irrigation}. Mandi spot rates for ${primaryCrop} are ₹${mandiSpotRate.toLocaleString('en-IN')}/Qtl (${mandiWord}). Your overall farm resilience score is ${rep.score}%.`;
+  summary.textContent = `Namaste ${currentFarmerProfile.name}. In ${currentFarmerProfile.district}, current ${rainWord} is cushioned by your ${currentFarmerProfile.irrigation}. ${primaryCrop} at ${mandiMarketName} is ₹${mandiSpotRate.toLocaleString('en-IN')}/Qtl (${mandiWord}). Based on your ${currentFarmerProfile.acres} acres land and ${currentFarmerProfile.crops.length} diversified crops, your real-time Distress Score is ${rep.score}%.`;
 
   // 2. Telemetry Cards
   document.getElementById('cardMetricWeather').textContent = `${liveTemp}°C`;
-  document.getElementById('cardDescWeather').textContent = `14-day rainfall is ${rainDeficitPct >= 0 ? '+' : ''}${rainDeficitPct}% relative to district seasonal normal.`;
+  document.getElementById('cardDescWeather').textContent = `7-day precipitation is ${rain7dSum} mm (${rainDeficitPct >= 0 ? '+' : ''}${rainDeficitPct}% vs seasonal normal).`;
 
   document.getElementById('cardMetricMandi').textContent = `₹${mandiSpotRate.toLocaleString('en-IN')}/Qtl`;
-  document.getElementById('cardDescMandi').textContent = `${primaryCrop} spot auction vs MSP baseline of ₹${baseMsp.toLocaleString('en-IN')}/Qtl.`;
+  document.getElementById('cardDescMandi').textContent = `${primaryCrop} spot rate at ${mandiMarketName} (Statutory MSP: ₹${baseMsp.toLocaleString('en-IN')}/Qtl).`;
 
   const moisture = currentFarmerProfile.irrigation.includes('Canal') || currentFarmerProfile.irrigation.includes('Drip') ? '34%' : '22%';
   document.getElementById('cardMetricSoil').textContent = moisture;
-  document.getElementById('cardDescSoil').textContent = `Volumetric root-zone moisture cushioned by ${currentFarmerProfile.irrigation}.`;
+  document.getElementById('cardDescSoil').textContent = `Volumetric root-zone moisture buffered by ${currentFarmerProfile.irrigation}.`;
 
   document.getElementById('cardMetricLand').textContent = `${currentFarmerProfile.acres} Acres`;
-  document.getElementById('cardDescLand').textContent = `${currentFarmerProfile.crops.length} diversified crops (${currentFarmerProfile.crops.join(', ')}) shielding against price shock.`;
+  document.getElementById('cardDescLand').textContent = `${currentFarmerProfile.crops.length} registered crops (${currentFarmerProfile.crops.join(', ')}) providing diversification buffer.`;
 }
+
 
 // Voice Audio Briefing
 async function playVoiceBriefing(btn) {
