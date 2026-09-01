@@ -410,12 +410,12 @@
     width: 100% !important;
     position: static !important;
     border: none !important;
+    border-left: none !important; /* Remove black line */
     box-shadow: none !important;
-    border-radius: 8px !important;
+    border-radius: 12px !important;
     background: #F8FAFC !important;
-    border-left: 3px solid #0D0C22 !important;
-    padding: 4px 8px !important;
-    margin: 4px 0 8px 6px !important;
+    padding: 6px !important;
+    margin: 4px 0 8px 0 !important;
   }
 
   /* Expands when .open class is toggled on click */
@@ -423,6 +423,8 @@
     display: flex !important;
     flex-direction: column !important; /* Stack vertically: one in a line, then other in next line */
     gap: 4px !important;
+    border: none !important;
+    border-left: none !important;
   }
 
   .dd-item {
