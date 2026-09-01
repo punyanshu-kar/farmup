@@ -2866,3 +2866,5 @@ const FarmUpDistressEngine = {
 };
 
 window.FarmUpDistressEngine = FarmUpDistressEngine;
+
+if (typeof document !== "undefined") { FarmUpAuth.syncNavbar(); }

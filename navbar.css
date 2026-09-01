@@ -435,3 +435,20 @@
     display: none !important;
   }
 }
+
+
+/* ==========================================================================
+   ZERO-FLICKER AUTH STATE RULES
+   ========================================================================== */
+html.user-logged-in .btn-nav-auth {
+  display: none !important;
+}
+html.user-logged-in .user-avatar-wrap {
+  display: inline-block !important;
+}
+html.user-logged-out .btn-nav-auth {
+  display: inline-flex !important;
+}
+html.user-logged-out .user-avatar-wrap {
+  display: none !important;
+}
