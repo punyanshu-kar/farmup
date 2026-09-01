@@ -2756,7 +2756,6 @@ window.addEventListener('storage', (e) => {
 
 /* ---------- 4.4 PREDICTIVE KISAN DISTRESS-RISK & SOS ROUTING ENGINE ---------- */
 const FarmUpDistressEngine = {
-  // Baseline MSP / Cost of Cultivation (₹/Qtl)
   mspBaselines: {
     'Wheat': 2275,
     'Mustard': 5650,
@@ -2768,75 +2767,82 @@ const FarmUpDistressEngine = {
   },
 
   calculateDistressScore({
-    rainfallDeficitPct = 25, // % deviation from normal
-    crop = 'Wheat',
+    rainfallDeficitPct = 0,
+    crop = 'Paddy',
     currentMandiRate = 2480,
-    loanAmount = 150000,
-    loanDueDays = 45,
-    acres = 3.2
-  }) {
-    // 1. Weather / Rainfall Risk Component (0 - 100)
-    // Deficit > 30% or Excess > 50% triggers high vulnerability
-    let weatherRisk = Math.min(100, Math.max(0, Math.abs(rainfallDeficitPct) * 1.5));
-
-    // 2. Price Crash / Market Risk Component (0 - 100)
-    const baseMsp = this.mspBaselines[crop] || 2200;
-    let priceDropPct = 0;
-    if (currentMandiRate < baseMsp) {
-      priceDropPct = ((baseMsp - currentMandiRate) / baseMsp) * 100;
+    irrigationType = 'Canal + Borewell',
+    totalDebt = 120000,
+    acres = 4.5,
+    informalDebtRatio = 0.20,
+    tenancyStatus = 'Owner-Cultivator',
+    cropDiversificationCount = 3
+  } = {}) {
+    // 1. Production & Weather Domain (Weight: 30%)
+    let weatherRisk = Math.min(100, Math.max(0, Math.abs(rainfallDeficitPct) * 1.6));
+    const irr = (irrigationType || '').toLowerCase();
+    if (irr.includes('canal') || irr.includes('drip') || irr.includes('borewell')) {
+      weatherRisk = Math.max(0, weatherRisk - 25); // Protective buffer
+    } else if (irr.includes('rainfed') || irr.includes('barani')) {
+      weatherRisk = Math.min(100, weatherRisk + 30); // Vulnerability
     }
-    let marketRisk = Math.min(100, Math.max(0, priceDropPct * 3.0));
 
-    // 3. Debt & Loan Proximity Risk Component (0 - 100)
-    // Debt per acre + days left until repayment deadline
-    const debtPerAcre = loanAmount / Math.max(1, acres);
-    let debtSeverity = Math.min(50, (debtPerAcre / 40000) * 50);
-    let timeUrgency = loanDueDays <= 15 ? 50 : (loanDueDays <= 30 ? 35 : (loanDueDays <= 60 ? 20 : 5));
-    let debtRisk = Math.min(100, debtSeverity + timeUrgency);
+    // 2. Market & Price Domain (Weight: 25%)
+    const baseMsp = this.mspBaselines[crop] || 2200;
+    let priceSpreadPct = ((currentMandiRate - baseMsp) / baseMsp) * 100;
+    let marketRisk = 0;
+    if (priceSpreadPct < 0) {
+      marketRisk = Math.min(100, Math.abs(priceSpreadPct) * 3.5); // Price crashed below MSP
+    } else {
+      marketRisk = Math.max(0, 20 - priceSpreadPct * 1.2); // Profitable above MSP
+    }
 
-    // 4. Weighted Composite Distress Score (0 - 100%)
-    // Weights: Weather (35%) + Market Crash (35%) + Debt Proximity (30%)
-    const compositeScore = Math.round((weatherRisk * 0.35) + (marketRisk * 0.35) + (debtRisk * 0.30));
+    // 3. Financial & Debt Domain (Weight: 25%)
+    const debtPerAcre = totalDebt / Math.max(0.5, acres);
+    let debtSeverity = Math.min(70, (debtPerAcre / 45000) * 50);
+    let informalPenalty = (informalDebtRatio > 0.3) ? 30 : (informalDebtRatio * 40);
+    let financialRisk = Math.min(100, debtSeverity + informalPenalty);
 
-    // 5. Categorization
+    // 4. Structural Resilience Domain (Weight: 20%)
+    const ten = (tenancyStatus || '').toLowerCase();
+    let tenancyRisk = (ten.includes('tenant') || ten.includes('sharecropper')) ? 45 : 15;
+    let diversificationDiscount = Math.min(30, (cropDiversificationCount || 1) * 8);
+    let structuralRisk = Math.max(0, Math.min(100, tenancyRisk - diversificationDiscount + (acres < 2 ? 25 : 0)));
+
+    // Composite Weighted Score (0 - 100%)
+    const compositeScore = Math.round(
+      (weatherRisk * 0.30) + 
+      (marketRisk * 0.25) + 
+      (financialRisk * 0.25) + 
+      (structuralRisk * 0.20)
+    );
+
     let severityBand = 'LOW';
-    let badgeColor = '#268549'; // Green
-    let statusTitle = 'Low Vulnerability (Stable)';
-    let actionRecommendation = 'Standard agronomic monitoring. Yield and market buffers are healthy.';
-    let alertRequired = false;
+    let badgeColor = '#268549';
+    let statusTitle = 'Low Vulnerability (Resilient)';
+    let actionRecommendation = 'Agronomic conditions and market realization are stable.';
 
-    if (compositeScore >= 66) {
+    if (compositeScore >= 65) {
       severityBand = 'CRITICAL';
-      badgeColor = '#D32F2F'; // Red
-      statusTitle = 'Critical Debt & Crop Distress';
-      actionRecommendation = 'High financial and climate vulnerability. Immediate Govt/NGO relief intervention, PMFBY fast-track claim, and KCC loan moratorium required.';
-      alertRequired = true;
-    } else if (compositeScore >= 36) {
+      badgeColor = '#D32F2F';
+      statusTitle = 'Critical Agrarian Distress';
+      actionRecommendation = 'Immediate relief intervention and PMFBY crop insurance expedited settlement recommended.';
+    } else if (compositeScore >= 35) {
       severityBand = 'MODERATE';
-      badgeColor = '#F57C00'; // Amber
+      badgeColor = '#F57C00';
       statusTitle = 'Moderate Vulnerability (Early Warning)';
-      actionRecommendation = 'Early financial stress detected. Monitor mandi price trends and schedule timely irrigation to prevent yield reduction.';
-      alertRequired = false;
+      actionRecommendation = 'Monitor APMC modal prices and utilize micro-irrigation to cushion against soil moisture stress.';
     }
 
     return {
-      score: compositeScore,
+      score: Math.max(5, Math.min(95, compositeScore)),
       severityBand,
       badgeColor,
       statusTitle,
       actionRecommendation,
-      alertRequired,
-      signals: {
-        rainfallDeficitPct,
-        weatherRisk: Math.round(weatherRisk),
-        currentMandiRate,
-        baseMsp,
-        priceDropPct: Math.round(priceDropPct),
-        marketRisk: Math.round(marketRisk),
-        loanAmount,
-        loanDueDays,
-        debtRisk: Math.round(debtRisk)
-      }
+      weatherRisk: Math.round(weatherRisk),
+      marketRisk: Math.round(marketRisk),
+      financialRisk: Math.round(financialRisk),
+      structuralRisk: Math.round(structuralRisk)
     };
   },
 
@@ -2848,20 +2854,13 @@ const FarmUpDistressEngine = {
       phone: farmerProfile.phone,
       location: (farmerProfile.village || 'Gram Panchayat') + ', ' + (farmerProfile.district || 'District') + ', ' + (farmerProfile.state || 'State'),
       distressScore: distressReport.score,
-      severity: distressReport.severityBand,
-      crops: farmerProfile.crops,
-      acres: farmerProfile.acres,
-      routedTo: [
-        'District Agriculture Officer (DAO), ' + farmerProfile.district,
-        'Krishi Vigyan Kendra (KVK) Extension Team',
-        'Lead District Bank / NABARD KCC Cell'
-      ],
-      reliefProtocols: [
-        'PMFBY Crop Loss Fast-Track Assessment',
-        'KCC Loan Interest Subvention & 90-Day Moratorium',
-        'State Disaster Relief Fund (SDRF) Input Subsidy'
-      ]
+      severityBand: distressReport.severityBand
     };
+    try {
+      const existing = JSON.parse(localStorage.getItem('farmup_kvk_tickets') || '[]');
+      existing.unshift(alertTicket);
+      localStorage.setItem('farmup_kvk_tickets', JSON.stringify(existing.slice(0, 50)));
+    } catch(e) {}
     return alertTicket;
   }
 };
