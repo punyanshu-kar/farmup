@@ -1897,6 +1897,52 @@ const FarmUpAuth = {
       }
 
       // 2. Attach click toggle on mobile for Distress dropdown
+            // 2. Inject Mobile Language Selector at bottom of .tb-links (for Smartphone View)
+      if (navLinks && typeof FarmUpTranslator !== 'undefined' && typeof FARMUP_LANGUAGES !== 'undefined') {
+        let existingMobileLang = navLinks.querySelector('.mobile-menu-lang-section');
+        if (!existingMobileLang) {
+          const mobileLangWrap = document.createElement('div');
+          mobileLangWrap.className = 'mobile-menu-lang-section';
+          mobileLangWrap.innerHTML = `
+            <div class="mobile-lang-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+              <span>Language / भाषा</span>
+            </div>
+            <div class="mobile-lang-grid">
+              ${FARMUP_LANGUAGES.map(l => {
+                const isCur = l.code === FarmUpTranslator.currentLang;
+                return `
+                  <button type="button" class="mobile-lang-chip ${isCur ? 'active' : ''}" data-code="${l.code}">
+                    <span>${l.native}</span>
+                    <span style="font-size:11px;color:#6C7A68;font-weight:500;">${l.name}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          `;
+
+          mobileLangWrap.querySelectorAll('.mobile-lang-chip').forEach(chip => {
+            chip.onclick = (e) => {
+              e.stopPropagation();
+              const code = chip.getAttribute('data-code');
+              FarmUpTranslator.setLanguage(code);
+              
+              // Update all active states
+              document.querySelectorAll('.mobile-lang-chip').forEach(c => c.classList.remove('active'));
+              chip.classList.add('active');
+
+              // Sync desktop dropdown button label
+              const selectedL = FARMUP_LANGUAGES.find(l => l.code === code);
+              if (selectedL) {
+                document.querySelectorAll('.lang-cur-name').forEach(el => { el.textContent = selectedL.native; });
+              }
+            };
+          });
+
+          navLinks.appendChild(mobileLangWrap);
+        }
+      }
+
       if (navLinks) {
         const distressTrigger = navLinks.querySelector('.nav-dropdown-trigger');
         if (distressTrigger) {
