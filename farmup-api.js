@@ -1958,7 +1958,7 @@ const FarmUpAuth = {
           right.appendChild(langWrap);
         }
 
-        // Inject Auth State (Avatar when logged in, Log in button when logged out)
+                // Inject Auth State (Avatar when logged in, Log in button when logged out)
         if (loggedIn && profile) {
           const name = profile.name || 'Farmer';
           const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || 'KF';
@@ -1971,15 +1971,27 @@ const FarmUpAuth = {
               <span>${initials}</span>
               <span style="position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border-radius:50%;background:#268549;border:2px solid #FFFFFF;"></span>
             </button>
-            <div id="navAvatarDropdown" style="display:none;position:absolute;top:44px;right:0;width:200px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);border-radius:14px;box-shadow:0 15px 35px rgba(0,0,0,0.15);padding:10px;z-index:999999;flex-direction:column;gap:4px;">
-              <div style="padding-bottom:6px;border-bottom:1px solid rgba(0,0,0,0.08);">
-                <div style="font-weight:700;font-size:13.5px;color:#0D0C22;">${name}</div>
-                <div style="font-size:11px;color:#6C7A68;font-family:'IBM Plex Mono',monospace;">${profile.kisanId || 'KID-IND-2026'}</div>
+            <div id="navAvatarDropdown" style="display:none;position:absolute;top:44px;right:0;width:215px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);border-radius:14px;box-shadow:0 15px 35px rgba(0,0,0,0.15);padding:8px;z-index:999999;flex-direction:column;gap:2px;">
+              <div style="padding:6px 10px 8px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">
+                <div style="font-weight:800;font-size:14px;color:#0D0C22;line-height:1.2;">${name}</div>
+                <div style="font-size:11px;color:#6C7A68;font-family:'IBM Plex Mono',monospace;margin-top:2px;">${profile.kisanId || 'KID-IND-2026'}</div>
               </div>
-              <a href="profile.html" style="padding:6px 8px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;">Dashboard</a>
-              <a href="distress.html" style="padding:6px 8px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;">Distress Scorer</a>
-              <a href="helpline.html" style="padding:6px 8px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;">Helpline</a>
-              <button type="button" onclick="FarmUpAuth.logout()" style="width:100%;text-align:left;padding:6px 8px;font-size:13px;font-weight:600;color:#D32F2F;background:none;border:none;cursor:pointer;border-top:1px solid rgba(0,0,0,0.08);margin-top:4px;">Sign Out</button>
+              <a href="profile.html" class="avatar-menu-item" style="display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;border-radius:8px;transition:background 0.15s ease;" onmouseover="this.style.background='#F4F6F8'" onmouseout="this.style.background='transparent'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#268549" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                <span>Dashboard</span>
+              </a>
+              <a href="distress.html" class="avatar-menu-item" style="display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;border-radius:8px;transition:background 0.15s ease;" onmouseover="this.style.background='#F4F6F8'" onmouseout="this.style.background='transparent'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D32F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <span>Distress Scorer</span>
+              </a>
+              <a href="helpline.html" class="avatar-menu-item" style="display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:13px;font-weight:600;color:#0D0C22;text-decoration:none;border-radius:8px;transition:background 0.15s ease;" onmouseover="this.style.background='#F4F6F8'" onmouseout="this.style.background='transparent'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F57C00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>Helpline</span>
+              </a>
+              <button type="button" onclick="FarmUpAuth.logout()" class="avatar-menu-item" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:13px;font-weight:600;color:#D32F2F;background:none;border:none;cursor:pointer;border-radius:8px;border-top:1px solid rgba(0,0,0,0.06);margin-top:4px;transition:background 0.15s ease;" onmouseover="this.style.background='#FEECEB'" onmouseout="this.style.background='transparent'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D32F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                <span>Sign Out</span>
+              </button>
             </div>
           `;
           right.appendChild(avatarWrap);
@@ -2868,3 +2880,15 @@ const FarmUpDistressEngine = {
 window.FarmUpDistressEngine = FarmUpDistressEngine;
 
 if (typeof document !== "undefined") { FarmUpAuth.syncNavbar(); }
+
+// Outside click listener for Avatar Dropdown
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    /* navAvatarDropdown_dismiss */
+    const popup = document.getElementById('navAvatarDropdown');
+    const btn = document.getElementById('navUserAvatarBtn');
+    if (popup && popup.style.display === 'flex' && !popup.contains(e.target) && (!btn || !btn.contains(e.target))) {
+      popup.style.display = 'none';
+    }
+  });
+}
