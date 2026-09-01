@@ -896,6 +896,82 @@
         <div id="staleActionButtons" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
       </div>
 
+      
+      <!-- LIVE RISK TUNING & SCENARIO SIMULATOR -->
+      <section class="section-card" style="background:#FFFFFF;border:1.5px solid #0D0C22;border-radius:18px;margin-bottom:24px;padding:20px 24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+          <div>
+            <h3 style="font-size:17px;font-weight:800;color:#0D0C22;display:flex;align-items:center;gap:8px;">
+              <span>🎛️</span> Dynamic Risk Telemetry & Scenario Calculator
+            </h3>
+            <p style="font-size:12.5px;color:var(--ink-muted);margin-top:2px;">
+              Tailored to your registered farm profile. Adjust sliders below to simulate weather deficits, mandi price fluctuations, and debt pressure in real-time:
+            </p>
+          </div>
+          <button type="button" class="btn btn-outline" onclick="resetTelemetryToProfile()" style="padding:5px 14px;font-size:12px;border-radius:100px;">
+            ↺ Reset to Profile Baseline
+          </button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;background:#F8FAFC;padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,0.06);">
+          <!-- 1. Rainfall Deficit -->
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <label style="font-size:12px;font-weight:700;color:#0D0C22;">14-Day Rain Deficit</label>
+              <span id="sliderValRain" style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:#D32F2F;">-24%</span>
+            </div>
+            <input type="range" min="-80" max="60" step="5" value="-24" id="sliderRain" oninput="onLiveTelemetryChange()" style="width:100%;cursor:pointer;" />
+          </div>
+
+          <!-- 2. Mandi Spot Rate -->
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <label style="font-size:12px;font-weight:700;color:#0D0C22;">Mandi Spot Price (₹/Qtl)</label>
+              <span id="sliderValMandi" style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:#268549;">₹2,480</span>
+            </div>
+            <input type="range" min="1000" max="7000" step="50" value="2480" id="sliderMandi" oninput="onLiveTelemetryChange()" style="width:100%;cursor:pointer;" />
+          </div>
+
+          <!-- 3. Total Debt -->
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <label style="font-size:12px;font-weight:700;color:#0D0C22;">Total Debt (₹)</label>
+              <span id="sliderValDebt" style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:#0D0C22;">₹1,50,000</span>
+            </div>
+            <input type="range" min="0" max="600000" step="10000" value="150000" id="sliderDebt" oninput="onLiveTelemetryChange()" style="width:100%;cursor:pointer;" />
+          </div>
+
+          <!-- 4. Informal Moneylender Share -->
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <label style="font-size:12px;font-weight:700;color:#0D0C22;">Informal Debt Share</label>
+              <span id="sliderValInformal" style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:#F57C00;">35%</span>
+            </div>
+            <input type="range" min="0" max="100" step="5" value="35" id="sliderInformal" oninput="onLiveTelemetryChange()" style="width:100%;cursor:pointer;" />
+          </div>
+
+          <!-- 5. Irrigation Source -->
+          <div>
+            <label style="font-size:12px;font-weight:700;color:#0D0C22;display:block;margin-bottom:4px;">Irrigation Infrastructure</label>
+            <select id="simIrrigation" onchange="onLiveTelemetryChange()" style="width:100%;padding:6px 10px;border-radius:8px;border:1.5px solid rgba(0,0,0,0.12);font-size:12.5px;font-weight:600;background:#fff;outline:none;">
+              <option value="Canal Irrigation" selected>Canal Irrigation (Buffered)</option>
+              <option value="Borewell + Drip Irrigation">Borewell + Drip Irrigation (Buffered)</option>
+              <option value="Tube Well + Sprinkler">Tube Well + Sprinkler</option>
+              <option value="Rainfed (Barani)">Rainfed / Barani (High Risk)</option>
+            </select>
+          </div>
+
+          <!-- 6. Tenancy Status -->
+          <div>
+            <label style="font-size:12px;font-weight:700;color:#0D0C22;display:block;margin-bottom:4px;">Tenancy & Land Rights</label>
+            <select id="simTenancy" onchange="onLiveTelemetryChange()" style="width:100%;padding:6px 10px;border-radius:8px;border:1.5px solid rgba(0,0,0,0.12);font-size:12.5px;font-weight:600;background:#fff;outline:none;">
+              <option value="Owner-Cultivator" selected>Owner-Cultivator</option>
+              <option value="Tenant Farmer / Sharecropper">Tenant / Sharecropper (High Risk)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
       <!-- 1. MAIN HERO ASSESSMENT CARD -->
       <section class="distress-hero-card">
         <div class="distress-gauge-box">
@@ -1818,6 +1894,48 @@
     }
 
     evaluateAndRenderDistress();
+  }
+
+  
+  function onLiveTelemetryChange() {
+    if (!currentFarmerProfile) return;
+
+    const rainVal = parseInt(document.getElementById('sliderRain').value, 10);
+    const mandiVal = parseInt(document.getElementById('sliderMandi').value, 10);
+    const debtVal = parseInt(document.getElementById('sliderDebt').value, 10);
+    const informalVal = parseInt(document.getElementById('sliderInformal').value, 10);
+    const irrigVal = document.getElementById('simIrrigation').value;
+    const tenancyVal = document.getElementById('simTenancy').value;
+
+    document.getElementById('sliderValRain').textContent = (rainVal > 0 ? '+' : '') + rainVal + '%';
+    document.getElementById('sliderValMandi').textContent = '₹' + mandiVal.toLocaleString('en-IN');
+    document.getElementById('sliderValDebt').textContent = '₹' + debtVal.toLocaleString('en-IN');
+    document.getElementById('sliderValInformal').textContent = informalVal + '%';
+
+    baseTelemetry.rainfallDeficitPct = rainVal;
+    baseTelemetry.currentMandiRate = mandiVal;
+    currentFarmerProfile.totalDebt = debtVal;
+    currentFarmerProfile.informalDebtRatio = informalVal / 100;
+    currentFarmerProfile.irrigation = irrigVal;
+    currentFarmerProfile.tenancyStatus = tenancyVal;
+
+    evaluateAndRenderDistress();
+  }
+
+  function resetTelemetryToProfile() {
+    const saved = FarmUpAuth.getProfile() || {};
+    const acres = parseFloat(saved.acres) || 3.2;
+    const debt = parseFloat(saved.totalDebt) || Math.round(acres * 32000);
+    const informal = parseFloat(saved.informalDebtRatio) || (acres < 2 ? 0.45 : 0.20);
+
+    document.getElementById('sliderRain').value = -24;
+    document.getElementById('sliderMandi').value = 2480;
+    document.getElementById('sliderDebt').value = debt;
+    document.getElementById('sliderInformal').value = Math.round(informal * 100);
+    document.getElementById('simIrrigation').value = saved.irrigation || 'Canal Irrigation';
+    document.getElementById('simTenancy').value = saved.tenancyStatus || 'Owner-Cultivator';
+
+    onLiveTelemetryChange();
   }
 
   function evaluateAndRenderDistress() {
