@@ -1,4 +1,7 @@
-# <img src="farmup-logo.png" width="32" height="32" alt="FarmUp Logo" style="vertical-align: middle;" /> FarmUp — Smart Agricultural Intelligence for Indian Farmers
+<h1 align="left">
+  <img src="farmup-logo.png" width="36" height="36" alt="FarmUp Logo" style="vertical-align: middle; margin-right: 8px;" />
+  FarmUp — Smart Agricultural Intelligence for Indian Farmers
+</h1>
 
 FarmUp is an intuitive, field-tested digital agriculture platform designed specifically for Indian farmers. It translates complex market rates, satellite weather data, agronomic research, and government policies into simple, actionable guidance in regional languages.
 
