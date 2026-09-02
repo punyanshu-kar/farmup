@@ -1,4 +1,4 @@
-FarmUp is an intuitive, field-tested digital agriculture platform designed specifically for Indian farmers. It translates complex market rates, satellite weather data, agronomic research, and government policies into simple, actionable guidance in regional languages.
+# FarmUp is an intuitive, field-tested digital agriculture platform designed specifically for Indian farmers. It translates complex market rates, satellite weather data, agronomic research, and government policies into simple, actionable guidance in regional languages.
 
 ---
 
