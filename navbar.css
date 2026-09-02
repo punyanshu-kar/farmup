@@ -544,3 +544,102 @@ html.user-logged-out .user-avatar-wrap {
 .mobile-lang-chip.active span:last-child {
   color: rgba(255, 255, 255, 0.7) !important;
 }
+
+
+/* ==========================================================================
+   UNIVERSAL CLEAN CREDIBLE FOOTER STYLES
+   ========================================================================== */
+footer.farmup-universal-footer {
+  width: 100% !important;
+  background: #FFFFFF !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  padding: 48px 0 28px !important;
+  margin-top: 64px !important;
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+}
+
+.farmup-footer-wrap {
+  width: 100% !important;
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
+  box-sizing: border-box !important;
+}
+
+.farmup-footer-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 32px !important;
+  margin-bottom: 36px !important;
+}
+
+@media (min-width: 640px) {
+  .farmup-footer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .farmup-footer-grid {
+    grid-template-columns: 1.4fr 1fr 1.2fr 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+.farmup-footer-col h5 {
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  color: #0D0C22 !important;
+  margin: 0 0 14px 0 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.farmup-footer-col p {
+  font-size: 13.5px !important;
+  color: #6E6D7A !important;
+  line-height: 1.6 !important;
+  margin: 0 0 12px 0 !important;
+}
+
+.farmup-footer-col ul {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.farmup-footer-col ul li a {
+  font-size: 13.5px !important;
+  color: #6E6D7A !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+  display: inline-block !important;
+}
+
+.farmup-footer-col ul li a:hover {
+  color: #0D0C22 !important;
+  text-decoration: underline !important;
+}
+
+.farmup-footer-bottom {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  padding-top: 24px !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+  font-size: 12.5px !important;
+  color: #8C8B99 !important;
+  text-align: center !important;
+}
+
+@media (min-width: 768px) {
+  .farmup-footer-bottom {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: left !important;
+  }
+}
